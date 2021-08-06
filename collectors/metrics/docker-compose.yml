@@ -1,0 +1,8 @@
+version: '3'
+
+services:
+  get_metrics:
+    build: .
+    volumes:
+      - ./:/usr/src/app
+    entrypoint: ["/usr/src/app/get_metrics_from_prom.py"]
