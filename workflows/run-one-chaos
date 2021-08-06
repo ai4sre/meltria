@@ -1,0 +1,8 @@
+#!/bin/bash
+
+set -e -o pipefail
+
+appLabel=$1
+chaos=$2
+
+cue eval --out yaml argowf-chaos.cue | argo submit -n litmus --watch --parameter chaosTypes="'$2'" --parameter appLabels="[\"$1\"]" -

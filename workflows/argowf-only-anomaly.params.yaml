@@ -1,0 +1,11 @@
+repeatNum: 1
+appLabels:
+  - user-db
+  - orders-db
+  - carts-db
+  - catalogue-db
+  - front-end
+  - user
+  - orders
+  - carts
+  - catalogue

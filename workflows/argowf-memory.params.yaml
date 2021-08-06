@@ -1,0 +1,10 @@
+repeatNum: 1
+appLabels:
+  - user-db
+  - orders-db
+  - carts-db
+  - catalogue-db
+  - payment
+  - front-end
+  - shipping
+chaosTypes: "'pod-memory-hog'"
