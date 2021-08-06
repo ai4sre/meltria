@@ -1,0 +1,5 @@
+namespace: monitoring
+resources:
+- ./grafana-dep.yaml
+- ./grafana-configmap.yaml
+- ./grafana-svc.yaml

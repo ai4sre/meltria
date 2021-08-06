@@ -1,0 +1,8 @@
+namespace: loadtest
+resources:
+- ./loadtest-dep.yaml
+
+configMapGenerator:
+- name: locustfile
+  files:
+  - locustfile.py

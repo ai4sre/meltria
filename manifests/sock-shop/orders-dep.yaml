@@ -1,0 +1,62 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: orders
+  labels:
+    name: orders
+    app: sock-shop
+  annotations:
+    litmuschaos.io/chaos: "true"
+  namespace: sock-shop
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: orders
+      app: sock-shop
+  template:
+    metadata:
+      labels:
+        name: orders
+        app: sock-shop
+    spec:
+      containers:
+      - name: orders
+        image: ghcr.io/ai4sre/sockshop-orders:latest
+        env:
+         - name: ZIPKIN
+           value: zipkin.jaeger.svc.cluster.local
+         - name: JAVA_OPTS
+           value: -Xms256m -Xmx256m -XX:+UseG1GC -Djava.security.egd=file:/dev/urandom
+        resources:
+          limits:
+            cpu: 150m
+            memory: 500Mi
+          requests:
+            cpu: 150m
+            memory: 500Mi
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - mountPath: /tmp
+          name: tmp-volume
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 80
+          initialDelaySeconds: 300
+          periodSeconds: 3
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 80
+          initialDelaySeconds: 180
+          periodSeconds: 3
+      volumes:
+        - name: tmp-volume
+          emptyDir:
+            medium: Memory
+      nodeSelector:
+        beta.kubernetes.io/os: linux
+        cloud.google.com/gke-nodepool: "default-pool"

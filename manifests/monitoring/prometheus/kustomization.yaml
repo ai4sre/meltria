@@ -1,0 +1,16 @@
+namespace: monitoring
+resources:
+- ./prometheus-sa.yaml
+- ./prometheus-cr.yaml
+- ./prometheus-crb.yaml
+- ./prometheus-exporter-ds.yaml
+- ./prometheus-exporter-disk-usage-ds.yaml
+- ./prometheus-exporter-kube-state-sa.yaml
+- ./prometheus-exporter-kube-state-dep.yaml
+- ./prometheus-exporter-kube-state-svc.yaml
+- ./prometheus-dep.yaml
+- ./prometheus-svc.yaml
+configMapGenerator:
+- name: prometheus-config
+  files:
+  - prometheus.yaml

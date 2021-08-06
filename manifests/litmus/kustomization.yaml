@@ -1,0 +1,7 @@
+namespace: litmus
+resources:
+- ./litmus-admin-rbac.yaml
+- ./argo-access.yaml
+- ./pod-cpu-hog.yaml
+- ./pod-memory-hog.yaml
+- ./pod-network-loss.yaml

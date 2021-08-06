@@ -1,0 +1,57 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-db
+  labels:
+    name: user-db
+    app: sock-shop
+  annotations:
+    litmuschaos.io/chaos: "true"
+  namespace: sock-shop
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: user-db
+      app: sock-shop
+  template:
+    metadata:
+      labels:
+        name: user-db
+        app: sock-shop
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9216"
+    spec:
+      containers:
+      - name: user-db
+        image: yuuki/sockshop-user-db:0.3.1
+        ports:
+        - name: mongo
+          containerPort: 27017
+        volumeMounts:
+        - mountPath: /tmp
+          name: tmp-volume
+        resources:
+          limits:
+            cpu: 200m
+            memory: 200Mi
+          requests:
+            cpu: 200m
+            memory: 200Mi
+      - name: mongodb-exporter
+        image: ssheehy/mongodb-exporter:0.10.0
+        ports:
+        - name: exporter
+          containerPort: 9216
+        env:
+          - name: MONGODB_URI
+            value: "mongodb://localhost:27017"
+      volumes:
+        - name: tmp-volume
+          emptyDir:
+            medium: Memory
+      nodeSelector:
+        beta.kubernetes.io/os: linux
+        cloud.google.com/gke-nodepool: "default-pool"

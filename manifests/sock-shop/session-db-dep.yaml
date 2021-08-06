@@ -1,0 +1,47 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: session-db
+  labels:
+    name: session-db
+    app: sock-shop
+  annotations:
+    litmuschaos.io/chaos: "true"
+  namespace: sock-shop
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: session-db
+      app: sock-shop
+  template:
+    metadata:
+      labels:
+        name: session-db
+        app: sock-shop
+      annotations:
+        prometheus.io.scrape: "true"
+    spec:
+      containers:
+      - name: session-db
+        image: redis:alpine
+        ports:
+        - name: redis
+          containerPort: 6379
+      - name: redis-exporter
+        image: oliver006/redis_exporter:latest
+        imagePullPolicy: Always
+        ports:
+        - name: exporter
+          containerPort: 9121
+          protocol: TCP
+        resources:
+          requests:
+            cpu: 50m
+            memory: 100Mi
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      nodeSelector:
+        beta.kubernetes.io/os: linux
+        cloud.google.com/gke-nodepool: "default-pool"

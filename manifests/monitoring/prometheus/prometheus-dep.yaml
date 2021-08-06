@@ -1,0 +1,81 @@
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: prometheus-ssd
+  annotations:
+    storageclass.kubernetes.io/is-default-class: "false"
+  labels:
+    kubernetes.io/cluster-service: "true"
+    addonmanager.kubernetes.io/mode : EnsureExists
+provisioner: kubernetes.io/gce-pd
+parameters:
+  type: pd-ssd
+  replication-type: none
+allowVolumeExpansion: true
+volumeBindingMode: WaitForFirstConsumer
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: prometheus-statefulset
+  namespace: monitoring
+spec:
+  serviceName: prometheus-statefulset
+  replicas: 1
+  updateStrategy:
+    type: "RollingUpdate"
+  selector:
+    matchLabels:
+      app: prometheus
+  template:
+    metadata:
+      name: prometheus
+      labels:
+        app: prometheus
+    spec:
+      terminationGracePeriodSeconds: 5
+      serviceAccount: prometheus
+      # Avoid Permission denied error when writing to pv. https://github.com/coreos/prometheus-operator/issues/541
+      securityContext:
+        fsGroup: 2000
+        runAsUser: 1000
+        runAsNonRoot: true
+      containers:
+      - name: prometheus
+        image: prom/prometheus:v2.20.0
+        args:
+        - '--storage.tsdb.retention.time=7200h'
+        - '--storage.tsdb.path=/var/lib/prometheus'
+        - '--config.file=/etc/prometheus/prometheus.yaml'
+        - '--log.level=debug'
+        ports:
+        - name: web
+          containerPort: 9090
+        volumeMounts:
+        - name: config-volume
+          mountPath: /etc/prometheus
+        # - name: alertrules-volume
+        #   mountPath: /etc/prometheus-rules
+        - name: prometheus-pv
+          mountPath: /var/lib/prometheus
+      volumes:
+      - name: config-volume
+        configMap:
+          name: prometheus-config
+      # - name: alertrules-volume
+      #   configMap:
+      #     name: prometheus-alertrules
+      nodeSelector:
+        beta.kubernetes.io/os: linux
+        cloud.google.com/gke-nodepool: "control-pool"
+  volumeClaimTemplates:
+    - metadata:
+        name: prometheus-pv
+      spec:
+        storageClassName: prometheus-ssd
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 100Gi
