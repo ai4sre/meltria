@@ -39,7 +39,9 @@ import concurrent.futures
 import datetime
 import json
 import sys
+import urllib.parse
 import urllib.request
+from typing import Any, Dict, Tuple
 
 COMPONENT_LABELS = {
     "front-end", "orders", "orders-db", "carts", "carts-db",
@@ -53,7 +55,7 @@ NAN = 'nan'
 GRAFANA_DASHBOARD = "d/3cHU4RSMk/sock-shop-performance"
 
 
-def get_targets(url, selector):
+def get_targets(url: str, selector: str) -> list[Dict[str, Any]]:
     params = {
         "match_target": '{' + selector + '}',
     }
@@ -72,7 +74,7 @@ def get_targets(url, selector):
         return targets
 
 
-def request_query_range(url, params, target):
+def request_query_range(url: str, params: Dict[str, Any], target: str) -> Dict[str, Any]:
     bparams = urllib.parse.urlencode(params).encode('ascii')
     headers = {
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -100,7 +102,8 @@ def request_query_range(url, params, target):
         raise(e)
 
 
-def get_metrics(url, targets, start, end, step, selector):
+def get_metrics(url: str, targets: list[str],
+                start: int, end: int, step: int, selector: str) -> list[Any]:
     futures = []
     with concurrent.futures.ThreadPoolExecutor(max_workers=20) as executor:
         for target in targets:
@@ -120,7 +123,7 @@ def get_metrics(url, targets, start, end, step, selector):
             futures.append(res)
         executor.shutdown()
 
-    concated_metrics = []
+    concated_metrics: list[Any] = []
     for future in concurrent.futures.as_completed(futures):
         metrics = future.result()
         if metrics is None:
@@ -129,7 +132,8 @@ def get_metrics(url, targets, start, end, step, selector):
     return concated_metrics
 
 
-def get_metrics_by_query_range(url, start, end, step, query, target):
+def get_metrics_by_query_range(url: str, start: int, end: int, step: int,
+                               query: str, target: str) -> Dict[str, Any]:
     params = {
         "query": query,
         "start": start,
@@ -139,7 +143,8 @@ def get_metrics_by_query_range(url, start, end, step, query, target):
     return request_query_range(url, params, target)
 
 
-def interpotate_time_series(values, time_meta):
+def interpotate_time_series(values: list[list[int]], time_meta: Dict[str, Any]
+                            ) -> list[list[float]]:
     start, end, step = time_meta['start'], time_meta['end'], time_meta['step']
     new_values = []
 
@@ -167,7 +172,7 @@ def interpotate_time_series(values, time_meta):
     return new_values
 
 
-def support_set_default(obj):
+def support_set_default(obj: set):
     if isinstance(obj, set):
         return list(obj)
     raise TypeError(repr(obj) + " is not JSON serializable")
@@ -305,7 +310,7 @@ def metrics_as_result(container_metrics, pod_metrics, node_metrics,
     return data
 
 
-def get_unix_time(timestamp):
+def get_unix_time(timestamp: Any) -> int:
     if timestamp.isdigit():  # check unix time
         return int(timestamp)
     if timestamp is None or not timestamp:
@@ -314,7 +319,7 @@ def get_unix_time(timestamp):
     return int(dt.timestamp())
 
 
-def time_range_from_args(params):
+def time_range_from_args(params: Dict[str, Any]) -> Tuple[int, int]:
     """
     get unix timestamps range (start to end) from duration
     """
