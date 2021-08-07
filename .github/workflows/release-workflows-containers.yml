@@ -1,0 +1,34 @@
+name: release-workflows-containers
+on:
+  push:
+    paths:
+      - 'tools/artifacts/**'
+      - ".github/workflows/release-tools-artifacts"
+
+env:
+  DOCKER_BASE_NAME: ghcr.io/${{ github.repository }}/workflows-containers
+
+jobs:
+  docker:
+    name: Push Docker image to GitHub Packages
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 1
+
+      - name: Login
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and Push to GitHub Packages
+        if: github.event_name != 'pull_request'
+        uses: docker/build-push-action@v2
+        with:
+          context: workflows/containers
+          push: true
+          tags: ${{ env.DOCKER_BASE_NAME }}:latest
