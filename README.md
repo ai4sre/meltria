@@ -1,4 +1,4 @@
-# Terrarium: AIOps Experimental Infrastructure with a Microservice Demo Application.
+# Terraria: AIOps Experimental Infrastructure with a Microservice Demo Application.
 
 This project build an experimental infrastructure for AIOps. (Work in Progress)
 
@@ -15,7 +15,7 @@ This project build an experimental infrastructure for AIOps. (Work in Progress)
 
 ## Related repositories 
 
-- [ai4sre/terrarium-analyzer](https://github.com/ai4sre/terrarium-analyzer): include scripts for analyzing operational data with machine learning and statistics.
+- [ai4sre/terraria-analyzer](https://github.com/ai4sre/terraria-analyzer): include scripts for analyzing operational data with machine learning and statistics.
 
 ## LICENSE
 

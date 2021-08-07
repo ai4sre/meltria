@@ -112,7 +112,7 @@ spec: {
 		{{inputs.parameters.tsdrMethod}}-{{workflow.creationTimestamp.Y}}-{{workflow.creationTimestamp.m}}-{{workflow.creationTimestamp.d}}-{{workflow.name}}.json
 		"""
 		container: {
-			image: "ghcr.io/ai4sre/terrarium-analyzer/tsdr:latest"
+			image: "ghcr.io/ai4sre/terraria-analyzer/tsdr:latest"
 			imagePullPolicy: "Always"
 			command: ["/usr/src/app/tsdr.py"]
 			args: [ "--method", "{{inputs.parameters.tsdrMethod}}",
