@@ -1,0 +1,8 @@
+version: '3'
+
+services:
+  list_metrics_files:
+    build: .
+    volumes:
+      - ./:/usr/src/app
+    entrypoint: ["/usr/src/app/list_metrics_files.py"]
