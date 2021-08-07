@@ -1,5 +1,6 @@
 # Kubernetes manifests
 
+The set of these manifests is forked from [microservices-demo/microservices-demo](https://github.com/microservices-demo/microservices-demo).
 ## How to Setup
 
 ### Setup GKE Cluster

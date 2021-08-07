@@ -5,11 +5,17 @@ This project build an experimental infrastructure for AIOps. (Work in Progress)
 1. Generate automatically MELT (Metrics, Events, Logs, Traces) data including performance anomaly.
 2. Analyze the generated data with machine learning algorithms.
 
-This repository is forked from [microservices-demo/microservices-demo](https://github.com/microservices-demo/microservices-demo).
-
 ## How to deploy application and monitoring stack
 
 [Documentation](./manifests/README.md)
+
+## How to generate operational data
+
+[Documentation](./workflows/README.md)
+
+## Related repositories 
+
+- [ai4sre/terrarium-analyzer](https://github.com/ai4sre/terrarium-analyzer): include scripts for analyzing operational data with machine learning and statistics.
 
 ## LICENSE
 
