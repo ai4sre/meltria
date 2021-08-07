@@ -343,7 +343,7 @@ spec: {
 		}]
 		#metricsPath: "/tmp/{{workflow.creationTimestamp.Y}}-{{workflow.creationTimestamp.m}}-{{workflow.creationTimestamp.d}}-{{workflow.name}}-{{inputs.parameters.appLabel}}_{{inputs.parameters.chaosType}}_{{inputs.parameters.jobN}}.json",
 		container: {
-			image: "ghcr.io/ai4sre/metrics-tools:latest"
+			image: "ghcr.io/ai4sre/terrarium/collectors-metrics:latest"
 			imagePullPolicy: "Always"
 			args: [
 				"--prometheus-url",
@@ -414,9 +414,9 @@ spec: {
 		{{inputs.parameters.tsdrMethod}}-{{workflow.creationTimestamp.Y}}-{{workflow.creationTimestamp.m}}-{{workflow.creationTimestamp.d}}-{{workflow.name}}.json
 		"""
 		container: {
-			image: "ghcr.io/ai4sre/tsdr-tools:latest"
+			image: "ghcr.io/ai4sre/terrarium-analyzer:latest"
 			imagePullPolicy: "Always"
-			command: ["/usr/src/app/tsdr.py"]
+			command: ["/usr/src/app/tsdr/tsdr.py"]
 			args: [ "--method", "{{inputs.parameters.tsdrMethod}}",
 					"--max-workers", "2",
 					"--include-raw-data",

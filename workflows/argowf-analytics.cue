@@ -54,7 +54,7 @@ spec: {
 			name: "blobPrefix"
 		}]
 		container: {
-			image: "ghcr.io/ai4sre/artifacts-tools:latest"
+			image: "ghcr.io/ai4sre/workflows-containers:latest"
 			imagePullPolicy: "Always"
 			command: ["/usr/src/app/list_metrics_files.py"]
 			args: [
@@ -112,7 +112,7 @@ spec: {
 		{{inputs.parameters.tsdrMethod}}-{{workflow.creationTimestamp.Y}}-{{workflow.creationTimestamp.m}}-{{workflow.creationTimestamp.d}}-{{workflow.name}}.json
 		"""
 		container: {
-			image: "ghcr.io/ai4sre/tsdr-tools:latest"
+			image: "ghcr.io/ai4sre/terrarium-analyzer/tsdr:latest"
 			imagePullPolicy: "Always"
 			command: ["/usr/src/app/tsdr.py"]
 			args: [ "--method", "{{inputs.parameters.tsdrMethod}}",
