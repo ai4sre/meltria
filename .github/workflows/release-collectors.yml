@@ -6,7 +6,7 @@ on:
       - ".github/workflows/release-tools-metrics"
 
 env:
-  DOCKER_BASE_NAME: ghcr.io/${{ github.repository_owner }}/collectors-metrics
+  DOCKER_BASE_NAME: ghcr.io/${{ github.repository }}/collectors-metrics
 
 jobs:
   docker:
