@@ -114,7 +114,7 @@ spec: {
 		container: {
 			image: "ghcr.io/ai4sre/terraria-analyzer/tsdr:latest"
 			imagePullPolicy: "Always"
-			command: ["/usr/src/app/tsdr.py"]
+			command: ["/usr/src/app/bin/tsdr_cli.py"]
 			args: [ "--method", "{{inputs.parameters.tsdrMethod}}",
 					"--max-workers", "2",
 					"--include-raw-data",
