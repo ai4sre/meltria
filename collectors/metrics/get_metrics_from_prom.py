@@ -41,7 +41,7 @@ import json
 import sys
 import urllib.parse
 import urllib.request
-from typing import Any, Dict, Tuple
+from typing import Any
 
 COMPONENT_LABELS = {
     "front-end", "orders", "orders-db", "carts", "carts-db",
@@ -55,7 +55,7 @@ NAN = 'nan'
 GRAFANA_DASHBOARD = "d/3cHU4RSMk/sock-shop-performance"
 
 
-def get_targets(url: str, selector: str) -> list[Dict[str, Any]]:
+def get_targets(url: str, selector: str) -> list[dict[str, Any]]:
     params = {
         "match_target": '{' + selector + '}',
     }
@@ -69,19 +69,20 @@ def get_targets(url: str, selector: str) -> list[Dict[str, Any]]:
         # remove duplicate target
         for item in body["data"]:
             if item["metric"] not in dupcheck:
-                targets.append({"metric": item["metric"], "type": item["type"]})
+                targets.append(
+                    {"metric": item["metric"], "type": item["type"]})
                 dupcheck[item["metric"]] = 1
         return targets
 
 
-def request_query_range(url: str, params: Dict[str, Any], target: str) -> Dict[str, Any]:
+def request_query_range(url: str, params: dict[str, Any], target: dict[str, Any]) -> dict[str, Any]:
     bparams = urllib.parse.urlencode(params).encode('ascii')
     headers = {
         'Content-Type': 'application/x-www-form-urlencoded',
     }
     try:
         # see https://prometheus.io/docs/prometheus/latest/querying/api/#range-queries
-        req = urllib.request.Request(url=url+'/api/v1/query_range',
+        req = urllib.request.Request(url=url + '/api/v1/query_range',
                                      data=bparams, headers=headers)
         with urllib.request.urlopen(req) as res:
             body = json.load(res)
@@ -102,7 +103,7 @@ def request_query_range(url: str, params: Dict[str, Any], target: str) -> Dict[s
         raise(e)
 
 
-def get_metrics(url: str, targets: list[str],
+def get_metrics(url: str, targets: list[dict[str, Any]],
                 start: int, end: int, step: int, selector: str) -> list[Any]:
     futures = []
     with concurrent.futures.ThreadPoolExecutor(max_workers=20) as executor:
@@ -112,7 +113,8 @@ def get_metrics(url: str, targets: list[str],
             query = '{0}{{{1}}}'.format(target['metric'], selector)
             if target['type'] == 'counter':
                 query = 'rate({}[1m])'.format(query)
-            query = 'sum by (instance,job,node,container,pod)({})'.format(query)
+            query = 'sum by (instance,job,node,container,pod)({})'.format(
+                query)
             params = {
                 "query": query,
                 "start": start,
@@ -133,7 +135,7 @@ def get_metrics(url: str, targets: list[str],
 
 
 def get_metrics_by_query_range(url: str, start: int, end: int, step: int,
-                               query: str, target: str) -> Dict[str, Any]:
+                               query: str, target: dict[str, Any]) -> dict[str, Any]:
     params = {
         "query": query,
         "start": start,
@@ -143,31 +145,31 @@ def get_metrics_by_query_range(url: str, start: int, end: int, step: int,
     return request_query_range(url, params, target)
 
 
-def interpotate_time_series(values: list[list[int]], time_meta: Dict[str, Any]
+def interpotate_time_series(values: list[list[int]], time_meta: dict[str, Any]
                             ) -> list[list[float]]:
     start, end, step = time_meta['start'], time_meta['end'], time_meta['step']
     new_values = []
 
     # start check
-    if (lost_num := int((values[0][0] - start) / step)-1) > 0:
+    if (lost_num := int((values[0][0] - start) / step) - 1) > 0:
         for j in range(lost_num):
-            new_values.append([start + step*j, NAN])
+            new_values.append([start + step * j, NAN])
 
     for i, val in enumerate(values):
-        if i+1 >= len(values):
+        if i + 1 >= len(values):
             new_values.append(val)
             break
-        cur_ts, next_ts = val[0], values[i+1][0]
+        cur_ts, next_ts = val[0], values[i + 1][0]
         new_values.append(val)
-        if (lost_num := int((next_ts - cur_ts) / step)-1) > 0:
+        if (lost_num := int((next_ts - cur_ts) / step) - 1) > 0:
             for j in range(lost_num):
-                new_values.append([cur_ts + step*(j+1), NAN])
+                new_values.append([cur_ts + step * (j + 1), NAN])
 
     # end check
     last_ts = values[-1][0]
     if (lost_num := int((end - last_ts) / step)) > 0:
         for j in range(lost_num):
-            new_values.append([last_ts + step*(j+1), NAN])
+            new_values.append([last_ts + step * (j + 1), NAN])
 
     return new_values
 
@@ -212,7 +214,8 @@ def metrics_as_result(container_metrics, pod_metrics, node_metrics,
         if '__name__' not in labels:
             continue
         # ex. pod="queue-master-85f5644bf5-wrp7q"
-        container = labels['pod'].rsplit("-", maxsplit=2)[0] if 'pod' in labels else labels['container']
+        container = labels['pod'].rsplit(
+            "-", maxsplit=2)[0] if 'pod' in labels else labels['container']
         data['containers'].setdefault(container, [])
         metric_name = labels['__name__']
 
@@ -233,13 +236,15 @@ def metrics_as_result(container_metrics, pod_metrics, node_metrics,
                 data['containers'][container].append(m)
         else:
             if not dupcheck[container][metric_name]:
-                uniq_metrics = [x for x in data['containers'][container] if x['metric_name'] != metric_name]
+                uniq_metrics = [x for x in data['containers']
+                                [container] if x['metric_name'] != metric_name]
                 uniq_metrics.append(m)
                 data['containers'][container] = uniq_metrics
                 dupcheck[container][metric_name] = True
 
         # Update mappings for nods and containers
-        data['mappings']['nodes-containers'].setdefault(labels['instance'], set())
+        data['mappings']['nodes-containers'].setdefault(
+            labels['instance'], set())
         data['mappings']['nodes-containers'][labels['instance']].add(container)
 
     for metric in pod_metrics:
@@ -305,7 +310,8 @@ def metrics_as_result(container_metrics, pod_metrics, node_metrics,
     data['meta']['count']['middlewares'] = middlewares_cnt
     data['meta']['count']['services'] = services_cnt
     data['meta']['count']['nodes'] = nodes_cnt
-    data['meta']['count']['sum'] = containers_cnt + middlewares_cnt + services_cnt + nodes_cnt
+    data['meta']['count']['sum'] = containers_cnt + \
+        middlewares_cnt + services_cnt + nodes_cnt
 
     return data
 
@@ -319,7 +325,7 @@ def get_unix_time(timestamp: Any) -> int:
     return int(dt.timestamp())
 
 
-def time_range_from_args(params: Dict[str, Any]) -> Tuple[int, int]:
+def time_range_from_args(params: dict[str, Any]) -> tuple[int, int]:
     """
     get unix timestamps range (start to end) from duration
     """
@@ -365,12 +371,15 @@ def main():
     parser.add_argument("--grafana-url",
                         help="endpoint URL for grafana server",
                         default="http://localhost:3000")
-    parser.add_argument("--start", help="start time (UNIX or RFC 3339)", type=str)
+    parser.add_argument(
+        "--start", help="start time (UNIX or RFC 3339)", type=str)
     parser.add_argument("--end", help="end time (UNIX or RFC 3339)", type=str)
     parser.add_argument("--step", help="step seconds", type=int, default=STEP)
     parser.add_argument("--duration", help="", type=str, default="30m")
-    parser.add_argument("--chaos-injected-component", help="chaos-injected component")
-    parser.add_argument("--injected-chaos-type", help="chaos type such as 'pod-cpu-hog'")
+    parser.add_argument("--chaos-injected-component",
+                        help="chaos-injected component")
+    parser.add_argument("--injected-chaos-type",
+                        help="chaos type such as 'pod-cpu-hog'")
     parser.add_argument("--out", help="output path", type=str)
     args = parser.parse_args()
 
