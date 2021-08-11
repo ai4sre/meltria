@@ -39,6 +39,7 @@ import concurrent.futures
 import datetime
 import json
 import sys
+import urllib.error
 import urllib.parse
 import urllib.request
 from typing import Any
@@ -88,7 +89,7 @@ def request_query_range(url: str, params: dict[str, Any], target: dict[str, Any]
             body = json.load(res)
             metrics = body['data']['result']
             if metrics is None or len(metrics) < 1:
-                return []
+                return {}
             for metric in metrics:
                 metric['metric']['__name__'] = target['metric']
             return metrics
