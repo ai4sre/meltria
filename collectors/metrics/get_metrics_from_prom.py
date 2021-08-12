@@ -76,7 +76,7 @@ def get_targets(url: str, selector: str) -> list[dict[str, Any]]:
         return targets
 
 
-def request_query_range(url: str, params: dict[str, Any], target: dict[str, Any]) -> dict[str, Any]:
+def request_query_range(url: str, params: dict[str, Any], target: dict[str, Any]) -> list[Any]:
     bparams = urllib.parse.urlencode(params).encode('ascii')
     headers = {
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -89,7 +89,7 @@ def request_query_range(url: str, params: dict[str, Any], target: dict[str, Any]
             body = json.load(res)
             metrics = body['data']['result']
             if metrics is None or len(metrics) < 1:
-                return {}
+                return []
             for metric in metrics:
                 metric['metric']['__name__'] = target['metric']
             return metrics
@@ -136,7 +136,7 @@ def get_metrics(url: str, targets: list[dict[str, Any]],
 
 
 def get_metrics_by_query_range(url: str, start: int, end: int, step: int,
-                               query: str, target: dict[str, Any]) -> dict[str, Any]:
+                               query: str, target: dict[str, Any]) -> list[Any]:
     params = {
         "query": query,
         "start": start,
@@ -181,13 +181,14 @@ def support_set_default(obj: set):
     raise TypeError(repr(obj) + " is not JSON serializable")
 
 
-def metrics_as_result(container_metrics, pod_metrics, node_metrics,
-                      throughput_metrics, latency_metrics, time_meta, injected_meta):
+def metrics_as_result(container_metrics: list[Any], pod_metrics: list[Any], node_metrics: list[Any],
+                      throughput_metrics: list[Any], latency_metrics: list[Any],
+                      time_meta: dict[str, Any], injected_meta: dict[str, Any]) -> dict[str, Any]:
     start, end = time_meta['start'], time_meta['end']
     grafana_url = time_meta['grafana_url']
     dashboard_url = f"{grafana_url}/{GRAFANA_DASHBOARD}?orgId=1&from={start}000&to={end}000"
 
-    data = {
+    data: dict[str, Any] = {
         'meta': {
             'prometheus_url': time_meta['prometheus_url'],
             'grafana_url': grafana_url,
@@ -208,7 +209,7 @@ def metrics_as_result(container_metrics, pod_metrics, node_metrics,
     }
     data['meta'].update(injected_meta)
 
-    dupcheck = {}
+    dupcheck: dict[str, Any] = {}
     for metric in container_metrics:
         # some metrics in results of prometheus query has no '__name__'
         labels = metric['metric']
