@@ -63,7 +63,7 @@ import "strings"
 	}]
 	"pod-network-loss": [{
 		name: "pod-network-loss"
-		spec: { 
+		spec: {
 			components: env: [{
 				name:  "TARGET_CONTAINER"
 				value: "{{inputs.parameters.appLabel}}"
@@ -72,7 +72,7 @@ import "strings"
 				value: "eth0"
 			}, {
 				name: "NETWORK_PACKET_LOSS_PERCENTAGE"
-				value: "5"
+				value: "20"
 			}, {
 				name:  "TOTAL_CHAOS_DURATION"
 				value: "{{workflow.parameters.chaosDurationSec}}"
@@ -390,7 +390,7 @@ spec: {
 			"""]
 		}
 	}, {
-		// Note the following duplicate code in argowf-analytics.cue. 
+		// Note the following duplicate code in argowf-analytics.cue.
 		name: "run-tsdr-by-method"
 		nodeSelector: {
 			"cloud.google.com/gke-nodepool": "analytics-pool"
@@ -420,7 +420,7 @@ spec: {
 			args: [ "--method", "{{inputs.parameters.tsdrMethod}}",
 					"--max-workers", "2",
 					"--include-raw-data",
-					"--out", "/tmp/\(#result_file_name)", 
+					"--out", "/tmp/\(#result_file_name)",
 					"/tmp/metrics.json"]
 		}
 		outputs: artifacts: [{
