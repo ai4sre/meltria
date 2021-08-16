@@ -4,7 +4,9 @@ appLabels:
   - orders-db
   - carts-db
   - catalogue-db
-  - payment
   - front-end
-  - shipping
+  - user
+  - orders
+  - carts
+  - catalogue
 chaosTypes: "'pod-network-loss','pod-network-latency'"
