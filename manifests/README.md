@@ -8,7 +8,7 @@ The set of these manifests is forked from [microservices-demo/microservices-demo
 1. Create GKE cluster.
 
 ```shell-session
-$ export PROJECT_ID=$(gcloud config list --format 'value(core.project)') 
+$ export PROJECT_ID=$(gcloud config list --format 'value(core.project)')
 $ gcloud container clusters create sock-shop-01 \
 	--region asia-northeast1-a \
 	--release-channel regular \
@@ -63,10 +63,20 @@ $ kubectl annotate serviceaccount --namespace litmus argo-chaos iam.gke.io/gcp-s
 ### Deploy Sock Shop Application and Monitoring Stacks
 
 ```shell-session
-$ helm plugin install https://github.com/databus23/helm-diff          
+$ helm plugin install https://github.com/databus23/helm-diff
 $ helmfile apply
 $ kubectl apply -k .
 ```
+
+## Setup Litmus
+
+1. Prepare to access Litmus 2.0 Portal.
+
+```shell-session
+$ kubectl port-forward svc/litmusportal-frontend-service -n litmus --address 0.0.0.0 9091:9091
+```
+
+2. Access and Login <http://localhost:9091> with username/password: `admin/litmus` <https://litmuschaos.github.io/tutorials/tutorial-getting-started/index.html#2>.
 
 ## Browse Grafana Dashboards
 
