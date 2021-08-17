@@ -181,8 +181,7 @@ spec: {
 			withSequence: count: "{{inputs.parameters.repeatNum}}"
 		}] ]
 	}, for type, _ in #chaosTypeToExps {
-		#chaosEngineName: "{{inputs.parameters.appLabel}}-\( type )-{{inputs.parameters.jobN}}"
-		#chaosResultName: "\( #chaosEngineName )-\( type )"
+		#chaosEngineName: "{{inputs.parameters.appLabel}}-\( type )-{{inputs.parameters.jobN}}.{{workflow.name}}"
 		name: "inject-chaos-\( type )-and-get-metrics"
 		inputs: parameters: [{
 			name: "jobN"
@@ -190,16 +189,6 @@ spec: {
 			name: "appLabel"
 		}]
 		steps: [ [{
-			name: "reset-chaosengine"
-			template: "revert-chaosengine"
-			arguments: parameters: [{
-				name: "chaosEngineName"
-				value: #chaosEngineName
-			}, {
-				name:  "chaosResultName"
-				value: #chaosResultName
-			}]
-		}], [{
 			name:     "inject-chaos-\( type )"
 			template: "inject-chaos-\( type )"
 			arguments: parameters: [{
@@ -231,16 +220,6 @@ spec: {
 			}, {
 				name: "endTimestamp"
 				value: "{{steps.get-injection-finished-time.outputs.result}}"
-			}]
-		}], [{
-			name: "revert-chaosengine"
-			template: "revert-chaosengine"
-			arguments: parameters: [{
-				name:  "chaosEngineName"
-				value: #chaosEngineName
-			}, {
-				name:  "chaosResultName"
-				value: #chaosResultName
 			}]
 		}], [{
 			name: "run-tsdr-and-then-sleep"
@@ -372,22 +351,6 @@ spec: {
 				name: "metrics-file-path"
 				value: #gcsMetricsFilePath
 			}]
-		}
-	}, {
-		name: "revert-chaosengine"
-		inputs: parameters: [{
-			name: "chaosEngineName"
-		}, {
-			name: "chaosResultName"
-		}]
-		container: {
-			image: "bitnami/kubectl"
-        	command: ["sh", "-c"]
-        	args: ["""
-			kubectl delete --wait chaosengine {{inputs.parameters.chaosEngineName}} -n {{workflow.parameters.adminModeNamespace}};
-			kubectl delete --wait chaosresult {{inputs.parameters.chaosResultName}} -n {{workflow.parameters.adminModeNamespace}};
-			true
-			"""]
 		}
 	}, {
 		// Note the following duplicate code in argowf-analytics.cue.
