@@ -118,7 +118,7 @@ spec: {
 		value: "litmus"
 	}, {
 		name:  "chaosServiceAccount"
-		value: "litmus-admin"
+		value: "k8s-chaos-admin"
 	}, {
 		name: "appLabels"
 		value: json.Marshal(_cue_app_labels)
@@ -465,7 +465,6 @@ spec: {
 					spec: {
 						annotationCheck: "false"
 						engineState:     "active"
-						monitoring:      true
 						appinfo: {
 							appns: "{{workflow.parameters.appNamespace}}"
 							applabel: "name={{inputs.parameters.appLabel}}"
