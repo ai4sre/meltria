@@ -456,6 +456,29 @@ def main():
             """,
         {'metric': 'request_duration_seconds_sum', 'type': 'gauge'},
     )
+    # The labels exported by some microservices (such as orders) in sock shop have been changed from
+    # request_duration_seconds_sum to http_request_duration_seconds_sum.
+    latency_metrics_patch = get_metrics_by_query_range(
+        args.prometheus_url, start, end, args.step, """
+            sum by (name) (
+                rate(
+                    http_request_duration_seconds_sum{
+                        job="kubernetes-service-endpoints",
+                        kubernetes_namespace="sock-shop"
+                    }[1m]
+                )
+            ) / sum by (name) (
+                rate(
+                    http_request_duration_seconds_count{
+                        job="kubernetes-service-endpoints",
+                        kubernetes_namespace="sock-shop"
+                    }[1m]
+                )
+            )
+            """,
+        {'metric': 'request_duration_seconds_sum', 'type': 'gauge'},
+    )
+    latency_metrics.extend(latency_metrics_patch)
 
     result = metrics_as_result(
         container_metrics, pod_metrics,
