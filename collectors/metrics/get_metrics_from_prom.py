@@ -52,6 +52,7 @@ COMPONENT_LABELS = {
 APP_LABEL = 'sock-shop'
 APP_NODEPOOL = 'default-pool'
 STEP = 15
+DEFAULT_DURATION = "30m"
 NAN = 'nan'
 GRAFANA_DASHBOARD = "d/3cHU4RSMk/sock-shop-performance"
 
@@ -365,66 +366,46 @@ def time_range_from_args(params: dict[str, Any]) -> tuple[int, int]:
     return start, end
 
 
-def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--prometheus-url",
-                        help="endpoint URL for prometheus server",
-                        default="http://localhost:9090")
-    parser.add_argument("--grafana-url",
-                        help="endpoint URL for grafana server",
-                        default="http://localhost:3000")
-    parser.add_argument(
-        "--start", help="start time (UNIX or RFC 3339)", type=str)
-    parser.add_argument("--end", help="end time (UNIX or RFC 3339)", type=str)
-    parser.add_argument("--step", help="step seconds", type=int, default=STEP)
-    parser.add_argument("--duration", help="", type=str, default="30m")
-    parser.add_argument("--chaos-injected-component",
-                        help="chaos-injected component")
-    parser.add_argument("--injected-chaos-type",
-                        help="chaos type such as 'pod-cpu-hog'")
-    parser.add_argument("--out", help="output path", type=str)
-    args = parser.parse_args()
+def collect_metrics(prometheus_url: str, grafana_url: str, start_time: str, end_time: str, chaos_param: dict[str, str],
+                    duration: str = DEFAULT_DURATION, step: int = STEP) -> dict[str, Any]:
+    """
+    Collect metrics API
+    """
 
-    try:
-        start, end = time_range_from_args({
-            "duration": args.duration,
-            "start": args.start,
-            "end": args.end,
-            "step": args.step,
-        })
-        if start > end:
-            print("start must be lower than end.", file=sys.stderr)
-            parser.print_help()
-            exit(-1)
-    except ValueError as e:
-        print("parsing timestamp error:", e, file=sys.stderr)
-        exit(-1)
+    start, end = time_range_from_args({
+        "duration": duration,
+        "start": start_time,
+        "end": end_time,
+        "step": step,
+    })
+    if start > end:
+        raise ValueError("start must be lower than end.")
 
     # get container metrics (cAdvisor)
-    container_targets = get_targets(args.prometheus_url,
+    container_targets = get_targets(prometheus_url,
                                     'job=~"kubernetes-cadvisor"')
     # add container=POD for network metrics
     # exclude metrics of argo workflow pods by removing metrics that 'instance' is gke control-pool node.
     comp_list = '|'.join(COMPONENT_LABELS)
     container_selector = f"namespace='sock-shop',container=~'{comp_list}|POD',nodepool='{APP_NODEPOOL}'"
-    container_metrics = get_metrics(args.prometheus_url, container_targets,
-                                    start, end, args.step, container_selector)
+    container_metrics = get_metrics(prometheus_url, container_targets,
+                                    start, end, step, container_selector)
 
     # get pod metrics
     pod_selector = 'app="{}"'.format(APP_LABEL)
-    pod_targets = get_targets(args.prometheus_url, pod_selector)
-    pod_metrics = get_metrics(args.prometheus_url, pod_targets,
-                              start, end, args.step, pod_selector)
+    pod_targets = get_targets(prometheus_url, pod_selector)
+    pod_metrics = get_metrics(prometheus_url, pod_targets,
+                              start, end, step, pod_selector)
 
     # get node metrics (node-exporter)
     node_selector = f"job='monitoring/node-exporter',node=~'.+-{APP_NODEPOOL}-.+'"
-    node_targets = get_targets(args.prometheus_url, node_selector)
-    node_metrics = get_metrics(args.prometheus_url, node_targets,
-                               start, end, args.step, node_selector)
+    node_targets = get_targets(prometheus_url, node_selector)
+    node_metrics = get_metrics(prometheus_url, node_targets,
+                               start, end, step, node_selector)
 
     # get service metrics
     throughput_metrics = get_metrics_by_query_range(
-        args.prometheus_url, start, end, args.step, """
+        prometheus_url, start, end, step, """
             sum by (name) (
                 rate(
                     request_duration_seconds_count{
@@ -437,7 +418,7 @@ def main():
         {'metric': 'request_duration_seconds_count', 'type': 'gauge'},
     )
     latency_metrics = get_metrics_by_query_range(
-        args.prometheus_url, start, end, args.step, """
+        prometheus_url, start, end, step, """
             sum by (name) (
                 rate(
                     request_duration_seconds_sum{
@@ -485,14 +466,54 @@ def main():
         node_metrics, throughput_metrics, latency_metrics, {
             'start': start,
             'end': end,
-            'step': args.step,
-            'prometheus_url': args.prometheus_url,
-            'grafana_url': args.grafana_url,
+            'step': step,
+            'prometheus_url': prometheus_url,
+            'grafana_url': grafana_url,
         }, {
-            'chaos_injected_component': args.chaos_injected_component,
-            'injected_chaos_type': args.injected_chaos_type,
+            'chaos_injected_component': chaos_param['chaos_injected_component'],
+            'injected_chaos_type': chaos_param['injected_chaos_type'],
         }
     )
+    return result
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--prometheus-url",
+                        help="endpoint URL for prometheus server",
+                        default="http://localhost:9090")
+    parser.add_argument("--grafana-url",
+                        help="endpoint URL for grafana server",
+                        default="http://localhost:3000")
+    parser.add_argument(
+        "--start", help="start time (UNIX or RFC 3339)", type=str)
+    parser.add_argument("--end", help="end time (UNIX or RFC 3339)", type=str)
+    parser.add_argument("--step", help="step seconds", type=int, default=STEP)
+    parser.add_argument("--duration", help="", type=str, default=DEFAULT_DURATION)
+    parser.add_argument("--chaos-injected-component",
+                        help="chaos-injected component")
+    parser.add_argument("--injected-chaos-type",
+                        help="chaos type such as 'pod-cpu-hog'")
+    parser.add_argument("--out", help="output path", type=str)
+    args = parser.parse_args()
+
+    try:
+        result = collect_metrics(
+            prometheus_url=args.prometheus_url,
+            grafana_url=args.grafana_url,
+            start_time=args.start,
+            end_time=args.end,
+            chaos_param={
+                'chaos_injected_component': args.chaos_injected_component,
+                'injected_chaos_type': args.injected_chaos_type,
+            },
+            duration=args.duration,
+            step=args.step,
+        )
+    except ValueError as e:
+        print("parsing timestamp error:", e, file=sys.stderr)
+        parser.print_help()
+        exit(-1)
 
     data = json.dumps(result, default=support_set_default)
     if args.out is None:
