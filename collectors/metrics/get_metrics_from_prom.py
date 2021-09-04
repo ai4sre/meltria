@@ -440,7 +440,7 @@ def collect_metrics(prometheus_url: str, grafana_url: str, start_time: str, end_
     # The labels exported by some microservices (such as orders) in sock shop have been changed from
     # request_duration_seconds_sum to http_request_duration_seconds_sum.
     latency_metrics_patch = get_metrics_by_query_range(
-        args.prometheus_url, start, end, args.step, """
+        prometheus_url, start, end, step, """
             sum by (name) (
                 rate(
                     http_request_duration_seconds_sum{
