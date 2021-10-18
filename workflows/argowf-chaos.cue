@@ -322,7 +322,7 @@ spec: {
 		}]
 		#metricsPath: "/tmp/{{workflow.creationTimestamp.Y}}-{{workflow.creationTimestamp.m}}-{{workflow.creationTimestamp.d}}-{{workflow.name}}-{{inputs.parameters.appLabel}}_{{inputs.parameters.chaosType}}_{{inputs.parameters.jobN}}.json",
 		container: {
-			image: "ghcr.io/ai4sre/terraria/collectors-metrics:latest"
+			image: "ghcr.io/ai4sre/meltria/collectors-metrics:latest"
 			imagePullPolicy: "Always"
 			args: [
 				"--prometheus-url",
@@ -377,7 +377,7 @@ spec: {
 		{{inputs.parameters.tsdrMethod}}-{{workflow.creationTimestamp.Y}}-{{workflow.creationTimestamp.m}}-{{workflow.creationTimestamp.d}}-{{workflow.name}}.json
 		"""
 		container: {
-			image: "ghcr.io/ai4sre/terraria-analyzer:latest"
+			image: "ghcr.io/ai4sre/meltria-analyzer:latest"
 			imagePullPolicy: "Always"
 			command: ["/usr/src/app/bin/tsdr_cli.py"]
 			args: [ "--method", "{{inputs.parameters.tsdrMethod}}",
