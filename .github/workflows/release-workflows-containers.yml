@@ -1,9 +1,6 @@
 name: release-workflows-containers
 on:
   push:
-    paths:
-      - 'workflows/containers/**'
-      - '.github/workflows/release-workflows-containers.yml'
 
 env:
   DOCKER_BASE_NAME: ghcr.io/${{ github.repository }}/workflows-containers

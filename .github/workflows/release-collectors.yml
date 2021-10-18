@@ -1,9 +1,6 @@
 name: release-collectors
 on:
   push:
-    paths:
-      - 'collectors/**'
-      - '.github/workflows/release-collectors.yml'
 
 env:
   DOCKER_BASE_NAME: ghcr.io/${{ github.repository }}/collectors-metrics
