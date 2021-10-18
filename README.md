@@ -1,4 +1,4 @@
-# Terraria: AIOps Experimental Infrastructure with a Microservice Demo Application.
+# Meltria: A Dynamic Datasets Generating System for Anomaly Detection and Root Cause Analysis in Microservices
 
 This project build an experimental infrastructure for AIOps. (Work in Progress)
 
@@ -15,7 +15,7 @@ This project build an experimental infrastructure for AIOps. (Work in Progress)
 
 ## Related repositories 
 
-- [ai4sre/terraria-analyzer](https://github.com/ai4sre/terraria-analyzer): include scripts for analyzing operational data with machine learning and statistics.
+- [ai4sre/meltria-analyzer](https://github.com/ai4sre/meltria-analyzer): include scripts for analyzing operational data with machine learning and statistics.
 
 ## LICENSE
 
