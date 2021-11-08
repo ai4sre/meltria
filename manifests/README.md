@@ -11,8 +11,7 @@ The set of these manifests is forked from [microservices-demo/microservices-demo
 $ export PROJECT_ID=$(gcloud config list --format 'value(core.project)')
 $ gcloud container clusters create sock-shop-01 \
 	--region asia-northeast1-a \
-	--release-channel regular \
-	--cluster-version 1.19.10-gke.1700 \
+	--cluster-version 1.19.15-gke.1801 \
 	--image-type=cos \
 	--machine-type e2-medium \
 	--num-nodes 4 \
