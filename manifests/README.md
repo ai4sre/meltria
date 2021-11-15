@@ -53,9 +53,6 @@ $ gcloud projects add-iam-policy-binding $PROJECT_ID --member serviceAccount:$CL
 $ gcloud iam service-accounts add-iam-policy-binding --role roles/iam.workloadIdentityUser --member "serviceAccount:$PROJECT_ID.svc.id.goog[litmus/argo-chaos]" $CLUSTER_NAME@$PROJECT_ID.iam.gserviceaccount.com
 ```
 
-```shell-session
-$ kubectl annotate serviceaccount --namespace litmus argo-chaos iam.gke.io/gcp-service-account=$CLUSTER_NAME@$PROJECT_ID.iam.gserviceaccount.com
-```
 
 4. Create GCS buckets (TBD)
 
@@ -63,10 +60,16 @@ $ kubectl annotate serviceaccount --namespace litmus argo-chaos iam.gke.io/gcp-s
 
 ```shell-session
 $ helm plugin install https://github.com/databus23/helm-diff
+$ helmfile charts
 $ helmfile apply
 $ kubectl apply -k .
 ```
 
+### Annotate the k8s service account to the GCP service account
+
+```shell-session
+$ kubectl annotate serviceaccount --namespace litmus argo-chaos iam.gke.io/gcp-service-account=$CLUSTER_NAME@$PROJECT_ID.iam.gserviceaccount.com
+```
 ## Setup Litmus
 
 1. Prepare to access Litmus 2.0 Portal.
