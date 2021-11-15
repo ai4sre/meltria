@@ -9,3 +9,5 @@ appLabels:
   - orders
   - carts
   - catalogue
+  - shipping
+chaosTypes: "'pod-cpu-hog','pod-memory-hog','pod-network-latency'"
