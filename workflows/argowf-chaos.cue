@@ -130,6 +130,9 @@ spec: {
 		name:  "chaosDurationSec"
 		value: 300
 	}, {
+		name:  "waitingTimeForTSDBSec"
+		value: 300
+	}, {
 		name:  "chaosIntervalSec"
 		value: 1800 // 30min
 	}, {
@@ -204,6 +207,13 @@ spec: {
 			arguments: parameters: [{
 				name:  "chaosEngineName"
 				value: #chaosEngineName
+			}]
+		}], [{
+			name:     "sleep-until-writing-metrics-to-TSDB"
+			template: "sleep-n-sec"
+			arguments: parameters: [{
+				name:  "seconds"
+				value: "{{workflow.parameters.waitingTimeForTSDBSec}}"
 			}]
 		}], [{
 			name:     "get-metrics"
