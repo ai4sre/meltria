@@ -95,3 +95,20 @@ $ kubectl port-forward svc/grafana -n monitoring --address 0.0.0.0 3000:80
 ```
 
 3. Open <http://grafana.monitoring.svc.cluster.local:3000>.
+
+## Browse Jeager UI
+
+
+1. Forward local port to grafana service port.
+
+```shell-session
+$ kubectl port-forward svc/grafana -n monitoring --address 0.0.0.0 4000:80
+```
+
+2. Add the following entry to `/etc/hosts` file.
+
+```
+127.0.0.1 ui.jaeger.svc.cluster.local
+```
+
+3. Open <http://ui.jaeger.svc.cluster.local:4000>.
