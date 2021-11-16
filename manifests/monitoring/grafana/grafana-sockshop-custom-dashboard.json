@@ -15,7 +15,7 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 1,
+  "id": 6,
   "links": [],
   "panels": [
     {
@@ -487,7 +487,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(rate(request_duration_seconds_count{name=\"carts\",status_code=~\"2..\",route!=\"metrics\"}[1m])) * 100",
+          "expr": "sum(rate(http_request_duration_seconds_count{name=\"carts\",status_code=~\"2..\",route!=\"metrics\"}[1m])) * 100",
           "interval": "",
           "intervalFactor": 1,
           "legendFormat": "2xx",
@@ -495,7 +495,7 @@
           "step": 4
         },
         {
-          "expr": "sum(rate(request_duration_seconds_count{name=\"carts\",status_code=~\"4.+|5.+\"}[1m])) * 100",
+          "expr": "sum(rate(http_request_duration_seconds_count{name=\"carts\",status_code=~\"4.+|5.+\"}[1m])) * 100",
           "interval": "",
           "intervalFactor": 1,
           "legendFormat": "4xx/5xx",
@@ -586,7 +586,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "histogram_quantile(0.99, sum(rate(request_duration_seconds_bucket{name=\"carts\"}[1m])) by (name, le))",
+          "expr": "histogram_quantile(0.99, sum(rate(http_request_duration_seconds_bucket{name=\"carts\"}[1m])) by (name, le))",
           "interval": "",
           "intervalFactor": 1,
           "legendFormat": "99th quantile",
@@ -594,7 +594,7 @@
           "step": 2
         },
         {
-          "expr": "histogram_quantile(0.5, sum(rate(request_duration_seconds_bucket{name=\"carts\"}[1m])) by (name, le))",
+          "expr": "histogram_quantile(0.5, sum(rate(http_request_duration_seconds_bucket{name=\"carts\"}[1m])) by (name, le))",
           "interval": "",
           "intervalFactor": 1,
           "legendFormat": "50th quantile",
@@ -602,7 +602,7 @@
           "step": 2
         },
         {
-          "expr": "sum(rate(request_duration_seconds_sum{name=\"carts\"}[1m])) / sum(rate(request_duration_seconds_count{name=\"carts\"}[1m]))",
+          "expr": "sum(rate(http_request_duration_seconds_sum{name=\"carts\"}[1m])) / sum(rate(http_request_duration_seconds_count{name=\"carts\"}[1m]))",
           "interval": "",
           "intervalFactor": 1,
           "legendFormat": "Mean",
@@ -692,7 +692,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(rate(request_duration_seconds_count{name=\"orders\",status_code=~\"2..\",route!=\"metrics\"}[1m])) * 100",
+          "expr": "sum(rate(http_request_duration_seconds_count{name=\"orders\",status_code=~\"2..\",route!=\"metrics\"}[1m])) * 100",
           "interval": "",
           "intervalFactor": 1,
           "legendFormat": "2xx",
@@ -700,7 +700,7 @@
           "step": 4
         },
         {
-          "expr": "sum(rate(request_duration_seconds_count{name=\"orders\",status_code=~\"4.+|5.+\"}[1m])) * 100",
+          "expr": "sum(rate(http_request_duration_seconds_count{name=\"orders\",status_code=~\"4.+|5.+\"}[1m])) * 100",
           "interval": "",
           "intervalFactor": 1,
           "legendFormat": "4xx/5xx",
@@ -791,7 +791,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "histogram_quantile(0.99, sum(rate(request_duration_seconds_bucket{name=\"orders\"}[1m])) by (name, le))",
+          "expr": "histogram_quantile(0.99, sum(rate(http_request_duration_seconds_bucket{name=\"orders\"}[1m])) by (name, le))",
           "interval": "",
           "intervalFactor": 1,
           "legendFormat": "99th quantile",
@@ -799,7 +799,7 @@
           "step": 2
         },
         {
-          "expr": "histogram_quantile(0.5, sum(rate(request_duration_seconds_bucket{name=\"orders\"}[1m])) by (name, le))",
+          "expr": "histogram_quantile(0.5, sum(rate(http_request_duration_seconds_bucket{name=\"orders\"}[1m])) by (name, le))",
           "interval": "",
           "intervalFactor": 1,
           "legendFormat": "50th quantile",
@@ -3163,7 +3163,7 @@
     "list": []
   },
   "time": {
-    "from": "now-30m",
+    "from": "now-12h",
     "to": "now"
   },
   "timepicker": {
@@ -3191,7 +3191,7 @@
     ]
   },
   "timezone": "browser",
-  "title": "Sock-Shop Performance",
+  "title": "Sock-Shop Performance2",
   "uid": "3cHU4RSMk",
-  "version": 6
+  "version": 4
 }
