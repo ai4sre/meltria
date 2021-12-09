@@ -1,4 +1,4 @@
-repeatNum: 1
+repeatNum: 5
 appLabels:
   - user-db
   - orders-db
