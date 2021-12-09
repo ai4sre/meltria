@@ -232,79 +232,13 @@ spec: {
 				value: "{{steps.get-injection-finished-time.outputs.result}}"
 			}]
 		}], [{
-			name: "run-tsdr-and-then-sleep"
-			template: "run-tsdr-and-then-sleep"
-			arguments: {
-				parameters: [{
-					name: "gcsMetricsFilePath"
-					value: "{{steps.get-metrics.outputs.parameters.metrics-file-path}}"
-				}]
-				artifacts: [{
-					name: "metricsFile"
-					from: "{{steps.get-metrics.outputs.artifacts.metrics-artifacts-gcs}}"
-				}]
-			}
-		}] ]
-	}, {
-		name: "run-tsdr-and-then-sleep"
-		inputs: {
-			parameters: [{
-				name: "gcsMetricsFilePath"
-			}]
-			artifacts: [{
-				name: "metricsFile"
-			}]
-		}
-		steps: [ [{
-			name: "run-tsdr"
-			template: "run-tsdr-by-all-methods"
-			arguments: {
-				parameters: [{
-					name: "gcsMetricsFilePath"
-					value: "{{inputs.parameters.gcsMetricsFilePath}}"
-				}]
-				artifacts: [{
-					name: "metricsFile"
-					from: "{{inputs.artifacts.metricsFile}}"
-				}]
-			}
-		}, {
 			name:     "sleep"
 			template: "sleep-n-sec"
 			arguments: parameters: [{
 				name:  "seconds"
-				value: "{{workflow.parameters.chaosIntervalSec}}"
+				value: "{{=asInt(workflow.parameters.chaosIntervalSec) - asInt(workflow.parameters.waitingTimeForTSDBSec)}}"
 			}]
-		} ] ]
-	}, {
-		name: "run-tsdr-by-all-methods"
-		parallelism: 1
-		inputs: {
-			parameters: [{
-				name: "gcsMetricsFilePath"
-			}]
-			artifacts: [{
-				name: "metricsFile"
-			}]
-		}
-		steps: [ [{
-			name: "run-tsdr"
-			template: "run-tsdr-by-method"
-			arguments: {
-				parameters: [{
-					name: "tsdrMethod"
-					value: "{{item}}"
-				}, {
-					name: "gcsMetricsFilePath"
-					value: "{{inputs.parameters.gcsMetricsFilePath}}"
-				}]
-				artifacts: [{
-					name: "metricsFile"
-					from: "{{inputs.artifacts.metricsFile}}"
-				}]
-			}
-			withItems: ["tsifter", "sieve"]
-		}] ]
+		}], ]
 	}, {
 		// return <injection started time> + <chaos duration>
 		name: "get-injection-finished-time"
@@ -362,50 +296,6 @@ spec: {
 				value: #gcsMetricsFilePath
 			}]
 		}
-	}, {
-		// Note the following duplicate code in argowf-analytics.cue.
-		name: "run-tsdr-by-method"
-		nodeSelector: {
-			"cloud.google.com/gke-nodepool": "analytics-pool"
-		}
-		inputs: {
-			parameters: [{
-				name: "tsdrMethod"
-			}, {
-				name: "gcsMetricsFilePath"
-			}]
-			artifacts: [ {
-				name: "metricsFile"
-				path: "/tmp/metrics.json"
-				gcs: {
-					bucket: "{{ workflow.parameters.gcsBucket }}"
-					key: "{{inputs.parameters.gcsMetricsFilePath}}"
-				}
-			} ]
-		}
-		#result_file_name: """
-		{{inputs.parameters.tsdrMethod}}-{{workflow.creationTimestamp.Y}}-{{workflow.creationTimestamp.m}}-{{workflow.creationTimestamp.d}}-{{workflow.name}}.json
-		"""
-		container: {
-			image: "ghcr.io/ai4sre/meltria-analyzer:latest"
-			imagePullPolicy: "Always"
-			command: ["/usr/src/app/bin/tsdr_cli.py"]
-			args: [ "--method", "{{inputs.parameters.tsdrMethod}}",
-					"--max-workers", "2",
-					"--include-raw-data",
-					"--out", "/tmp/\(#result_file_name)",
-					"/tmp/metrics.json"]
-		}
-		outputs: artifacts: [{
-			name: "tsdr-outputs"
-			path: "/tmp/\(#result_file_name)"
-			gcs: {
-				bucket: "{{workflow.parameters.gcsBucket}}"
-				key: """
-				results/{{=sprig.trimSuffix('.tgz', inputs.parameters.gcsMetricsFilePath)}}/\( #result_file_name + ".tgz" )
-				"""
-			}
-		}]
 	}, {
 		name: "sleep-n-sec"
 		inputs: parameters: [{
