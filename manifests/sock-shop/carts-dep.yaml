@@ -22,7 +22,7 @@ spec:
         app: sock-shop
     spec:
       containers:
-      - name: cart
+      - name: carts
         image: ghcr.io/ai4sre/sockshop-carts:latest
         env:
          - name: ZIPKIN
