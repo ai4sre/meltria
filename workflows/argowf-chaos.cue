@@ -15,6 +15,7 @@ import "strings"
 	}
 }
 
+// Currently, disable STO check to avoid misinjection
 #probe: [{
 	name: "check-front-end-qps"
 	type: "promProbe"
@@ -42,7 +43,6 @@ import "strings"
 				name:  "TOTAL_CHAOS_DURATION"
 				value: "{{workflow.parameters.chaosDurationSec}}"
 			}]
-			probe: #probe
 		}
 	}]
 	"pod-memory-hog": [{
@@ -58,7 +58,6 @@ import "strings"
 				name:  "TOTAL_CHAOS_DURATION"
 				value: "{{workflow.parameters.chaosDurationSec}}"
 			}]
-			probe: #probe
 		}
 	}]
 	"pod-network-loss": [{
@@ -77,7 +76,6 @@ import "strings"
 				name:  "TOTAL_CHAOS_DURATION"
 				value: "{{workflow.parameters.chaosDurationSec}}"
 			}]
-			probe: #probe
 		}
 	}]
 	"pod-network-latency": [{
@@ -96,7 +94,6 @@ import "strings"
 				name:  "TOTAL_CHAOS_DURATION"
 				value: "{{workflow.parameters.chaosDurationSec}}"
 			}]
-			probe: #probe
 		}
 	}]
 }
