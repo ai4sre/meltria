@@ -115,7 +115,7 @@ def get_metrics(url: str, targets: list[dict[str, Any]],
             query = '{0}{{{1}}}'.format(target['metric'], selector)
             if target['type'] == 'counter':
                 query = 'rate({}[1m])'.format(query)
-            query = 'sum by (instance,job,node,container,pod)({})'.format(
+            query = 'sum by (instance,job,node,container,pod,kubernetes_name)({})'.format(
                 query)
             params = {
                 "query": query,
@@ -253,7 +253,8 @@ def metrics_as_result(container_metrics: list[Any], pod_metrics: list[Any], node
     for metric in pod_metrics:
         if '__name__' not in metric['metric']:
             continue
-        container = metric['metric']['job']
+        # TODO: want to rename 'kubernetes-name' in prometheus config because it is not intuitive.
+        container = metric['metric']['kubernetes_name']
         data['middlewares'].setdefault(container, [])
         values = interpotate_time_series(metric['values'], time_meta)
         m = {
