@@ -183,7 +183,7 @@ def support_set_default(obj: set):
 
 
 def metrics_as_result(container_metrics: list[Any], pod_metrics: list[Any], node_metrics: list[Any],
-                      throughput_metrics: list[Any], latency_metrics: list[Any],
+                      throughput_metrics: list[Any], latency_metrics: list[Any], error_metrics: list[Any],
                       time_meta: dict[str, Any], injected_meta: dict[str, Any]) -> dict[str, Any]:
     start, end = time_meta['start'], time_meta['end']
     grafana_url = time_meta['grafana_url']
@@ -285,6 +285,17 @@ def metrics_as_result(container_metrics: list[Any], pod_metrics: list[Any], node
         m = {
             'service_name': metric['metric']['name'],
             'metric_name': 'throughput',
+            'values': values,
+        }
+        data['services'][service].append(m)
+
+    for metric in error_metrics:
+        service = metric['metric']['name']
+        data['services'].setdefault(service, [])
+        values = interpotate_time_series(metric['values'], time_meta)
+        m = {
+            'service_name': metric['metric']['name'],
+            'metric_name': 'errors',
             'values': values,
         }
         data['services'][service].append(m)
@@ -414,10 +425,41 @@ def collect_metrics(prometheus_url: str, grafana_url: str, start_time: str, end_
                         kubernetes_namespace="sock-shop"
                     }[1m]
                 )
+                +
+                rate(
+                    http_request_duration_seconds_count{
+                        job="kubernetes-service-endpoints",
+                        kubernetes_namespace="sock-shop"
+                    }[1m]
+                )
             )
             """,
         {'metric': 'request_duration_seconds_count', 'type': 'gauge'},
     )
+
+    error_metrics: list[Any] = get_metrics_by_query_range(
+        prometheus_url, start, end, step, """
+            sum by (name) (
+                rate(
+                    request_duration_seconds_count{
+                        job="kubernetes-service-endpoints",
+                        kubernetes_namespace="sock-shop",
+                        status_code=~"4.+|5.+",
+                    }[1m]
+                )
+                +
+                rate(
+                    http_request_duration_seconds_count{
+                        job="kubernetes-service-endpoints",
+                        kubernetes_namespace="sock-shop",
+                        status_code=~"4.+|5.+",
+                    }[1m]
+                )
+            )
+            """,
+        {'metric': 'request_duration_seconds_count', 'type': 'gauge'},
+    )
+
     latency_metrics = get_metrics_by_query_range(
         prometheus_url, start, end, step, """
             sum by (name) (
@@ -438,6 +480,7 @@ def collect_metrics(prometheus_url: str, grafana_url: str, start_time: str, end_
             """,
         {'metric': 'request_duration_seconds_sum', 'type': 'gauge'},
     )
+
     # The labels exported by some microservices (such as orders) in sock shop have been changed from
     # request_duration_seconds_sum to http_request_duration_seconds_sum.
     latency_metrics_patch = get_metrics_by_query_range(
@@ -464,7 +507,7 @@ def collect_metrics(prometheus_url: str, grafana_url: str, start_time: str, end_
 
     result = metrics_as_result(
         container_metrics, pod_metrics,
-        node_metrics, throughput_metrics, latency_metrics, {
+        node_metrics, throughput_metrics, latency_metrics, error_metrics, {
             'start': start,
             'end': end,
             'step': step,
