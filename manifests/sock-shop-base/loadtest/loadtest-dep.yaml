@@ -26,10 +26,15 @@ spec:
         image: locustio/locust:1.6.0
         command: ["/bin/sh"]
         # locust log: 'Your selected spawn rate is very high (>100), and this is known to sometimes cause issues. Do you really need to ramp up that fast?'
-        args: ["-c", "while true; do locust --host http://front-end.sock-shop.svc.cluster.local -f /config/locustfile.py --headless --users 5 --spawn-rate 5 --run-time 30s --only-summary; done"]
+        args: ["-c", "while true; do locust --host http://front-end.sock-shop.svc.cluster.local -f /config/locustfile.py --headless --users $(LOCUST_USERS) --spawn-rate $(LOCUST_SPAWN_RATE) --run-time 30s --only-summary; done"]
         volumeMounts:
           - name: locustfile-volume
             mountPath: /config
+        env:
+          - name: LOCUST_USERS
+            value: '5'
+          - name: LOCUST_SPAWN_RATE
+            value: '5'
       volumes:
         - name: locustfile-volume
           configMap:
