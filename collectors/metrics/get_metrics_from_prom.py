@@ -422,14 +422,16 @@ def collect_metrics(prometheus_url: str, grafana_url: str, start_time: str, end_
                 rate(
                     request_duration_seconds_count{
                         job="kubernetes-service-endpoints",
-                        kubernetes_namespace="sock-shop"
+                        kubernetes_namespace="sock-shop",
+                        status_code=~"2.."
                     }[1m]
                 )
-                +
+            ) or sum by (name) (
                 rate(
                     http_request_duration_seconds_count{
                         job="kubernetes-service-endpoints",
-                        kubernetes_namespace="sock-shop"
+                        kubernetes_namespace="sock-shop",
+                        status_code=~"2.."
                     }[1m]
                 )
             )
@@ -447,7 +449,7 @@ def collect_metrics(prometheus_url: str, grafana_url: str, start_time: str, end_
                         status_code=~"4.+|5.+",
                     }[1m]
                 )
-                +
+            ) or sum by (name) (
                 rate(
                     http_request_duration_seconds_count{
                         job="kubernetes-service-endpoints",
