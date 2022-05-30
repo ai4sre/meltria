@@ -1,0 +1,16 @@
+repeatNum: 1
+appLabels:
+  - user-db
+  - orders-db
+  - carts-db
+  - catalogue-db
+  - front-end
+  - user
+  - orders
+  - carts
+  - catalogue
+  - shipping
+chaosTypes: "'pod-cpu-hog','pod-memory-hog'"
+chaosDurationSec: 300  # 5min
+waitingTimeForTSDBSec: 300
+chaosIntervalSec: 2100 # 35min
