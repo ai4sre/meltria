@@ -1,0 +1,24 @@
+# gcloud container clusters resize sock-shop-01 --node-pool=default-pool --num-nodes=9
+# gcloud container clusters resize sock-shop-01 --node-pool=control-pool --num-nodes=2
+resources:
+  - ../../sock-shop-base
+replicas:
+  - name: carts
+    count: 3
+  - name: catalogue
+    count: 3
+  - name: front-end
+    count: 3
+  - name: orders
+    count: 3
+  - name: payment
+    count: 3
+  - name: shipping
+    count: 3
+  - name: user
+    count: 3
+  - name: load-test
+    count: 2
+patches:
+- loadtest.yaml
+- carts-db.yaml
