@@ -1,0 +1,9 @@
+# see https://stackoverflow.com/questions/57594001/how-can-i-create-a-namespace-with-kustomize
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: train-ticket
+resources:
+- ts-ns.yaml
+- ts-part1.yaml
+- ts-part2.yaml
+- ts-part3.yaml
