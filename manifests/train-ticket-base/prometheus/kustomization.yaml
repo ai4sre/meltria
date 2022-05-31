@@ -1,0 +1,8 @@
+namespace: monitoring
+resources:
+- monitoring-ns.yaml
+- rbac.yaml
+- node-exporter.yaml
+- configmap.yaml
+- prometheus.yaml
+- grafana.yaml

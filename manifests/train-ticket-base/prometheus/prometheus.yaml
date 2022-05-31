@@ -1,12 +1,32 @@
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: prometheus-ssd
+  annotations:
+    storageclass.kubernetes.io/is-default-class: "false"
+  labels:
+    kubernetes.io/cluster-service: "true"
+    addonmanager.kubernetes.io/mode : EnsureExists
+provisioner: kubernetes.io/gce-pd
+parameters:
+  type: pd-ssd
+  replication-type: none
+allowVolumeExpansion: true
+volumeBindingMode: WaitForFirstConsumer
+---
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   labels:
-    name: prometheus-deployment
+    name: prometheus-statefulset
   name: prometheus
-  namespace: kube-system
+  namespace: monitoring
 spec:
+  serviceName: prometheus-statefulset
   replicas: 1
+  updateStrategy:
+    type: "RollingUpdate"
   selector:
     matchLabels:
       app: prometheus
@@ -28,8 +48,8 @@ spec:
         - containerPort: 9090
           protocol: TCP
         volumeMounts:
-        - mountPath: "/prometheus"
-          name: data
+        - name: prometheus-pv
+          mountPath: /var/lib/prometheus
         - mountPath: "/etc/prometheus"
           name: config-volume
         resources:
@@ -41,11 +61,23 @@ spec:
             memory: 2500Mi
       serviceAccountName: prometheus
       volumes:
-      - name: data
-        emptyDir: {}
       - name: config-volume
         configMap:
           name: prometheus-config
+      nodeSelector:
+        kubernetes.io/os: linux
+        cloud.google.com/gke-nodepool: "control-pool"
+  volumeClaimTemplates:
+    - metadata:
+        name: prometheus-pv
+      spec:
+        storageClassName: prometheus-ssd
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 200Gi
+
 ---
 kind: Service
 apiVersion: v1
@@ -53,7 +85,7 @@ metadata:
   labels:
     app: prometheus
   name: prometheus
-  namespace: kube-system
+  namespace: monitoring
 spec:
   type: NodePort
   ports:
