@@ -1,0 +1,4 @@
+resources:
+  - ../../train-ticket-base/loadtest
+patches:
+- loadtest.yaml
