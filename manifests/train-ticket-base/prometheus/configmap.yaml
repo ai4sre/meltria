@@ -26,6 +26,7 @@ data:
       kubernetes_sd_configs:
       - role: node
       scheme: https
+      metrics_path: /metrics
       tls_config:
         ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
       bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
@@ -38,6 +39,9 @@ data:
         regex: (.+)
         target_label: __metrics_path__
         replacement: /api/v1/nodes/${1}/proxy/metrics
+      - action: labelmap
+        regex: __meta_kubernetes_node_label_cloud_google_com_gke_nodepool
+        replacement: nodepool
 
     - job_name: 'kubernetes-cadvisor'
       kubernetes_sd_configs:
