@@ -21,7 +21,7 @@ spec:
       hostNetwork: true
       containers:
       - image: ghcr.io/ai4sre/owlk8s:0.0.3
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         name: owlk8s
         securityContext:
           privileged: true
