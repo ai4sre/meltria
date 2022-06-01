@@ -5,6 +5,9 @@ resources:
 - node-exporter.yaml
 - owlk8s-cr.yaml
 - owlk8s-ds.yaml
-- configmap.yaml
 - prometheus.yaml
 - grafana.yaml
+configMapGenerator:
+- name: prometheus-config
+  files:
+  - prometheus.config.yaml

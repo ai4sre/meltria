@@ -35,14 +35,19 @@ spec:
       labels:
         app: prometheus
     spec:
+      # Avoid Permission denied error when writing to pv. https://github.com/coreos/prometheus-operator/issues/541
+      securityContext:
+        fsGroup: 2000
+        runAsUser: 1000
+        runAsNonRoot: true
       containers:
       - image: prom/prometheus:v2.36.0
         name: prometheus
         command:
         - "/bin/prometheus"
         args:
-        - "--config.file=/etc/prometheus/prometheus.yml"
-        - "--storage.tsdb.path=/prometheus"
+        - "--config.file=/etc/prometheus/prometheus.config.yaml"
+        - "--storage.tsdb.path=/var/lib/prometheus"
         - "--storage.tsdb.retention=1000d"
         ports:
         - containerPort: 9090
@@ -50,8 +55,8 @@ spec:
         volumeMounts:
         - name: prometheus-pv
           mountPath: /var/lib/prometheus
-        - mountPath: "/etc/prometheus"
-          name: config-volume
+        - name: config-volume
+          mountPath: /etc/prometheus
         resources:
           requests:
             cpu: 100m
@@ -59,6 +64,7 @@ spec:
           limits:
             cpu: 500m
             memory: 2500Mi
+      terminationGracePeriodSeconds: 5
       serviceAccountName: prometheus
       volumes:
       - name: config-volume
