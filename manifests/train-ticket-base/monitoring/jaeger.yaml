@@ -47,6 +47,9 @@ spec:
             path: "/"
             port: 14269
           initialDelaySeconds: 5
+      nodeSelector:
+        kubernetes.io/os: linux
+        cloud.google.com/gke-nodepool: "control-pool"
 
 ---
 
