@@ -1,4 +1,4 @@
 resources:
-- prometheus
+- monitoring
 - app
 - loadtest
