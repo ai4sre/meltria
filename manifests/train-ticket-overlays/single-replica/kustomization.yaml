@@ -3,5 +3,5 @@ resources:
 patches:
   - path: ts-app_patch.yaml
     target:
+      kind: Deployment
       namespace: train-ticket
-      name: ts-*
