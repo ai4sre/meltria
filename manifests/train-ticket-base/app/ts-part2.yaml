@@ -581,11 +581,11 @@ spec:
         - containerPort: 12340
         resources:
           requests:
-            cpu: 300m
-            memory: 500Mi
-          limits:
             cpu: 500m
-            memory: 800Mi
+            memory: 1200Mi
+          limits:
+            cpu: 1000m
+            memory: 1200Mi
         readinessProbe:
           tcpSocket:
             port: 12340
@@ -1316,11 +1316,11 @@ spec:
         - containerPort: 12346
         resources:
           requests:
-            cpu: 50m
-            memory: 500Mi
+            cpu: 200m
+            memory: 1200Mi
           limits:
             cpu: 200m
-            memory: 700Mi
+            memory: 1200Mi
         readinessProbe:
           tcpSocket:
             port: 12346
