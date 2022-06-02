@@ -1,4 +1,7 @@
 resources:
-  - ../../train-ticket-base/loadtest
+- ../../train-ticket-base/app
 patches:
-- loadtest.yaml
+  - path: ts-app_patch.yaml
+    target:
+      namespace: train-ticket
+      name: ts-*
