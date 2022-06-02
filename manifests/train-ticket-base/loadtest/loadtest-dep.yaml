@@ -35,4 +35,4 @@ spec:
             name: locustfile
       nodeSelector:
         kubernetes.io/os: linux
-        cloud.google.com/gke-nodepool: "control-pool"
+        cloud.google.com/gke-nodepool: "load-pool"
