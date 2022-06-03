@@ -2,15 +2,19 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ts-admin-basic-info-service
+  labels:
+    runtime: jvm
 spec:
   selector:
     matchLabels:
       app: ts-admin-basic-info-service
+      runtime: jvm
   replicas: 1
   template:
     metadata:
       labels:
         app: ts-admin-basic-info-service
+        runtime: jvm
     spec:
       containers:
       - name: ts-admin-basic-info-service
@@ -38,15 +42,19 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ts-admin-order-service
+  labels:
+    runtime: jvm
 spec:
   selector:
     matchLabels:
       app: ts-admin-order-service
+      runtime: jvm
   replicas: 1
   template:
     metadata:
       labels:
         app: ts-admin-order-service
+        runtime: jvm
     spec:
       containers:
       - name: ts-admin-order-service
@@ -73,15 +81,19 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ts-admin-route-service
+  labels:
+    runtime: jvm
 spec:
   selector:
     matchLabels:
       app: ts-admin-route-service
+      runtime: jvm
   replicas: 1
   template:
     metadata:
       labels:
         app: ts-admin-route-service
+        runtime: jvm
     spec:
       containers:
       - name: ts-admin-route-service
@@ -108,15 +120,19 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ts-admin-travel-service
+  labels:
+    runtime: jvm
 spec:
   selector:
     matchLabels:
       app: ts-admin-travel-service
+      runtime: jvm
   replicas: 1
   template:
     metadata:
       labels:
         app: ts-admin-travel-service
+        runtime: jvm
     spec:
       containers:
       - name: ts-admin-travel-service
@@ -143,15 +159,19 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ts-admin-user-service
+  labels:
+    runtime: jvm
 spec:
   selector:
     matchLabels:
       app: ts-admin-user-service
+      runtime: jvm
   replicas: 1
   template:
     metadata:
       labels:
         app: ts-admin-user-service
+        runtime: jvm
     spec:
       containers:
       - name: ts-admin-user-service
@@ -178,15 +198,19 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ts-assurance-service
+  labels:
+    runtime: jvm
 spec:
   selector:
     matchLabels:
       app: ts-assurance-service
+      runtime: jvm
   replicas: 1
   template:
     metadata:
       labels:
         app: ts-assurance-service
+        runtime: jvm
     spec:
       containers:
       - name: ts-assurance-service
@@ -213,15 +237,19 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ts-basic-service
+  labels:
+    runtime: jvm
 spec:
   selector:
     matchLabels:
       app: ts-basic-service
+      runtime: jvm
   replicas: 1
   template:
     metadata:
       labels:
         app: ts-basic-service
+        runtime: jvm
     spec:
       containers:
       - name: ts-basic-service
@@ -248,15 +276,19 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ts-cancel-service
+  labels:
+    runtime: jvm
 spec:
   selector:
     matchLabels:
       app: ts-cancel-service
+      runtime: jvm
   replicas: 1
   template:
     metadata:
       labels:
         app: ts-cancel-service
+        runtime: jvm
     spec:
       containers:
       - name: ts-cancel-service
@@ -283,15 +315,19 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ts-config-service
+  labels:
+    runtime: jvm
 spec:
   selector:
     matchLabels:
       app: ts-config-service
+      runtime: jvm
   replicas: 1
   template:
     metadata:
       labels:
         app: ts-config-service
+        runtime: jvm
     spec:
       containers:
       - name: ts-config-service
@@ -318,15 +354,19 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ts-consign-price-service
+  labels:
+    runtime: jvm
 spec:
   selector:
     matchLabels:
       app: ts-consign-price-service
+      runtime: jvm
   replicas: 1
   template:
     metadata:
       labels:
         app: ts-consign-price-service
+        runtime: jvm
     spec:
       containers:
       - name: ts-consign-price-service
@@ -353,15 +393,19 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ts-consign-service
+  labels:
+    runtime: jvm
 spec:
   selector:
     matchLabels:
       app: ts-consign-service
+      runtime: jvm
   replicas: 1
   template:
     metadata:
       labels:
         app: ts-consign-service
+        runtime: jvm
     spec:
       containers:
       - name: ts-consign-service
@@ -388,15 +432,19 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ts-contacts-service
+  labels:
+    runtime: jvm
 spec:
   selector:
     matchLabels:
       app: ts-contacts-service
+      runtime: jvm
   replicas: 1
   template:
     metadata:
       labels:
         app: ts-contacts-service
+        runtime: jvm
     spec:
       containers:
       - name: ts-contacts-service
@@ -423,15 +471,19 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ts-execute-service
+  labels:
+    runtime: jvm
 spec:
   selector:
     matchLabels:
       app: ts-execute-service
+      runtime: jvm
   replicas: 1
   template:
     metadata:
       labels:
         app: ts-execute-service
+        runtime: jvm
     spec:
       containers:
       - name: ts-execute-service
@@ -458,15 +510,19 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ts-food-map-service
+  labels:
+    runtime: jvm
 spec:
   selector:
     matchLabels:
       app: ts-food-map-service
+      runtime: jvm
   replicas: 1
   template:
     metadata:
       labels:
         app: ts-food-map-service
+        runtime: jvm
     spec:
       containers:
       - name: ts-food-map-service
@@ -493,15 +549,19 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ts-food-service
+  labels:
+    runtime: jvm
 spec:
   selector:
     matchLabels:
       app: ts-food-service
+      runtime: jvm
   replicas: 1
   template:
     metadata:
       labels:
         app: ts-food-service
+        runtime: jvm
     spec:
       containers:
       - name: ts-food-service
@@ -528,15 +588,19 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ts-inside-payment-service
+  labels:
+    runtime: jvm
 spec:
   selector:
     matchLabels:
       app: ts-inside-payment-service
+      runtime: jvm
   replicas: 1
   template:
     metadata:
       labels:
         app: ts-inside-payment-service
+        runtime: jvm
     spec:
       containers:
       - name: ts-inside-payment-service
@@ -563,15 +627,19 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ts-auth-service
+  labels:
+    runtime: jvm
 spec:
   selector:
     matchLabels:
       app: ts-auth-service
+      runtime: jvm
   replicas: 1
   template:
     metadata:
       labels:
         app: ts-auth-service
+        runtime: jvm
     spec:
       containers:
       - name: ts-auth-service
@@ -598,15 +666,19 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ts-news-service
+  labels:
+    runtime: go
 spec:
   selector:
     matchLabels:
       app: ts-news-service
+      runtime: go
   replicas: 1
   template:
     metadata:
       labels:
         app: ts-news-service
+        runtime: go
     spec:
       containers:
       - name: ts-news-service
@@ -633,15 +705,19 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ts-notification-service
+  labels:
+    runtime: jvm
 spec:
   selector:
     matchLabels:
       app: ts-notification-service
+      runtime: jvm
   replicas: 1
   template:
     metadata:
       labels:
         app: ts-notification-service
+        runtime: jvm
     spec:
       containers:
       - name: ts-notification-service
@@ -668,15 +744,19 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ts-order-other-service
+  labels:
+    runtime: jvm
 spec:
   selector:
     matchLabels:
       app: ts-order-other-service
+      runtime: jvm
   replicas: 1
   template:
     metadata:
       labels:
         app: ts-order-other-service
+        runtime: jvm
     spec:
       containers:
       - name: ts-order-other-service
@@ -703,15 +783,19 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ts-order-service
+  labels:
+    runtime: jvm
 spec:
   selector:
     matchLabels:
       app: ts-order-service
+      runtime: jvm
   replicas: 1
   template:
     metadata:
       labels:
         app: ts-order-service
+        runtime: jvm
     spec:
       containers:
       - name: ts-order-service
@@ -738,15 +822,19 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ts-payment-service
+  labels:
+    runtime: jvm
 spec:
   selector:
     matchLabels:
       app: ts-payment-service
+      runtime: jvm
   replicas: 1
   template:
     metadata:
       labels:
         app: ts-payment-service
+        runtime: jvm
     spec:
       containers:
       - name: ts-payment-service
@@ -773,15 +861,19 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ts-preserve-other-service
+  labels:
+    runtime: jvm
 spec:
   selector:
     matchLabels:
       app: ts-preserve-other-service
+      runtime: jvm
   replicas: 1
   template:
     metadata:
       labels:
         app: ts-preserve-other-service
+        runtime: jvm
     spec:
       containers:
       - name: ts-preserve-other-service
@@ -808,15 +900,19 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ts-preserve-service
+  labels:
+    runtime: jvm
 spec:
   selector:
     matchLabels:
       app: ts-preserve-service
+      runtime: jvm
   replicas: 1
   template:
     metadata:
       labels:
         app: ts-preserve-service
+        runtime: jvm
     spec:
       containers:
       - name: ts-preserve-service
@@ -843,15 +939,19 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ts-price-service
+  labels:
+    runtime: jvm
 spec:
   selector:
     matchLabels:
       app: ts-price-service
+      runtime: jvm
   replicas: 1
   template:
     metadata:
       labels:
         app: ts-price-service
+        runtime: jvm
     spec:
       containers:
       - name: ts-price-service
@@ -878,15 +978,19 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ts-rebook-service
+  labels:
+    runtime: jvm
 spec:
   selector:
     matchLabels:
       app: ts-rebook-service
+      runtime: jvm
   replicas: 1
   template:
     metadata:
       labels:
         app: ts-rebook-service
+        runtime: jvm
     spec:
       containers:
       - name: ts-rebook-service
@@ -913,15 +1017,19 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ts-route-plan-service
+  labels:
+    runtime: jvm
 spec:
   selector:
     matchLabels:
       app: ts-route-plan-service
+      runtime: jvm
   replicas: 1
   template:
     metadata:
       labels:
         app: ts-route-plan-service
+        runtime: jvm
     spec:
       containers:
       - name: ts-route-plan-service
@@ -948,15 +1056,19 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ts-route-service
+  labels:
+    runtime: jvm
 spec:
   selector:
     matchLabels:
       app: ts-route-service
+      runtime: jvm
   replicas: 1
   template:
     metadata:
       labels:
         app: ts-route-service
+        runtime: jvm
     spec:
       containers:
       - name: ts-route-service
@@ -983,15 +1095,19 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ts-seat-service
+  labels:
+    runtime: jvm
 spec:
   selector:
     matchLabels:
       app: ts-seat-service
+      runtime: jvm
   replicas: 1
   template:
     metadata:
       labels:
         app: ts-seat-service
+        runtime: jvm
     spec:
       containers:
       - name: ts-seat-service
@@ -1018,15 +1134,19 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ts-security-service
+  labels:
+    runtime: jvm
 spec:
   selector:
     matchLabels:
       app: ts-security-service
+      runtime: jvm
   replicas: 1
   template:
     metadata:
       labels:
         app: ts-security-service
+        runtime: jvm
     spec:
       containers:
       - name: ts-security-service
@@ -1053,15 +1173,19 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ts-user-service
+  labels:
+    runtime: jvm
 spec:
   selector:
     matchLabels:
       app: ts-user-service
+      runtime: jvm
   replicas: 1
   template:
     metadata:
       labels:
         app: ts-user-service
+        runtime: jvm
     spec:
       containers:
       - name: ts-user-service
@@ -1088,15 +1212,19 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ts-station-service
+  labels:
+    runtime: jvm
 spec:
   selector:
     matchLabels:
       app: ts-station-service
+      runtime: jvm
   replicas: 1
   template:
     metadata:
       labels:
         app: ts-station-service
+        runtime: jvm
     spec:
       containers:
       - name: ts-station-service
@@ -1123,15 +1251,19 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ts-ticket-office-service
+  labels:
+    runtime: nodejs
 spec:
   selector:
     matchLabels:
       app: ts-ticket-office-service
+      runtime: nodejs
   replicas: 1
   template:
     metadata:
       labels:
         app: ts-ticket-office-service
+        runtime: nodejs
     spec:
       containers:
       - name: ts-ticket-office-service
@@ -1158,15 +1290,19 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ts-ticketinfo-service
+  labels:
+    runtime: jvm
 spec:
   selector:
     matchLabels:
       app: ts-ticketinfo-service
+      runtime: jvm
   replicas: 1
   template:
     metadata:
       labels:
         app: ts-ticketinfo-service
+        runtime: jvm
     spec:
       containers:
       - name: ts-ticketinfo-service
@@ -1193,15 +1329,19 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ts-train-service
+  labels:
+    runtime: jvm
 spec:
   selector:
     matchLabels:
       app: ts-train-service
+      runtime: jvm
   replicas: 1
   template:
     metadata:
       labels:
         app: ts-train-service
+        runtime: jvm
     spec:
       containers:
       - name: ts-train-service
@@ -1228,15 +1368,19 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ts-travel2-service
+  labels:
+    runtime: jvm
 spec:
   selector:
     matchLabels:
       app: ts-travel2-service
+      runtime: jvm
   replicas: 1
   template:
     metadata:
       labels:
         app: ts-travel2-service
+        runtime: jvm
     spec:
       containers:
       - name: ts-travel2-service
@@ -1263,15 +1407,19 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ts-travel-plan-service
+  labels:
+    runtime: jvm
 spec:
   selector:
     matchLabels:
       app: ts-travel-plan-service
+      runtime: jvm
   replicas: 1
   template:
     metadata:
       labels:
         app: ts-travel-plan-service
+        runtime: jvm
     spec:
       containers:
       - name: ts-travel-plan-service
@@ -1298,15 +1446,19 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ts-travel-service
+  labels:
+    runtime: jvm
 spec:
   selector:
     matchLabels:
       app: ts-travel-service
+      runtime: jvm
   replicas: 1
   template:
     metadata:
       labels:
         app: ts-travel-service
+        runtime: jvm
     spec:
       containers:
       - name: ts-travel-service
@@ -1333,15 +1485,19 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ts-verification-code-service
+  labels:
+    runtime: jvm
 spec:
   selector:
     matchLabels:
       app: ts-verification-code-service
+      runtime: jvm
   replicas: 1
   template:
     metadata:
       labels:
         app: ts-verification-code-service
+        runtime: jvm
     spec:
       containers:
       - name: ts-verification-code-service
@@ -1368,15 +1524,19 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ts-voucher-service
+  labels:
+    runtime: python
 spec:
   selector:
     matchLabels:
       app: ts-voucher-service
+      runtime: python
   replicas: 1
   template:
     metadata:
       labels:
         app: ts-voucher-service
+        runtime: python
     spec:
       containers:
       - name: ts-voucher-service
