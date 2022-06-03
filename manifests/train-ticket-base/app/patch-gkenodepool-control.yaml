@@ -1,0 +1,10 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: not-important
+spec:
+  template:
+    spec:
+      nodeSelector:
+        kubernetes.io/os: linux
+        cloud.google.com/gke-nodepool: "control-pool"

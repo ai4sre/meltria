@@ -14,6 +14,10 @@ patches:
   - path: patch-gkenodepool.yaml
     target:
       kind: Deployment
+  - path: patch-gkenodepool-control.yaml
+    target:
+      kind: Deployment
+      name: jaeger
   - path: patch-mongodb-exporter.yaml
     target:
       kind: Deployment
