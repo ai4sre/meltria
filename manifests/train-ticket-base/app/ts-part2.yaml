@@ -15,7 +15,7 @@ spec:
       containers:
       - name: ts-admin-basic-info-service
         image: codewisdom/ts-admin-basic-info-service-with-jaeger:v1
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 18767
         resources:
@@ -51,7 +51,7 @@ spec:
       containers:
       - name: ts-admin-order-service
         image: codewisdom/ts-admin-order-service-with-jaeger:v1
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 16112
         resources:
@@ -86,7 +86,7 @@ spec:
       containers:
       - name: ts-admin-route-service
         image: codewisdom/ts-admin-route-service-with-jaeger:v1
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 16113
         resources:
@@ -121,7 +121,7 @@ spec:
       containers:
       - name: ts-admin-travel-service
         image: codewisdom/ts-admin-travel-service-with-jaeger:v1
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 16114
         resources:
@@ -156,7 +156,7 @@ spec:
       containers:
       - name: ts-admin-user-service
         image: codewisdom/ts-admin-user-service-with-jaeger:v1
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 16115
         resources:
@@ -191,7 +191,7 @@ spec:
       containers:
       - name: ts-assurance-service
         image: codewisdom/ts-assurance-service-with-jaeger:v1
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 18888
         resources:
@@ -226,7 +226,7 @@ spec:
       containers:
       - name: ts-basic-service
         image: codewisdom/ts-basic-service-with-jaeger:v1
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 15680
         resources:
@@ -261,7 +261,7 @@ spec:
       containers:
       - name: ts-cancel-service
         image: codewisdom/ts-cancel-service-with-jaeger:v1
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 18885
         resources:
@@ -296,7 +296,7 @@ spec:
       containers:
       - name: ts-config-service
         image: codewisdom/ts-config-service-with-jaeger:v1
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 15679
         resources:
@@ -331,7 +331,7 @@ spec:
       containers:
       - name: ts-consign-price-service
         image: codewisdom/ts-consign-price-service-with-jaeger:v1
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 16110
         resources:
@@ -366,7 +366,7 @@ spec:
       containers:
       - name: ts-consign-service
         image: codewisdom/ts-consign-service-with-jaeger:v1
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 16111
         resources:
@@ -401,7 +401,7 @@ spec:
       containers:
       - name: ts-contacts-service
         image: codewisdom/ts-contacts-service-with-jaeger:v1
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 12347
         resources:
@@ -436,7 +436,7 @@ spec:
       containers:
       - name: ts-execute-service
         image: codewisdom/ts-execute-service-with-jaeger:v1
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 12386
         resources:
@@ -471,7 +471,7 @@ spec:
       containers:
       - name: ts-food-map-service
         image: codewisdom/ts-food-map-service-with-jaeger:v1
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 18855
         resources:
@@ -506,7 +506,7 @@ spec:
       containers:
       - name: ts-food-service
         image: codewisdom/ts-food-service-with-jaeger:v1
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 18856
         resources:
@@ -541,7 +541,7 @@ spec:
       containers:
       - name: ts-inside-payment-service
         image: codewisdom/ts-inside-payment-service-with-jaeger:v1
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 18673
         resources:
@@ -576,7 +576,7 @@ spec:
       containers:
       - name: ts-auth-service
         image: codewisdom/ts-auth-service-with-jaeger:v1
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 12340
         resources:
@@ -611,7 +611,7 @@ spec:
       containers:
       - name: ts-news-service
         image: codewisdom/ts-news-service-with-jaeger:v1
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 12862
         resources:
@@ -646,7 +646,7 @@ spec:
       containers:
       - name: ts-notification-service
         image: codewisdom/ts-notification-service-with-jaeger:v1
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 17853
         resources:
@@ -681,7 +681,7 @@ spec:
       containers:
       - name: ts-order-other-service
         image: codewisdom/ts-order-other-service-with-jaeger:v1
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 12032
         resources:
@@ -716,7 +716,7 @@ spec:
       containers:
       - name: ts-order-service
         image: codewisdom/ts-order-service-with-jaeger:v1
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 12031
         resources:
@@ -751,7 +751,7 @@ spec:
       containers:
       - name: ts-payment-service
         image: codewisdom/ts-payment-service-with-jaeger:v1
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 19001
         resources:
@@ -786,7 +786,7 @@ spec:
       containers:
       - name: ts-preserve-other-service
         image: codewisdom/ts-preserve-other-service-with-jaeger:v1
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 14569
         resources:
@@ -821,7 +821,7 @@ spec:
       containers:
       - name: ts-preserve-service
         image: codewisdom/ts-preserve-service-with-jaeger:v1
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 14568
         resources:
@@ -856,7 +856,7 @@ spec:
       containers:
       - name: ts-price-service
         image: codewisdom/ts-price-service-with-jaeger:v1
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 16579
         resources:
@@ -891,7 +891,7 @@ spec:
       containers:
       - name: ts-rebook-service
         image: codewisdom/ts-rebook-service-with-jaeger:v1
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 18886
         resources:
@@ -926,7 +926,7 @@ spec:
       containers:
       - name: ts-route-plan-service
         image: codewisdom/ts-route-plan-service-with-jaeger:v1
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 14578
         resources:
@@ -961,7 +961,7 @@ spec:
       containers:
       - name: ts-route-service
         image: codewisdom/ts-route-service-with-jaeger:v1
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 11178
         resources:
@@ -996,7 +996,7 @@ spec:
       containers:
       - name: ts-seat-service
         image: codewisdom/ts-seat-service-with-jaeger:v1
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 18898
         resources:
@@ -1031,7 +1031,7 @@ spec:
       containers:
       - name: ts-security-service
         image: codewisdom/ts-security-service-with-jaeger:v1
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 11188
         resources:
@@ -1066,7 +1066,7 @@ spec:
       containers:
       - name: ts-user-service
         image: codewisdom/ts-user-service-with-jaeger:v1
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 12342
         resources:
@@ -1101,7 +1101,7 @@ spec:
       containers:
       - name: ts-station-service
         image: codewisdom/ts-station-service-with-jaeger:v1
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 12345
         resources:
@@ -1136,7 +1136,7 @@ spec:
       containers:
       - name: ts-ticket-office-service
         image: codewisdom/ts-ticket-office-service-with-jaeger:v1
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 16108
         resources:
@@ -1171,7 +1171,7 @@ spec:
       containers:
       - name: ts-ticketinfo-service
         image: codewisdom/ts-ticketinfo-service-with-jaeger:v1
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 15681
         resources:
@@ -1206,7 +1206,7 @@ spec:
       containers:
       - name: ts-train-service
         image: codewisdom/ts-train-service-with-jaeger:v1
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 14567
         resources:
@@ -1241,7 +1241,7 @@ spec:
       containers:
       - name: ts-travel2-service
         image: codewisdom/ts-travel2-service-with-jaeger:v1
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 16346
         resources:
@@ -1276,7 +1276,7 @@ spec:
       containers:
       - name: ts-travel-plan-service
         image: codewisdom/ts-travel-plan-service-with-jaeger:v1
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 14322
         resources:
@@ -1311,7 +1311,7 @@ spec:
       containers:
       - name: ts-travel-service
         image: codewisdom/ts-travel-service-with-jaeger:v1
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 12346
         resources:
@@ -1346,7 +1346,7 @@ spec:
       containers:
       - name: ts-verification-code-service
         image: codewisdom/ts-verification-code-service-with-jaeger:v1
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 15678
         resources:
@@ -1381,7 +1381,7 @@ spec:
       containers:
       - name: ts-voucher-service
         image: codewisdom/ts-voucher-service-with-jaeger:v1
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 16101
         resources:
