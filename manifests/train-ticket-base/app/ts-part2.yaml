@@ -830,7 +830,7 @@ spec:
             memory: 160Mi
           limits:
             cpu: 200m
-            memory: 500Mi
+            memory: 800Mi
         readinessProbe:
           tcpSocket:
             port: 14568
