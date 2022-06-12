@@ -14,6 +14,9 @@ configMapGenerator:
 - name: nginxlog-exporter-config
   files:
   - nginxlog-exporter.config.hcl
+- name: jmx-config
+  files:
+  - jmx-exporter.config.yaml
 
 patches:
   - path: patch-gkenodepool.yaml
@@ -27,3 +30,8 @@ patches:
     target:
       kind: Deployment
       name: ts-.+-mongo
+  - path: patch-jmx-exporter.yaml
+    target:
+      kind: Deployment
+      name: ts-.+
+      labelSelector: runtime=jvm
