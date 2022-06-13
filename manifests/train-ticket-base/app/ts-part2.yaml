@@ -21,7 +21,7 @@ spec:
         image: codewisdom/ts-admin-basic-info-service-with-jaeger:v1
         imagePullPolicy: IfNotPresent
         env:
-          - name: JAVA_TOOL_OPTS
+          - name: JAVA_TOOL_OPTIONS
             value: >-
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
@@ -68,7 +68,7 @@ spec:
         image: codewisdom/ts-admin-order-service-with-jaeger:v1
         imagePullPolicy: IfNotPresent
         env:
-          - name: JAVA_TOOL_OPTS
+          - name: JAVA_TOOL_OPTIONS
             value: >-
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
@@ -114,7 +114,7 @@ spec:
         image: codewisdom/ts-admin-route-service-with-jaeger:v1
         imagePullPolicy: IfNotPresent
         env:
-          - name: JAVA_TOOL_OPTS
+          - name: JAVA_TOOL_OPTIONS
             value: >-
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
@@ -160,7 +160,7 @@ spec:
         image: codewisdom/ts-admin-travel-service-with-jaeger:v1
         imagePullPolicy: IfNotPresent
         env:
-          - name: JAVA_TOOL_OPTS
+          - name: JAVA_TOOL_OPTIONS
             value: >-
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
@@ -206,7 +206,7 @@ spec:
         image: codewisdom/ts-admin-user-service-with-jaeger:v1
         imagePullPolicy: IfNotPresent
         env:
-          - name: JAVA_TOOL_OPTS
+          - name: JAVA_TOOL_OPTIONS
             value: >-
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
@@ -252,7 +252,7 @@ spec:
         image: codewisdom/ts-assurance-service-with-jaeger:v1
         imagePullPolicy: IfNotPresent
         env:
-          - name: JAVA_TOOL_OPTS
+          - name: JAVA_TOOL_OPTIONS
             value: >-
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
@@ -298,7 +298,7 @@ spec:
         image: codewisdom/ts-basic-service-with-jaeger:v1
         imagePullPolicy: IfNotPresent
         env:
-          - name: JAVA_TOOL_OPTS
+          - name: JAVA_TOOL_OPTIONS
             value: >-
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
@@ -344,7 +344,7 @@ spec:
         image: codewisdom/ts-cancel-service-with-jaeger:v1
         imagePullPolicy: IfNotPresent
         env:
-          - name: JAVA_TOOL_OPTS
+          - name: JAVA_TOOL_OPTIONS
             value: >-
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
@@ -390,7 +390,7 @@ spec:
         image: codewisdom/ts-config-service-with-jaeger:v1
         imagePullPolicy: IfNotPresent
         env:
-          - name: JAVA_TOOL_OPTS
+          - name: JAVA_TOOL_OPTIONS
             value: >-
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
@@ -436,7 +436,7 @@ spec:
         image: codewisdom/ts-consign-price-service-with-jaeger:v1
         imagePullPolicy: IfNotPresent
         env:
-          - name: JAVA_TOOL_OPTS
+          - name: JAVA_TOOL_OPTIONS
             value: >-
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
@@ -482,7 +482,7 @@ spec:
         image: codewisdom/ts-consign-service-with-jaeger:v1
         imagePullPolicy: IfNotPresent
         env:
-          - name: JAVA_TOOL_OPTS
+          - name: JAVA_TOOL_OPTIONS
             value: >-
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
@@ -528,7 +528,7 @@ spec:
         image: codewisdom/ts-contacts-service-with-jaeger:v1
         imagePullPolicy: IfNotPresent
         env:
-          - name: JAVA_TOOL_OPTS
+          - name: JAVA_TOOL_OPTIONS
             value: >-
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
@@ -574,7 +574,7 @@ spec:
         image: codewisdom/ts-execute-service-with-jaeger:v1
         imagePullPolicy: IfNotPresent
         env:
-          - name: JAVA_TOOL_OPTS
+          - name: JAVA_TOOL_OPTIONS
             value: >-
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
@@ -620,7 +620,7 @@ spec:
         image: codewisdom/ts-food-map-service-with-jaeger:v1
         imagePullPolicy: IfNotPresent
         env:
-          - name: JAVA_TOOL_OPTS
+          - name: JAVA_TOOL_OPTIONS
             value: >-
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
@@ -666,7 +666,7 @@ spec:
         image: codewisdom/ts-food-service-with-jaeger:v1
         imagePullPolicy: IfNotPresent
         env:
-          - name: JAVA_TOOL_OPTS
+          - name: JAVA_TOOL_OPTIONS
             value: >-
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
@@ -712,7 +712,7 @@ spec:
         image: codewisdom/ts-inside-payment-service-with-jaeger:v1
         imagePullPolicy: IfNotPresent
         env:
-          - name: JAVA_TOOL_OPTS
+          - name: JAVA_TOOL_OPTIONS
             value: >-
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
@@ -758,7 +758,7 @@ spec:
         image: codewisdom/ts-auth-service-with-jaeger:v1
         imagePullPolicy: IfNotPresent
         env:
-          - name: JAVA_TOOL_OPTS
+          - name: JAVA_TOOL_OPTIONS
             value: >-
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
@@ -843,7 +843,7 @@ spec:
         image: codewisdom/ts-notification-service-with-jaeger:v1
         imagePullPolicy: IfNotPresent
         env:
-          - name: JAVA_TOOL_OPTS
+          - name: JAVA_TOOL_OPTIONS
             value: >-
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
@@ -889,7 +889,7 @@ spec:
         image: codewisdom/ts-order-other-service-with-jaeger:v1
         imagePullPolicy: IfNotPresent
         env:
-          - name: JAVA_TOOL_OPTS
+          - name: JAVA_TOOL_OPTIONS
             value: >-
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
@@ -935,7 +935,7 @@ spec:
         image: codewisdom/ts-order-service-with-jaeger:v1
         imagePullPolicy: IfNotPresent
         env:
-          - name: JAVA_TOOL_OPTS
+          - name: JAVA_TOOL_OPTIONS
             value: >-
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
@@ -981,7 +981,7 @@ spec:
         image: codewisdom/ts-payment-service-with-jaeger:v1
         imagePullPolicy: IfNotPresent
         env:
-          - name: JAVA_TOOL_OPTS
+          - name: JAVA_TOOL_OPTIONS
             value: >-
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
@@ -1027,7 +1027,7 @@ spec:
         image: codewisdom/ts-preserve-other-service-with-jaeger:v1
         imagePullPolicy: IfNotPresent
         env:
-          - name: JAVA_TOOL_OPTS
+          - name: JAVA_TOOL_OPTIONS
             value: >-
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
@@ -1073,7 +1073,7 @@ spec:
         image: codewisdom/ts-preserve-service-with-jaeger:v1
         imagePullPolicy: IfNotPresent
         env:
-          - name: JAVA_TOOL_OPTS
+          - name: JAVA_TOOL_OPTIONS
             value: >-
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
@@ -1119,7 +1119,7 @@ spec:
         image: codewisdom/ts-price-service-with-jaeger:v1
         imagePullPolicy: IfNotPresent
         env:
-          - name: JAVA_TOOL_OPTS
+          - name: JAVA_TOOL_OPTIONS
             value: >-
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
@@ -1165,7 +1165,7 @@ spec:
         image: codewisdom/ts-rebook-service-with-jaeger:v1
         imagePullPolicy: IfNotPresent
         env:
-          - name: JAVA_TOOL_OPTS
+          - name: JAVA_TOOL_OPTIONS
             value: >-
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
@@ -1211,7 +1211,7 @@ spec:
         image: codewisdom/ts-route-plan-service-with-jaeger:v1
         imagePullPolicy: IfNotPresent
         env:
-          - name: JAVA_TOOL_OPTS
+          - name: JAVA_TOOL_OPTIONS
             value: >-
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
@@ -1257,7 +1257,7 @@ spec:
         image: codewisdom/ts-route-service-with-jaeger:v1
         imagePullPolicy: IfNotPresent
         env:
-          - name: JAVA_TOOL_OPTS
+          - name: JAVA_TOOL_OPTIONS
             value: >-
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
@@ -1303,7 +1303,7 @@ spec:
         image: codewisdom/ts-seat-service-with-jaeger:v1
         imagePullPolicy: IfNotPresent
         env:
-          - name: JAVA_TOOL_OPTS
+          - name: JAVA_TOOL_OPTIONS
             value: >-
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
@@ -1349,7 +1349,7 @@ spec:
         image: codewisdom/ts-security-service-with-jaeger:v1
         imagePullPolicy: IfNotPresent
         env:
-          - name: JAVA_TOOL_OPTS
+          - name: JAVA_TOOL_OPTIONS
             value: >-
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
@@ -1395,7 +1395,7 @@ spec:
         image: codewisdom/ts-user-service-with-jaeger:v1
         imagePullPolicy: IfNotPresent
         env:
-          - name: JAVA_TOOL_OPTS
+          - name: JAVA_TOOL_OPTIONS
             value: >-
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
@@ -1441,7 +1441,7 @@ spec:
         image: codewisdom/ts-station-service-with-jaeger:v1
         imagePullPolicy: IfNotPresent
         env:
-          - name: JAVA_TOOL_OPTS
+          - name: JAVA_TOOL_OPTIONS
             value: >-
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
@@ -1487,7 +1487,7 @@ spec:
         image: codewisdom/ts-ticket-office-service-with-jaeger:v1
         imagePullPolicy: IfNotPresent
         env:
-          - name: JAVA_TOOL_OPTS
+          - name: JAVA_TOOL_OPTIONS
             value: >-
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
@@ -1533,7 +1533,7 @@ spec:
         image: codewisdom/ts-ticketinfo-service-with-jaeger:v1
         imagePullPolicy: IfNotPresent
         env:
-          - name: JAVA_TOOL_OPTS
+          - name: JAVA_TOOL_OPTIONS
             value: >-
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
@@ -1579,7 +1579,7 @@ spec:
         image: codewisdom/ts-train-service-with-jaeger:v1
         imagePullPolicy: IfNotPresent
         env:
-          - name: JAVA_TOOL_OPTS
+          - name: JAVA_TOOL_OPTIONS
             value: >-
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
@@ -1625,7 +1625,7 @@ spec:
         image: codewisdom/ts-travel2-service-with-jaeger:v1
         imagePullPolicy: IfNotPresent
         env:
-          - name: JAVA_TOOL_OPTS
+          - name: JAVA_TOOL_OPTIONS
             value: >-
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
@@ -1671,7 +1671,7 @@ spec:
         image: codewisdom/ts-travel-plan-service-with-jaeger:v1
         imagePullPolicy: IfNotPresent
         env:
-          - name: JAVA_TOOL_OPTS
+          - name: JAVA_TOOL_OPTIONS
             value: >-
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
@@ -1717,7 +1717,7 @@ spec:
         image: codewisdom/ts-travel-service-with-jaeger:v1
         imagePullPolicy: IfNotPresent
         env:
-          - name: JAVA_TOOL_OPTS
+          - name: JAVA_TOOL_OPTIONS
             value: >-
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
@@ -1763,7 +1763,7 @@ spec:
         image: codewisdom/ts-verification-code-service-with-jaeger:v1
         imagePullPolicy: IfNotPresent
         env:
-          - name: JAVA_TOOL_OPTS
+          - name: JAVA_TOOL_OPTIONS
             value: >-
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
