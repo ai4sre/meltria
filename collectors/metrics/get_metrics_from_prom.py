@@ -105,8 +105,10 @@ def request_query_range(url: str, params: dict[str, Any], target: dict[str, Any]
         raise(e)
 
 
-def get_metrics(url: str, targets: list[dict[str, Any]],
-                start: int, end: int, step: int, selector: str) -> list[Any]:
+def get_metrics(
+    url: str, targets: list[dict[str, Any]],
+    start: int, end: int, step: int, selector: str,
+) -> list[Any]:
     futures = []
     with concurrent.futures.ThreadPoolExecutor(max_workers=20) as executor:
         for target in targets:
@@ -136,8 +138,10 @@ def get_metrics(url: str, targets: list[dict[str, Any]],
     return concated_metrics
 
 
-def get_metrics_by_query_range(url: str, start: int, end: int, step: int,
-                               query: str, target: dict[str, Any]) -> list[Any]:
+def get_metrics_by_query_range(
+    url: str, start: int, end: int, step: int,
+    query: str, target: dict[str, Any],
+) -> list[Any]:
     params = {
         "query": query,
         "start": start,
@@ -147,8 +151,9 @@ def get_metrics_by_query_range(url: str, start: int, end: int, step: int,
     return request_query_range(url, params, target)
 
 
-def interpotate_time_series(values: list[list[int]], time_meta: dict[str, Any]
-                            ) -> list[list[float]]:
+def interpotate_time_series(
+    values: list[list[int]], time_meta: dict[str, Any],
+) -> list[list[float]]:
     start, end, step = time_meta['start'], time_meta['end'], time_meta['step']
     new_values = []
 
@@ -182,9 +187,11 @@ def support_set_default(obj: set):
     raise TypeError(repr(obj) + " is not JSON serializable")
 
 
-def metrics_as_result(container_metrics: list[Any], pod_metrics: list[Any], node_metrics: list[Any],
-                      throughput_metrics: list[Any], latency_metrics: list[Any], error_metrics: list[Any],
-                      time_meta: dict[str, Any], injected_meta: dict[str, Any]) -> dict[str, Any]:
+def metrics_as_result(
+    container_metrics: list[Any], pod_metrics: list[Any], node_metrics: list[Any],
+    throughput_metrics: list[Any], latency_metrics: list[Any], error_metrics: list[Any],
+    time_meta: dict[str, Any], injected_meta: dict[str, Any],
+) -> dict[str, Any]:
     start, end = time_meta['start'], time_meta['end']
     grafana_url = time_meta['grafana_url']
     dashboard_url = f"{grafana_url}/{GRAFANA_DASHBOARD}?orgId=1&from={start}000&to={end}000"
@@ -378,8 +385,10 @@ def time_range_from_args(params: dict[str, Any]) -> tuple[int, int]:
     return start, end
 
 
-def collect_metrics(prometheus_url: str, grafana_url: str, start_time: str, end_time: str, chaos_param: dict[str, str],
-                    duration: str = DEFAULT_DURATION, step: int = STEP) -> dict[str, Any]:
+def collect_metrics(
+    prometheus_url: str, grafana_url: str, start_time: str, end_time: str, chaos_param: dict[str, str],
+    duration: str = DEFAULT_DURATION, step: int = STEP,
+) -> dict[str, Any]:
     """
     Collect metrics API
     """
