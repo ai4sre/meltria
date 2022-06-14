@@ -1,0 +1,18 @@
+# gcloud container clusters resize train-ticket-01 --node-pool=default-pool --num-nodes=X
+# gcloud container clusters resize train-ticket-01 --node-pool=control-pool --num-nodes=X
+resources:
+  - ../../train-ticket-base
+replicas:
+  - name: ts-travel-service
+    count: 3
+  - name: ts-preserve-service
+    count: 3
+  - name: ts-order-service
+    count: 3
+  - name: ts-seat-service
+    count: 3
+  - name: load-test
+    count: 2
+patches:
+- loadtest.yaml
+- carts-db.yaml

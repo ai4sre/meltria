@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-ui-dashboard
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "4040"
+spec:
+  selector:
+    matchLabels:
+      app: ts-ui-dashboard
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ts-ui-dashboard
+    spec:
+      containers:
+      - name: ts-ui-dashboard
+        image: codewisdom/ts-ui-dashboard-with-jaeger:v1
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8080
+        volumeMounts:
+        - name: nginxlog-vol
+          mountPath: /usr/local/openresty/nginx/logs/
+        resources:
+          requests:
+            cpu: 50m
+            memory: 100Mi
+          limits:
+            cpu: 500m
+            memory: 500Mi
+      - name: nginxlog-exporter
+        image: ghcr.io/martin-helmich/prometheus-nginxlog-exporter/exporter:v1
+        args: ["-config-file", "/etc/prometheus-nginxlog-exporter/nginxlog-exporter.config.hcl"]
+        ports:
+          - name: exporter
+            containerPort: 4040
+        volumeMounts:
+        - name: nginxlog-vol
+          mountPath: /etc/nginxlog
+        - name: nginxlog-exporter-config
+          mountPath: /etc/prometheus-nginxlog-exporter
+      volumes:
+      - name: nginxlog-vol
+        emptyDir: {}
+      - name: nginxlog-exporter-config
+        configMap:
+          name: nginxlog-exporter-config
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-ui-dashboard
+spec:
+  type: NodePort
+  ports:
+    - name: http
+      port: 8080
+      nodePort: 32677
+  selector:
+    app: ts-ui-dashboard
+---

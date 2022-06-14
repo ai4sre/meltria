@@ -1,0 +1,4 @@
+resources:
+- monitoring
+- app
+- loadtest

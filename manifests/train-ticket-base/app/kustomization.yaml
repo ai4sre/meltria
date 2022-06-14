@@ -1,0 +1,37 @@
+# see https://stackoverflow.com/questions/57594001/how-can-i-create-a-namespace-with-kustomize
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: train-ticket
+
+resources:
+- ts-ns.yaml
+- jaeger.yaml
+- ts-part1.yaml
+- ts-part2.yaml
+- ts-part3.yaml
+
+configMapGenerator:
+- name: nginxlog-exporter-config
+  files:
+  - nginxlog-exporter.config.hcl
+- name: jmx-config
+  files:
+  - jmx-exporter.config.yaml
+
+patches:
+  - path: patch-gkenodepool.yaml
+    target:
+      kind: Deployment
+  - path: patch-gkenodepool-control.yaml
+    target:
+      kind: Deployment
+      name: jaeger
+  - path: patch-mongodb-exporter.yaml
+    target:
+      kind: Deployment
+      name: ts-.+-mongo
+  - path: patch-jmx-exporter.yaml
+    target:
+      kind: Deployment
+      name: ts-.+
+      labelSelector: runtime=jvm

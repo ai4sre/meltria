@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: not-important
+spec:
+  template:
+    metadata:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9216"
+    spec:
+      containers:
+        - name: mongodb-exporter
+          image: percona/mongodb_exporter:0.32.0
+          imagePullPolicy: IfNotPresent
+          args: ['--collector.diagnosticdata', '--collector.replicasetstatus', '--collector.dbstats', '--collector.topmetrics', '--collector.indexstats', '--collector.collstats']
+          ports:
+          - name: exporter
+            containerPort: 9216
+            protocol: TCP
+          env:
+          - name: MONGODB_URI
+            value: "mongodb://127.0.0.1:27017/admin?ssl=false"

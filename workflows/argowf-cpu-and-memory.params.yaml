@@ -1,0 +1,12 @@
+repeatNum: 5
+appLabels:
+  - user-db
+  - orders-db
+  - carts-db
+  - catalogue-db
+  - front-end
+  - user
+  - orders
+  - carts
+  - catalogue
+chaosTypes: "'pod-cpu-hog','pod-memory-hog'"

@@ -1,0 +1,14 @@
+namespace: monitoring
+resources:
+- monitoring-ns.yaml
+- rbac.yaml
+- node-exporter.yaml
+- owlk8s-cr.yaml
+- owlk8s-ds.yaml
+- prometheus.yaml
+- grafana.yaml
+- jaeger.yaml
+configMapGenerator:
+- name: prometheus-config
+  files:
+  - prometheus.config.yaml

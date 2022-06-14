@@ -1,0 +1,102 @@
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: prometheus-ssd
+  annotations:
+    storageclass.kubernetes.io/is-default-class: "false"
+  labels:
+    kubernetes.io/cluster-service: "true"
+    addonmanager.kubernetes.io/mode : EnsureExists
+provisioner: kubernetes.io/gce-pd
+parameters:
+  type: pd-ssd
+  replication-type: none
+allowVolumeExpansion: true
+volumeBindingMode: WaitForFirstConsumer
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    name: prometheus-statefulset
+  name: prometheus
+  namespace: monitoring
+spec:
+  serviceName: prometheus-statefulset
+  replicas: 1
+  updateStrategy:
+    type: "RollingUpdate"
+  selector:
+    matchLabels:
+      app: prometheus
+  template:
+    metadata:
+      labels:
+        app: prometheus
+    spec:
+      # Avoid Permission denied error when writing to pv. https://github.com/coreos/prometheus-operator/issues/541
+      securityContext:
+        fsGroup: 2000
+        runAsUser: 1000
+        runAsNonRoot: true
+      containers:
+      - image: prom/prometheus:v2.36.0
+        name: prometheus
+        command:
+        - "/bin/prometheus"
+        args:
+        - "--config.file=/etc/prometheus/prometheus.config.yaml"
+        - "--storage.tsdb.path=/var/lib/prometheus"
+        - "--storage.tsdb.retention=1000d"
+        ports:
+        - containerPort: 9090
+          protocol: TCP
+        volumeMounts:
+        - name: prometheus-pv
+          mountPath: /var/lib/prometheus
+        - name: config-volume
+          mountPath: /etc/prometheus
+        resources:
+          requests:
+            cpu: 500m
+            memory: 250Mi
+          limits:
+            cpu: 500m
+            memory: 2500Mi
+      terminationGracePeriodSeconds: 5
+      serviceAccountName: prometheus
+      volumes:
+      - name: config-volume
+        configMap:
+          name: prometheus-config
+      nodeSelector:
+        kubernetes.io/os: linux
+        cloud.google.com/gke-nodepool: "control-pool"
+  volumeClaimTemplates:
+    - metadata:
+        name: prometheus-pv
+      spec:
+        storageClassName: prometheus-ssd
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 200Gi
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  labels:
+    app: prometheus
+  name: prometheus
+  namespace: monitoring
+spec:
+  type: NodePort
+  ports:
+  - port: 9090
+    targetPort: 9090
+    nodePort: 30003
+  selector:
+    app: prometheus
