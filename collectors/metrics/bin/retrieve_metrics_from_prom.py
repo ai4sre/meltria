@@ -5,7 +5,15 @@ import json
 import logging
 import os
 
-from get_metrics_from_prom import collect_metrics, support_set_default
+from targets import sockshop
+
+DEFAULT_DURATION = "30m"
+
+
+def support_set_default(obj: set):
+    if isinstance(obj, set):
+        return list(obj)
+    raise TypeError(repr(obj) + " is not JSON serializable")
 
 
 def main():
@@ -15,6 +23,7 @@ def main():
     parser.add_argument('metricsfiles',
                         nargs='+',
                         help='metrics output JSON file')
+    parser.add_argument("--duration", help="", type=str, default=DEFAULT_DURATION)
     parser.add_argument('destdir', help='destionation directory')
     args = parser.parse_args()
 
@@ -22,12 +31,13 @@ def main():
         logging.info(f"--> Loading {metrics_file} ...")
         with open(metrics_file) as r:
             obj = json.load(r)
-            result = collect_metrics(
+            result = sockshop.collect_metrics(
                 prometheus_url=obj['meta']['prometheus_url'],
                 grafana_url=obj['meta']['grafana_url'],
                 start_time=str(obj['meta']['start']),
                 end_time=str(obj['meta']['end']),
                 step=obj['meta']['step'],
+                duration=DEFAULT_DURATION,  # FIXME: calculate duration from start and end
                 chaos_param={
                     'chaos_injected_component': obj['meta']['chaos_injected_component'],
                     'injected_chaos_type': obj['meta']['injected_chaos_type'],
