@@ -44,6 +44,8 @@ import urllib.parse
 import urllib.request
 from typing import Any
 
+from prometheus.fetcher import PromFetcher
+
 COMPONENT_LABELS = {
     "front-end", "orders", "orders-db", "carts", "carts-db",
     "shipping", "user", "user-db", "payment", "catalogue", "catalogue-db",
@@ -55,100 +57,6 @@ STEP = 15
 DEFAULT_DURATION = "30m"
 NAN = 'nan'
 GRAFANA_DASHBOARD = "d/3cHU4RSMk/sock-shop-performance"
-
-
-def get_targets(url: str, selector: str) -> list[dict[str, Any]]:
-    params = {
-        "match_target": '{' + selector + '}',
-    }
-    req = urllib.request.Request('{}{}?{}'.format(
-        url, "/api/v1/targets/metadata",
-        urllib.parse.urlencode(params)))
-    dupcheck = {}
-    targets = []
-    with urllib.request.urlopen(req) as res:
-        body = json.load(res)
-        # remove duplicate target
-        for item in body["data"]:
-            if item["metric"] not in dupcheck:
-                targets.append(
-                    {"metric": item["metric"], "type": item["type"]})
-                dupcheck[item["metric"]] = 1
-        return targets
-
-
-def request_query_range(url: str, params: dict[str, Any], target: dict[str, Any]) -> list[Any]:
-    bparams = urllib.parse.urlencode(params).encode('ascii')
-    headers = {
-        'Content-Type': 'application/x-www-form-urlencoded',
-    }
-    try:
-        # see https://prometheus.io/docs/prometheus/latest/querying/api/#range-queries
-        req = urllib.request.Request(url=url + '/api/v1/query_range',
-                                     data=bparams, headers=headers)
-        with urllib.request.urlopen(req) as res:
-            body = json.load(res)
-            metrics = body['data']['result']
-            if metrics is None or len(metrics) < 1:
-                return []
-            for metric in metrics:
-                metric['metric']['__name__'] = target['metric']
-            return metrics
-    except urllib.error.HTTPError as err:
-        print(urllib.parse.unquote(bparams.decode()), file=sys.stderr)
-        print(err.read().decode(), file=sys.stderr)
-        raise(err)
-    except urllib.error.URLError as err:
-        print(err.reason, file=sys.stderr)
-        raise(err)
-    except Exception as e:
-        raise(e)
-
-
-def get_metrics(
-    url: str, targets: list[dict[str, Any]],
-    start: int, end: int, step: int, selector: str,
-) -> list[Any]:
-    futures = []
-    with concurrent.futures.ThreadPoolExecutor(max_workers=20) as executor:
-        for target in targets:
-            if target == 'node_cpu_seconds_total':
-                selector += ',mode!="idle"'
-            query = '{0}{{{1}}}'.format(target['metric'], selector)
-            if target['type'] == 'counter':
-                query = 'rate({}[1m])'.format(query)
-            query = 'sum by (instance,job,node,container,pod,kubernetes_name)({})'.format(
-                query)
-            params = {
-                "query": query,
-                "start": start,
-                "end": end,
-                "step": '{}s'.format(step),
-            }
-            res = executor.submit(request_query_range, url, params, target)
-            futures.append(res)
-        executor.shutdown()
-
-    concated_metrics: list[Any] = []
-    for future in concurrent.futures.as_completed(futures):
-        metrics = future.result()
-        if metrics is None:
-            continue
-        concated_metrics += metrics
-    return concated_metrics
-
-
-def get_metrics_by_query_range(
-    url: str, start: int, end: int, step: int,
-    query: str, target: dict[str, Any],
-) -> list[Any]:
-    params = {
-        "query": query,
-        "start": start,
-        "end": end,
-        "step": '{}s'.format(step),
-    }
-    return request_query_range(url, params, target)
 
 
 def interpotate_time_series(
@@ -402,31 +310,29 @@ def collect_metrics(
     if start > end:
         raise ValueError("start must be lower than end.")
 
+    fetcher = PromFetcher(url=prometheus_url, ts_range=(start, end), step=step)
+
     # get container metrics (cAdvisor)
-    container_targets = get_targets(prometheus_url,
-                                    'job=~"kubernetes-cadvisor"')
+    container_targets = fetcher.request_targets('job=~"kubernetes-cadvisor"')
     # add container=POD for network metrics
     # exclude metrics of argo workflow pods by removing metrics that 'instance' is gke control-pool node.
     comp_list = '|'.join(COMPONENT_LABELS)
     container_selector = f"namespace='sock-shop',container=~'{comp_list}|POD',nodepool='{APP_NODEPOOL}'"
-    container_metrics = get_metrics(prometheus_url, container_targets,
-                                    start, end, step, container_selector)
+    container_metrics = fetcher.get_metrics(container_targets, container_selector)
 
     # get pod metrics
     pod_selector = 'app="{}"'.format(APP_LABEL)
-    pod_targets = get_targets(prometheus_url, pod_selector)
-    pod_metrics = get_metrics(prometheus_url, pod_targets,
-                              start, end, step, pod_selector)
+    pod_targets = fetcher.request_targets(pod_selector)
+    pod_metrics = fetcher.get_metrics(pod_targets, pod_selector)
 
     # get node metrics (node-exporter)
     node_selector = f"job='monitoring/node-exporter',node=~'.+-{APP_NODEPOOL}-.+'"
-    node_targets = get_targets(prometheus_url, node_selector)
-    node_metrics = get_metrics(prometheus_url, node_targets,
-                               start, end, step, node_selector)
+    node_targets = fetcher.request_targets(node_selector)
+    node_metrics = fetcher.get_metrics(node_targets, node_selector)
 
     # get service metrics
-    throughput_metrics = get_metrics_by_query_range(
-        prometheus_url, start, end, step, """
+    throughput_metrics = fetcher.get_metrics_by_query_range(
+        """
             sum by (name) (
                 rate(
                     request_duration_seconds_count{
@@ -444,12 +350,12 @@ def collect_metrics(
                     }[1m]
                 )
             )
-            """,
+        """,
         {'metric': 'request_duration_seconds_count', 'type': 'gauge'},
     )
 
-    error_metrics: list[Any] = get_metrics_by_query_range(
-        prometheus_url, start, end, step, """
+    error_metrics: list[Any] = fetcher.get_metrics_by_query_range(
+        """
             sum by (name) (
                 rate(
                     request_duration_seconds_count{
@@ -467,12 +373,12 @@ def collect_metrics(
                     }[1m]
                 )
             )
-            """,
+        """,
         {'metric': 'request_duration_seconds_count', 'type': 'gauge'},
     )
 
-    latency_metrics = get_metrics_by_query_range(
-        prometheus_url, start, end, step, """
+    latency_metrics = fetcher.get_metrics_by_query_range(
+        """
             sum by (name) (
                 rate(
                     request_duration_seconds_sum{
@@ -488,14 +394,14 @@ def collect_metrics(
                     }[1m]
                 )
             )
-            """,
+        """,
         {'metric': 'request_duration_seconds_sum', 'type': 'gauge'},
     )
 
     # The labels exported by some microservices (such as orders) in sock shop have been changed from
     # request_duration_seconds_sum to http_request_duration_seconds_sum.
-    latency_metrics_patch = get_metrics_by_query_range(
-        prometheus_url, start, end, step, """
+    latency_metrics_patch = fetcher.get_metrics_by_query_range(
+        """
             sum by (name) (
                 rate(
                     http_request_duration_seconds_sum{
@@ -511,7 +417,7 @@ def collect_metrics(
                     }[1m]
                 )
             )
-            """,
+        """,
         {'metric': 'request_duration_seconds_sum', 'type': 'gauge'},
     )
     latency_metrics.extend(latency_metrics_patch)
