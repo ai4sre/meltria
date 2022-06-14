@@ -1,5 +1,6 @@
 global:
   scrape_interval:     15s
+  scrape_timeout:      12s
   evaluation_interval: 15s
 scrape_configs:
 
@@ -43,6 +44,7 @@ scrape_configs:
   tls_config:
     ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
   bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+  metrics_path: /metrics
   relabel_configs:
   - action: labelmap
     regex: __meta_kubernetes_node_label_(.+)
@@ -52,6 +54,14 @@ scrape_configs:
     regex: (.+)
     target_label: __metrics_path__
     replacement: /api/v1/nodes/${1}/proxy/metrics/cadvisor
+  - action: labelmap
+    regex: __meta_kubernetes_node_label_cloud_google_com_gke_nodepool
+    replacement: nodepool
+  metric_relabel_configs:
+  - source_labels: ['pod', 'pod_name']
+    regex: '^(ts-[a-zA-Z\d]+-[a-zA-Z\d]+)-.+$'  # eg. "ts-notification-service-bcd6b59dc-7qwch"
+    replacement: ${1}
+    target_label: app
 
 - job_name: 'kubernetes-service-endpoints'
   kubernetes_sd_configs:
@@ -151,3 +161,13 @@ scrape_configs:
   - source_labels: [__meta_kubernetes_pod_name]
     action: replace
     target_label: kubernetes_pod_name
+  - source_labels:
+    - __meta_kubernetes_namespace
+    - __meta_kubernetes_pod_label_name
+    - __meta_kubernetes_pod_label_app
+    separator: /
+    target_label: job
+  - source_labels:
+    - __meta_kubernetes_pod_node_name
+    - __meta_kubernetes_pod_label_app
+    target_label: node
