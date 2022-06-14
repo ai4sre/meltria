@@ -5,4 +5,4 @@ services:
     build: .
     volumes:
       - ./:/usr/src/app
-    entrypoint: ["/usr/src/app/get_metrics_from_prom.py"]
+    entrypoint: ["/usr/src/app/bin/get_metrics_from_prom.py"]

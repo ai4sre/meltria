@@ -9,5 +9,6 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 WORKDIR /usr/src/app
 
 COPY . .
+ENV PYTHONPATH=/usr/src/app
 
-ENTRYPOINT ["/usr/src/app/get_metrics_from_prom.py"]
+ENTRYPOINT ["/usr/src/app/bin/get_metrics_from_prom.py"]
