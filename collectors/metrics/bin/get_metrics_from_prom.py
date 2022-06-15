@@ -39,7 +39,7 @@ import json
 import sys
 from typing import Any
 
-from targets import sockshop
+from targets import sockshop, trainticket
 
 STEP = 15
 DEFAULT_DURATION = "30m"
@@ -74,9 +74,27 @@ def main():
     parser.add_argument("--out", help="output path", type=str)
     args = parser.parse_args()
 
-    if args.target == 'sockshop':
-        try:
-            result: dict[str, Any] = sockshop.collect_metrics(
+    match args.target:
+        case 'sockshop':
+            try:
+                result: dict[str, Any] = sockshop.collect_metrics(
+                    prometheus_url=args.prometheus_url,
+                    grafana_url=args.grafana_url,
+                    start_time=args.start,
+                    end_time=args.end,
+                    chaos_param={
+                        'chaos_injected_component': args.chaos_injected_component,
+                        'injected_chaos_type': args.injected_chaos_type,
+                    },
+                    duration=args.duration,
+                    step=args.step,
+                )
+            except ValueError as e:
+                print("parsing timestamp error:", e, file=sys.stderr)
+                parser.print_help()
+                exit(-1)
+        case 'trainticket':
+            result = trainticket.collect_metrics(
                 prometheus_url=args.prometheus_url,
                 grafana_url=args.grafana_url,
                 start_time=args.start,
@@ -88,14 +106,8 @@ def main():
                 duration=args.duration,
                 step=args.step,
             )
-        except ValueError as e:
-            print("parsing timestamp error:", e, file=sys.stderr)
-            parser.print_help()
-            exit(-1)
-    elif args.target == 'trainticket':
-        result = {}
-    else:
-        raise ValueError("Unknown target: {}".format(args.target))
+        case _:
+            raise ValueError("Unknown target: {}".format(args.target))
 
     data = json.dumps(result, default=support_set_default)
     if args.out is None:
