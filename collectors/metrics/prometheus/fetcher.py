@@ -72,7 +72,7 @@ class PromFetcher:
                 query = '{0}{{{1}}}'.format(target['metric'], selector)
                 if target['type'] == 'counter':
                     query = 'rate({}[1m])'.format(query)
-                query = 'sum by (instance,job,node,container,pod,kubernetes_name)({})'.format(
+                query = 'sum by (instance,job,node,container,pod,kubernetes_name,app)({})'.format(
                     query)
                 params = {
                     "query": query,

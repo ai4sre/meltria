@@ -83,7 +83,8 @@ def metrics_as_result(
         if '__name__' not in metric['metric']:
             continue
         # TODO: want to rename 'kubernetes-name' in prometheus config because it is not intuitive.
-        container = metric['metric']['kubernetes_name']
+        # sockshop is 'kubernetes_name', but trainticket is 'app'.
+        container = metric['metric'].get('kubernetes_name', metric['metric']['app'])
         data['middlewares'].setdefault(container, [])
         values = tsutil.interpotate_time_series(metric['values'], time_meta)
         m = {
@@ -109,11 +110,12 @@ def metrics_as_result(
 
     for metric_name, metrics in service_metrics.items():
         for metric in metrics:
-            service = metric['metric']['name']
+            service = metric['metric'].get('name', metric['metric']['svc'])
             data['services'].setdefault(service, [])
             values = tsutil.interpotate_time_series(metric['values'], time_meta)
             m = {
-                'service_name': metric['metric']['name'],
+                #  sockshop is 'name', but trainticket is 'svc'
+                'service_name': service,
                 'metric_name': metric_name,
                 'values': values,
             }
