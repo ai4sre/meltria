@@ -1,13 +1,18 @@
 import concurrent.futures
 import json
-import sys
 import urllib.error
 import urllib.parse
 import urllib.request
+from logging import getLogger
 from typing import Any
+
+import urllib3
+import urllib3.exceptions
 
 PROM_API_METADATA: str = "/api/v1/targets/metadata"
 PROM_API_FETCH_CONCURRENCY: int = 20
+
+logger = getLogger(__name__)
 
 
 class PromFetcher:
@@ -19,49 +24,40 @@ class PromFetcher:
         self.ts_start, self.ts_end = ts_range
         self.step = step
         self.concurrency = concurrency
+        self.http = urllib3.PoolManager(num_pools=concurrency)
 
     def request_targets(self, selector: str) -> list[dict[str, Any]]:
-        params = {"match_target": '{' + selector + '}'}
-        req = urllib.request.Request('{}{}?{}'.format(
-            self.url, PROM_API_METADATA,
-            urllib.parse.urlencode(params)))
-        dupcheck = {}
+        encoded_params = urllib.parse.urlencode({"match_target": '{' + selector + '}'})
+        r = self.http.request(
+            'GET', f"{self.url}{PROM_API_METADATA}?{encoded_params}",
+        )
+
+        body = json.loads(r.data.decode('utf-8'))
         targets: list[dict[str, Any]] = []
-        with urllib.request.urlopen(req) as res:
-            body = json.load(res)
-            # remove duplicate target
-            for item in body["data"]:
-                if item["metric"] not in dupcheck:
-                    targets.append(
-                        {"metric": item["metric"], "type": item["type"]})
-                    dupcheck[item["metric"]] = 1
+        seen: set[str] = set()
+        # remove duplicate target
+        for item in body["data"]:
+            if item["metric"] not in seen:
+                targets.append({"metric": item["metric"], "type": item["type"]})
+                seen.add(item["metric"])
         return targets
 
     def request_query_range(self, params: dict[str, Any], target: dict[str, Any]) -> list[Any]:
-        bparams = urllib.parse.urlencode(params).encode('ascii')
-        headers = {
-            'Content-Type': 'application/x-www-form-urlencoded',
-        }
-        try:
-            # see https://prometheus.io/docs/prometheus/latest/querying/api/#range-queries
-            req = urllib.request.Request(url=self.url + '/api/v1/query_range', data=bparams, headers=headers)
-            with urllib.request.urlopen(req) as res:
-                body = json.load(res)
-                metrics = body['data']['result']
-                if metrics is None or len(metrics) < 1:
-                    return []
-                for metric in metrics:
-                    metric['metric']['__name__'] = target['metric']
-                return metrics
-        except urllib.error.HTTPError as err:
-            print(urllib.parse.unquote(bparams.decode()), file=sys.stderr)
-            print(err.read().decode(), file=sys.stderr)
-            raise(err)
-        except urllib.error.URLError as err:
-            print(err.reason, file=sys.stderr)
-            raise(err)
-        except Exception as e:
-            raise(e)
+        # see https://prometheus.io/docs/prometheus/latest/querying/api/#range-queries
+        r = self.http.request(
+            'GET', f"{self.url}/api/v1/query_range",
+            fields=params,
+            headers={
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+        )
+        body = json.loads(r.data.decode('utf-8'))
+        metrics = body['data']['result']
+        if metrics is None or len(metrics) < 1:
+            return []
+        for metric in metrics:
+            metric['metric']['__name__'] = target['metric']
+        return metrics
 
     def get_metrics(
         self, targets: list[dict[str, Any]], selector: str,
