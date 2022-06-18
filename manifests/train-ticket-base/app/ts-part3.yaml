@@ -2,9 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ts-ui-dashboard
-  annotations:
-    prometheus.io/scrape: "true"
-    prometheus.io/port: "4040"
 spec:
   selector:
     matchLabels:
@@ -14,6 +11,9 @@ spec:
     metadata:
       labels:
         app: ts-ui-dashboard
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "4040"
     spec:
       containers:
       - name: ts-ui-dashboard
