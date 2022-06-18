@@ -2,13 +2,14 @@
 
 set -e -o pipefail
 
-appLabel=$1
-chaos=$2
-debug=$3
+appNamespace=$1
+appLabel=$2
+chaos=$3
+debug=$4
 
 cleanup='delete'
 if [[ debug != "" ]]; then
   cleanup='retain'
 fi
 
-cue eval --out yaml argowf-chaos.cue | argo submit -n litmus --watch --parameter chaosTypes="'$2'" --parameter appLabels="[\"$1\"]" --parameter litmusJobCleanupPolicy="${cleanup}" -
+cue eval --out yaml argowf-chaos.cue | argo submit -n litmus --watch --parameter appNamespace="${appNamespace}" --parameter chaosTypes="'${chaos}'" --parameter appLabels="[\"${appLabel}\"]" --parameter litmusJobCleanupPolicy="${cleanup}" -
