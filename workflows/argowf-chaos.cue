@@ -34,6 +34,12 @@ import "strings"
 		name: "pod-cpu-hog"
 		spec: {
 			components: env: [{
+				name: "CONTAINER_RUNTIME"
+				value: "containerd"
+			}, {
+				name: "SOCKET_PATH"
+				value: "/var/run/containerd/containerd.sock"
+			}, {
 				name:  "TARGET_CONTAINER"
 				value: "{{inputs.parameters.appLabel}}"
 			}, {
@@ -49,6 +55,12 @@ import "strings"
 		name: "pod-memory-hog"
 		spec: {
 			components: env: [{
+				name: "CONTAINER_RUNTIME"
+				value: "containerd"
+			}, {
+				name: "SOCKET_PATH"
+				value: "/var/run/containerd/containerd.sock"
+			}, {
 				name:  "TARGET_CONTAINER"
 				value: "{{inputs.parameters.appLabel}}"
 			}, {
@@ -64,6 +76,12 @@ import "strings"
 		name: "pod-network-loss"
 		spec: {
 			components: env: [{
+				name: "CONTAINER_RUNTIME"
+				value: "containerd"
+			}, {
+				name: "SOCKET_PATH"
+				value: "/var/run/containerd/containerd.sock"
+			}, {
 				name:  "TARGET_CONTAINER"
 				value: "{{inputs.parameters.appLabel}}"
 			}, {
@@ -82,6 +100,12 @@ import "strings"
 		name: "pod-network-latency"
 		spec: {
 			components: env: [{
+				name: "CONTAINER_RUNTIME"
+				value: "containerd"
+			}, {
+				name: "SOCKET_PATH"
+				value: "/var/run/containerd/containerd.sock"
+			}, {
 				name:  "TARGET_CONTAINER"
 				value: "{{inputs.parameters.appLabel}}"
 			}, {
