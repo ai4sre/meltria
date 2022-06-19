@@ -4,7 +4,9 @@ kind: Service
 metadata:
   name: orders
   labels:
-    name: orders
+    app.kubernetes.io/name: orders
+    app.kubernetes.io/part-of: orders
+    app.kubernetes.io/component: web
     app: sock-shop
   namespace: sock-shop
 spec:
@@ -13,5 +15,7 @@ spec:
   - port: 80
     targetPort: 80
   selector:
-    name: orders
+    app.kubernetes.io/name: orders
+    app.kubernetes.io/part-of: orders
+    app.kubernetes.io/component: web
     app: sock-shop

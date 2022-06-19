@@ -4,7 +4,9 @@ kind: Service
 metadata:
   name: user-db
   labels:
-    name: user-db
+    app.kubernetes.io/name: user-db
+    app.kubernetes.io/part-of: user
+    app.kubernetes.io/component: db
     app: sock-shop
   namespace: sock-shop
 spec:
@@ -13,5 +15,7 @@ spec:
   - port: 27017
     targetPort: 27017
   selector:
-    name: user-db
+    app.kubernetes.io/name: user-db
+    app.kubernetes.io/part-of: user
+    app.kubernetes.io/component: db
     app: sock-shop

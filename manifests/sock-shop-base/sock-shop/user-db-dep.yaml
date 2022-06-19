@@ -4,7 +4,9 @@ kind: Deployment
 metadata:
   name: user-db
   labels:
-    name: user-db
+    app.kubernetes.io/name: user-db
+    app.kubernetes.io/part-of: user
+    app.kubernetes.io/component: db
     app: sock-shop
   annotations:
     litmuschaos.io/chaos: "true"
@@ -13,12 +15,16 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      name: user-db
+      app.kubernetes.io/name: user-db
+      app.kubernetes.io/part-of: user
+      app.kubernetes.io/component: db
       app: sock-shop
   template:
     metadata:
       labels:
-        name: user-db
+        app.kubernetes.io/name: user-db
+        app.kubernetes.io/part-of: user
+        app.kubernetes.io/component: db
         app: sock-shop
       annotations:
         prometheus.io/scrape: "true"

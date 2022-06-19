@@ -4,7 +4,9 @@ kind: Deployment
 metadata:
   name: carts-db
   labels:
-    name: carts-db
+    app.kubernetes.io/name: carts-db
+    app.kubernetes.io/part-of: carts
+    app.kubernetes.io/component: db
     app: sock-shop
   namespace: sock-shop
   annotations:
@@ -13,12 +15,16 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      name: carts-db
+      app.kubernetes.io/name: carts-db
+      app.kubernetes.io/part-of: carts
+      app.kubernetes.io/component: db
       app: sock-shop
   template:
     metadata:
       labels:
-        name: carts-db
+        app.kubernetes.io/name: carts-db
+        app.kubernetes.io/part-of: carts
+        app.kubernetes.io/component: db
         app: sock-shop
       annotations:
         prometheus.io/scrape: "true"

@@ -4,7 +4,9 @@ kind: Deployment
 metadata:
   name: user
   labels:
-    name: user
+    app.kubernetes.io/name: user
+    app.kubernetes.io/part-of: user
+    app.kubernetes.io/component: web
     app: sock-shop
   annotations:
     litmuschaos.io/chaos: "true"
@@ -13,12 +15,16 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      name: user
+      app.kubernetes.io/name: user
+      app.kubernetes.io/part-of: user
+      app.kubernetes.io/component: web
       app: sock-shop
   template:
     metadata:
       labels:
-        name: user
+        app.kubernetes.io/name: user
+        app.kubernetes.io/part-of: user
+        app.kubernetes.io/component: web
         app: sock-shop
     spec:
       containers:

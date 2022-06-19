@@ -4,7 +4,9 @@ kind: Service
 metadata:
   name: carts-db
   labels:
-    name: carts-db
+    app.kubernetes.io/name: carts-db
+    app.kubernetes.io/part-of: carts
+    app.kubernetes.io/component: db
     app: sock-shop
   namespace: sock-shop
 spec:
@@ -13,5 +15,7 @@ spec:
   - port: 27017
     targetPort: 27017
   selector:
-    name: carts-db
+    app.kubernetes.io/name: carts-db
+    app.kubernetes.io/part-of: carts
+    app.kubernetes.io/component: db
     app: sock-shop

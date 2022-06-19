@@ -4,7 +4,9 @@ kind: Service
 metadata:
   name: rabbitmq
   labels:
-    name: rabbitmq
+    app.kubernetes.io/name: rabbitmq
+    app.kubernetes.io/part-of: shipping
+    app.kubernetes.io/component: queue-db
     app: sock-shop
   namespace: sock-shop
 spec:
@@ -18,5 +20,7 @@ spec:
     targetPort: exporter
     protocol: TCP
   selector:
-    name: rabbitmq
+    app.kubernetes.io/name: rabbitmq
+    app.kubernetes.io/part-of: shipping
+    app.kubernetes.io/component: queue-db
     app: sock-shop

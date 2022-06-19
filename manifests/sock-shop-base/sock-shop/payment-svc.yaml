@@ -4,7 +4,9 @@ kind: Service
 metadata:
   name: payment
   labels:
-    name: payment
+    app.kubernetes.io/name: payment
+    app.kubernetes.io/part-of: payment
+    app.kubernetes.io/component: web
     app: sock-shop
   namespace: sock-shop
 spec:
@@ -13,5 +15,7 @@ spec:
   - port: 80
     targetPort: 80
   selector:
-    name: payment
+    app.kubernetes.io/name: payment
+    app.kubernetes.io/part-of: payment
+    app.kubernetes.io/component: web
     app: sock-shop

@@ -4,7 +4,9 @@ kind: Service
 metadata:
   name: catalogue
   labels:
-    name: catalogue
+    app.kubernetes.io/name: catalogue
+    app.kubernetes.io/part-of: catalogue
+    app.kubernetes.io/component: web
     app: sock-shop
   namespace: sock-shop
 spec:
@@ -13,5 +15,7 @@ spec:
   - port: 80
     targetPort: 80
   selector:
-    name: catalogue
+    app.kubernetes.io/name: catalogue
+    app.kubernetes.io/part-of: catalogue
+    app.kubernetes.io/component: web
     app: sock-shop

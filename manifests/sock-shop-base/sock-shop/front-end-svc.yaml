@@ -4,7 +4,9 @@ kind: Service
 metadata:
   name: front-end
   labels:
-    name: front-end
+    app.kubernetes.io/name: front-end
+    app.kubernetes.io/part-of: front-end
+    app.kubernetes.io/component: web
     app: sock-shop
   namespace: sock-shop
 spec:
@@ -14,5 +16,7 @@ spec:
     targetPort: 8079
     nodePort: 30001
   selector:
-    name: front-end
+    app.kubernetes.io/name: front-end
+    app.kubernetes.io/part-of: front-end
+    app.kubernetes.io/component: web
     app: sock-shop
