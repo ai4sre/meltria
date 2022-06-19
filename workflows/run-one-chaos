@@ -8,7 +8,7 @@ chaos=$3
 debug=$4
 
 cleanup='delete'
-if [[ debug != "" ]]; then
+if [[ ${debug} != "" ]]; then
   cleanup='retain'
 fi
 
