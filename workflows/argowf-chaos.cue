@@ -265,6 +265,8 @@ spec: {
 		container: {
 			image: "ghcr.io/ai4sre/meltria/collectors-metrics:latest"
 			imagePullPolicy: "Always"
+			// `command must be specified for containers.` https://argoproj.github.io/argo-workflows/workflow-executors/#emissary-emissary
+			command: ["/usr/src/app/bin/get_metrics_from_prom.py"],
 			args: [
 				"--prometheus-url",
 				"http://prometheus.monitoring.svc.cluster.local:9090",
@@ -327,7 +329,7 @@ spec: {
 						engineState:     "active"
 						appinfo: {
 							appns: "{{workflow.parameters.appNamespace}}"
-							applabel: "name={{inputs.parameters.appLabel}}"
+							applabel: "app.kubernetes.io/name={{inputs.parameters.appLabel}}"
 							appkind:  "deployment"
 						}
 						chaosServiceAccount: "{{workflow.parameters.chaosServiceAccount}}"
