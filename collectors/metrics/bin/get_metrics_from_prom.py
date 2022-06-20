@@ -54,7 +54,7 @@ def support_set_default(obj: set):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--target",
-                        choices=['sockshop', 'trainticket'], default='sockshop',
+                        choices=[sockshop.TARGET_APP_NAME, trainticket.TARGET_APP_NAME], default=sockshop.TARGET_APP_NAME,
                         help="target application to collect metrics")
     parser.add_argument("--prometheus-url",
                         help="endpoint URL for prometheus server",
@@ -75,7 +75,7 @@ def main():
     args = parser.parse_args()
 
     match args.target:
-        case 'sock-shop':
+        case sockshop.TARGET_APP_NAME:
             try:
                 result: dict[str, Any] = sockshop.collect_metrics(
                     prometheus_url=args.prometheus_url,
@@ -93,7 +93,7 @@ def main():
                 print("parsing timestamp error:", e, file=sys.stderr)
                 parser.print_help()
                 exit(-1)
-        case 'train-ticket':
+        case trainticket.TARGET_APP_NAME:
             result = trainticket.collect_metrics(
                 prometheus_url=args.prometheus_url,
                 grafana_url=args.grafana_url,

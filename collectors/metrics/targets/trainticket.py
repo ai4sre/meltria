@@ -4,6 +4,7 @@ from typing import Any
 from prometheus.fetcher import PromFetcher
 from tsutil import tsutil
 
+TARGET_APP_NAME = 'train-ticket'
 APP_LABEL = 'train-ticket'
 APP_NODEPOOL = 'default-pool'
 GRAFANA_DASHBOARD = ''
