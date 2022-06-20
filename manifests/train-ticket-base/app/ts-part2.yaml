@@ -1887,11 +1887,11 @@ spec:
         - containerPort: 16346
         resources:
           requests:
-            cpu: 50m
-            memory: 160Mi
-          limits:
             cpu: 200m
             memory: 500Mi
+          limits:
+            cpu: 200m
+            memory: 750Mi
         readinessProbe:
           tcpSocket:
             port: 16346
