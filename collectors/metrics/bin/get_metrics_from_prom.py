@@ -75,7 +75,7 @@ def main():
     args = parser.parse_args()
 
     match args.target:
-        case 'sockshop':
+        case 'sock-shop':
             try:
                 result: dict[str, Any] = sockshop.collect_metrics(
                     prometheus_url=args.prometheus_url,
@@ -93,7 +93,7 @@ def main():
                 print("parsing timestamp error:", e, file=sys.stderr)
                 parser.print_help()
                 exit(-1)
-        case 'trainticket':
+        case 'train-ticket':
             result = trainticket.collect_metrics(
                 prometheus_url=args.prometheus_url,
                 grafana_url=args.grafana_url,
