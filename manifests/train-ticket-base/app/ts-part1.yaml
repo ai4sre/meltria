@@ -358,14 +358,14 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: ts-travel2-mongo
-      app.kubernetes.io/part-of: ts-travel
+      app.kubernetes.io/part-of: ts-travel2
       app.kubernetes.io/component: db
   replicas: 1
   template:
     metadata:
       labels:
         app.kubernetes.io/name: ts-travel2-mongo
-        app.kubernetes.io/part-of: ts-travel
+        app.kubernetes.io/part-of: ts-travel2
         app.kubernetes.io/component: db
     spec:
       containers:
