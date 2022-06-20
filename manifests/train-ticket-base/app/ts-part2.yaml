@@ -1876,6 +1876,7 @@ spec:
       - name: ts-travel2-service
         image: codewisdom/ts-travel2-service-with-jaeger:v1
         imagePullPolicy: IfNotPresent
+        args: ["java", "-Xmx350m",  "-jar", "/app/ts-travel2-service-1.0.jar"]
         env:
           - name: JAVA_TOOL_OPTIONS
             value: >-
@@ -1887,11 +1888,11 @@ spec:
         - containerPort: 16346
         resources:
           requests:
-            cpu: 200m
-            memory: 500Mi
+            cpu: 100m
+            memory: 700Mi
           limits:
-            cpu: 200m
-            memory: 750Mi
+            cpu: 100m
+            memory: 700Mi
         readinessProbe:
           tcpSocket:
             port: 16346
@@ -1982,6 +1983,7 @@ spec:
       - name: ts-travel-service
         image: codewisdom/ts-travel-service-with-jaeger:v1
         imagePullPolicy: IfNotPresent
+        args: ["java", "-Xmx400m",  "-jar", "/app/ts-travel-service-1.0.jar"]
         env:
           - name: JAVA_TOOL_OPTIONS
             value: >-
@@ -1994,10 +1996,10 @@ spec:
         resources:
           requests:
             cpu: 600m
-            memory: 1200Mi
+            memory: 800Mi
           limits:
             cpu: 600m
-            memory: 1200Mi
+            memory: 800Mi
         readinessProbe:
           tcpSocket:
             port: 12346
