@@ -292,10 +292,9 @@ spec: {
 			// `command must be specified for containers.` https://argoproj.github.io/argo-workflows/workflow-executors/#emissary-emissary
 			command: ["/usr/src/app/bin/get_metrics_from_prom.py"],
 			args: [
-				"--prometheus-url",
-				"http://prometheus.monitoring.svc.cluster.local:9090",
-				"--grafana-url",
-				"http://grafana.monitoring.svc.cluster.local:3000",
+				"--target", "{{workflow.parameters.appNamespace}}",
+				"--prometheus-url", "http://prometheus.monitoring.svc.cluster.local:9090",
+				"--grafana-url", "http://grafana.monitoring.svc.cluster.local:3000",
 				"--end", "{{inputs.parameters.endTimestamp}}",
 				"--chaos-injected-component", "{{inputs.parameters.appLabel}}",
 				"--injected-chaos-type", "{{inputs.parameters.chaosType}}",
