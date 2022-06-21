@@ -3,6 +3,7 @@ kind: Service
 metadata:
   name: load-test-master
   labels:
+    app: load-test-master
     app.kubernetes.io/name: load-test-master
     app.kubernetes.io/parts-of: load-test-cluster
     app.kubernetes.io/component: locust-master
@@ -20,6 +21,7 @@ spec:
     targetPort: master-p1
   type: NodePort
   selector:
+    app: load-test-master
     app.kubernetes.io/name: load-test-master
     app.kubernetes.io/parts-of: load-test-cluster
     app.kubernetes.io/component: locust-master

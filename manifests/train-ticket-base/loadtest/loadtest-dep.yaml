@@ -3,6 +3,7 @@ kind: Deployment
 metadata:
   name: load-test-master
   labels:
+    app: load-test-master
     app.kubernetes.io/name: load-test-master
     app.kubernetes.io/parts-of: load-test-cluster
     app.kubernetes.io/component: locust-master
@@ -10,12 +11,14 @@ spec:
   replicas: 1
   selector:
     matchLabels:
+      app: load-test-master
       app.kubernetes.io/name: load-test-master
       app.kubernetes.io/parts-of: load-test-cluster
       app.kubernetes.io/component: locust-master
   template:
     metadata:
       labels:
+        app: load-test-master
         app.kubernetes.io/name: load-test-master
         app.kubernetes.io/parts-of: load-test-cluster
         app.kubernetes.io/component: locust-master
@@ -35,7 +38,7 @@ spec:
           - name: LOCUST_SPAWN_RATE
             value: '5'
           - name: LOCUST_AUTOSTART
-            value: '1'
+            value: 'true'
         ports:
           - name: master-web
             containerPort: 8089
@@ -56,6 +59,7 @@ kind: Deployment
 metadata:
   name: load-test-worker
   labels:
+    app: load-test-worker
     app.kubernetes.io/name: load-test-worker
     app.kubernetes.io/parts-of: load-test-cluster
     app.kubernetes.io/component: locust-worker
@@ -63,12 +67,14 @@ spec:
   replicas: 1
   selector:
     matchLabels:
+      app: load-test-worker
       app.kubernetes.io/name: load-test-worker
       app.kubernetes.io/parts-of: load-test-cluster
       app.kubernetes.io/component: locust-worker
   template:
     metadata:
       labels:
+        app: load-test-worker
         app.kubernetes.io/name: load-test-worker
         app.kubernetes.io/parts-of: load-test-cluster
         app.kubernetes.io/component: locust-worker
