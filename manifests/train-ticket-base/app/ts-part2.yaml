@@ -1985,7 +1985,7 @@ spec:
       - name: ts-travel-service
         image: codewisdom/ts-travel-service:0.2.0
         imagePullPolicy: IfNotPresent
-        args: ["java", "-Xmx400m",  "-jar", "/app/ts-travel-service-1.0.jar"]
+        args: ["java", "-Xmx500m",  "-jar", "/app/ts-travel-service-1.0.jar"]
         env:
           - name: JAVA_TOOL_OPTIONS
             value: >-
@@ -1997,11 +1997,11 @@ spec:
         - containerPort: 12346
         resources:
           requests:
-            cpu: 300m
-            memory: 800Mi
+            cpu: 200m
+            memory: 600Mi
           limits:
             cpu: 600m
-            memory: 800Mi
+            memory: 1000Mi
         readinessProbe:
           tcpSocket:
             port: 12346
