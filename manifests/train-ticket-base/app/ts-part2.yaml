@@ -41,7 +41,7 @@ spec:
             cpu: 50m
             memory: 100Mi
           limits:
-            cpu: 200m
+            cpu: 100m
             memory: 500Mi
         readinessProbe:
           tcpSocket:
@@ -95,7 +95,7 @@ spec:
             cpu: 50m
             memory: 160Mi
           limits:
-            cpu: 200m
+            cpu: 100m
             memory: 500Mi
         readinessProbe:
           tcpSocket:
@@ -148,7 +148,7 @@ spec:
             cpu: 50m
             memory: 160Mi
           limits:
-            cpu: 200m
+            cpu: 100m
             memory: 500Mi
         readinessProbe:
           tcpSocket:
@@ -201,7 +201,7 @@ spec:
             cpu: 50m
             memory: 160Mi
           limits:
-            cpu: 200m
+            cpu: 100m
             memory: 500Mi
         readinessProbe:
           tcpSocket:
@@ -254,7 +254,7 @@ spec:
             cpu: 50m
             memory: 160Mi
           limits:
-            cpu: 200m
+            cpu: 150m
             memory: 500Mi
         readinessProbe:
           tcpSocket:
@@ -307,8 +307,8 @@ spec:
             cpu: 50m
             memory: 160Mi
           limits:
-            cpu: 200m
-            memory: 500Mi
+            cpu: 100m
+            memory: 400Mi
         readinessProbe:
           tcpSocket:
             port: 18888
@@ -413,7 +413,7 @@ spec:
             cpu: 50m
             memory: 160Mi
           limits:
-            cpu: 200m
+            cpu: 100m
             memory: 500Mi
         readinessProbe:
           tcpSocket:
@@ -466,7 +466,7 @@ spec:
             cpu: 50m
             memory: 160Mi
           limits:
-            cpu: 200m
+            cpu: 100m
             memory: 500Mi
         readinessProbe:
           tcpSocket:
@@ -519,7 +519,7 @@ spec:
             cpu: 50m
             memory: 160Mi
           limits:
-            cpu: 200m
+            cpu: 100m
             memory: 500Mi
         readinessProbe:
           tcpSocket:
@@ -572,7 +572,7 @@ spec:
             cpu: 50m
             memory: 160Mi
           limits:
-            cpu: 200m
+            cpu: 100m
             memory: 500Mi
         readinessProbe:
           tcpSocket:
@@ -625,7 +625,7 @@ spec:
             cpu: 50m
             memory: 160Mi
           limits:
-            cpu: 200m
+            cpu: 100m
             memory: 500Mi
         readinessProbe:
           tcpSocket:
@@ -678,7 +678,7 @@ spec:
             cpu: 50m
             memory: 160Mi
           limits:
-            cpu: 200m
+            cpu: 100m
             memory: 500Mi
         readinessProbe:
           tcpSocket:
@@ -731,7 +731,7 @@ spec:
             cpu: 50m
             memory: 160Mi
           limits:
-            cpu: 200m
+            cpu: 100m
             memory: 500Mi
         readinessProbe:
           tcpSocket:
@@ -837,7 +837,7 @@ spec:
             cpu: 50m
             memory: 160Mi
           limits:
-            cpu: 200m
+            cpu: 100m
             memory: 500Mi
         readinessProbe:
           tcpSocket:
@@ -876,6 +876,7 @@ spec:
       - name: ts-auth-service
         image: codewisdom/ts-auth-service-with-jaeger:v1
         imagePullPolicy: IfNotPresent
+        args: ["java", "-Xmx400m",  "-jar", "/app/ts-auth-service-1.0.jar"]
         env:
           - name: JAVA_TOOL_OPTIONS
             value: >-
@@ -887,11 +888,11 @@ spec:
         - containerPort: 12340
         resources:
           requests:
-            cpu: 500m
-            memory: 1200Mi
+            cpu: 700m
+            memory: 800Mi
           limits:
-            cpu: 1500m
-            memory: 1200Mi
+            cpu: 700m
+            memory: 800Mi
         readinessProbe:
           tcpSocket:
             port: 12340
@@ -934,10 +935,10 @@ spec:
         resources:
           requests:
             cpu: 50m
-            memory: 160Mi
+            memory: 50Mi
           limits:
-            cpu: 200m
-            memory: 500Mi
+            cpu: 50m
+            memory: 50Mi
         readinessProbe:
           tcpSocket:
             port: 12862
@@ -989,7 +990,7 @@ spec:
             cpu: 50m
             memory: 160Mi
           limits:
-            cpu: 200m
+            cpu: 100m
             memory: 500Mi
         readinessProbe:
           tcpSocket:
@@ -1240,6 +1241,7 @@ spec:
       - name: ts-preserve-service
         image: codewisdom/ts-preserve-service-with-jaeger:v1
         imagePullPolicy: IfNotPresent
+        args: ["java", "-Xmx400m",  "-jar", "/app/ts-preserve-service-1.0.jar"]
         env:
           - name: JAVA_TOOL_OPTIONS
             value: >-
@@ -1876,7 +1878,7 @@ spec:
       - name: ts-travel2-service
         image: codewisdom/ts-travel2-service-with-jaeger:v1
         imagePullPolicy: IfNotPresent
-        args: ["java", "-Xmx350m",  "-jar", "/app/ts-travel2-service-1.0.jar"]
+        args: ["java", "-Xmx200m",  "-jar", "/app/ts-travel2-service-1.0.jar"]
         env:
           - name: JAVA_TOOL_OPTIONS
             value: >-
@@ -1889,10 +1891,10 @@ spec:
         resources:
           requests:
             cpu: 100m
-            memory: 700Mi
+            memory: 200Mi
           limits:
             cpu: 100m
-            memory: 700Mi
+            memory: 400Mi
         readinessProbe:
           tcpSocket:
             port: 16346
@@ -1995,7 +1997,7 @@ spec:
         - containerPort: 12346
         resources:
           requests:
-            cpu: 600m
+            cpu: 300m
             memory: 800Mi
           limits:
             cpu: 600m
@@ -2095,10 +2097,10 @@ spec:
         resources:
           requests:
             cpu: 50m
-            memory: 160Mi
+            memory: 50Mi
           limits:
-            cpu: 200m
-            memory: 500Mi
+            cpu: 50m
+            memory: 50Mi
         readinessProbe:
           tcpSocket:
             port: 16101
