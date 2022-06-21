@@ -41,7 +41,7 @@ spec:
             cpu: 50m
             memory: 100Mi
           limits:
-            cpu: 100m
+            cpu: 200m
             memory: 500Mi
         readinessProbe:
           tcpSocket:
@@ -95,7 +95,7 @@ spec:
             cpu: 50m
             memory: 160Mi
           limits:
-            cpu: 100m
+            cpu: 200m
             memory: 500Mi
         readinessProbe:
           tcpSocket:
@@ -148,7 +148,7 @@ spec:
             cpu: 50m
             memory: 160Mi
           limits:
-            cpu: 100m
+            cpu: 200m
             memory: 500Mi
         readinessProbe:
           tcpSocket:
@@ -201,7 +201,7 @@ spec:
             cpu: 50m
             memory: 160Mi
           limits:
-            cpu: 100m
+            cpu: 200m
             memory: 500Mi
         readinessProbe:
           tcpSocket:
@@ -254,7 +254,7 @@ spec:
             cpu: 50m
             memory: 160Mi
           limits:
-            cpu: 150m
+            cpu: 200m
             memory: 500Mi
         readinessProbe:
           tcpSocket:
@@ -307,7 +307,7 @@ spec:
             cpu: 50m
             memory: 160Mi
           limits:
-            cpu: 100m
+            cpu: 200m
             memory: 400Mi
         readinessProbe:
           tcpSocket:
@@ -360,7 +360,7 @@ spec:
             cpu: 50m
             memory: 160Mi
           limits:
-            cpu: 200m
+            cpu: 500m
             memory: 500Mi
         readinessProbe:
           tcpSocket:
@@ -413,7 +413,7 @@ spec:
             cpu: 50m
             memory: 160Mi
           limits:
-            cpu: 100m
+            cpu: 200m
             memory: 500Mi
         readinessProbe:
           tcpSocket:
@@ -463,10 +463,10 @@ spec:
         - containerPort: 15679
         resources:
           requests:
-            cpu: 50m
+            cpu: 100m
             memory: 160Mi
           limits:
-            cpu: 100m
+            cpu: 500m
             memory: 500Mi
         readinessProbe:
           tcpSocket:
@@ -519,7 +519,7 @@ spec:
             cpu: 50m
             memory: 160Mi
           limits:
-            cpu: 100m
+            cpu: 200m
             memory: 500Mi
         readinessProbe:
           tcpSocket:
@@ -572,7 +572,7 @@ spec:
             cpu: 50m
             memory: 160Mi
           limits:
-            cpu: 100m
+            cpu: 200m
             memory: 500Mi
         readinessProbe:
           tcpSocket:
@@ -622,10 +622,10 @@ spec:
         - containerPort: 12347
         resources:
           requests:
-            cpu: 50m
+            cpu: 100m
             memory: 160Mi
           limits:
-            cpu: 100m
+            cpu: 500m
             memory: 500Mi
         readinessProbe:
           tcpSocket:
@@ -678,7 +678,7 @@ spec:
             cpu: 50m
             memory: 160Mi
           limits:
-            cpu: 100m
+            cpu: 200m
             memory: 500Mi
         readinessProbe:
           tcpSocket:
@@ -731,7 +731,7 @@ spec:
             cpu: 50m
             memory: 160Mi
           limits:
-            cpu: 100m
+            cpu: 200m
             memory: 500Mi
         readinessProbe:
           tcpSocket:
@@ -837,7 +837,7 @@ spec:
             cpu: 50m
             memory: 160Mi
           limits:
-            cpu: 100m
+            cpu: 200m
             memory: 500Mi
         readinessProbe:
           tcpSocket:
@@ -888,8 +888,8 @@ spec:
         - containerPort: 12340
         resources:
           requests:
-            cpu: 700m
-            memory: 800Mi
+            cpu: 500m
+            memory: 500Mi
           limits:
             cpu: 700m
             memory: 800Mi
@@ -937,7 +937,7 @@ spec:
             cpu: 50m
             memory: 50Mi
           limits:
-            cpu: 50m
+            cpu: 200m
             memory: 50Mi
         readinessProbe:
           tcpSocket:
@@ -990,7 +990,7 @@ spec:
             cpu: 50m
             memory: 160Mi
           limits:
-            cpu: 100m
+            cpu: 200m
             memory: 500Mi
         readinessProbe:
           tcpSocket:
@@ -1522,7 +1522,7 @@ spec:
             memory: 160Mi
           limits:
             cpu: 200m
-            memory: 500Mi
+            memory: 700Mi
         readinessProbe:
           tcpSocket:
             port: 18898
@@ -1893,7 +1893,7 @@ spec:
             cpu: 100m
             memory: 200Mi
           limits:
-            cpu: 100m
+            cpu: 200m
             memory: 400Mi
         readinessProbe:
           tcpSocket:
