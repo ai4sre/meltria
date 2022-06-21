@@ -65,7 +65,8 @@ def login(client):
     def api_call_admin_login():
         headers = {"Accept": "application/json", "Content-Type": "application/json"}
         body = {"username": "admin", "password": "222222"}
-        response = client.post(url="/api/v1/users/login", headers=headers, json=body, name=get_name_suffix("admin_login"))
+        response = client.post(
+            url="/api/v1/users/login", headers=headers, json=body, name=get_name_suffix("admin_login"))
         response_as_json = get_json_from_response(response)
         return response_as_json, response_as_json["status"]
 
@@ -346,6 +347,7 @@ def get_voucher(client, user_id):
 
 
 class UserNoLogin(HttpUser):
+    weight = 50
 
     def on_start(self):
         self.client.headers.update({"Content-Type": "application/json"})
@@ -362,6 +364,7 @@ class UserNoLogin(HttpUser):
 
 
 class UserBooking(HttpUser):
+    weight = 10
 
     def on_start(self):
         user_id, token = login(self.client)
@@ -384,6 +387,7 @@ class UserBooking(HttpUser):
 
 
 class UserConsignTicket(HttpUser):
+    weight = 5
 
     def on_start(self):
         user_id, token = login(self.client)
@@ -405,6 +409,7 @@ class UserConsignTicket(HttpUser):
 
 
 class UserCancelNoRefund(HttpUser):
+    weight = 1
 
     def on_start(self):
         user_id, token = login(self.client)
@@ -426,6 +431,7 @@ class UserCancelNoRefund(HttpUser):
 
 
 class UserRefundVoucher(HttpUser):
+    weight = 1
 
     def on_start(self):
         user_id, token = login(self.client)
