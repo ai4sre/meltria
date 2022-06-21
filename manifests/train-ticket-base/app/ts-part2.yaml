@@ -3,17 +3,24 @@ kind: Deployment
 metadata:
   name: ts-admin-basic-info-service
   labels:
+    app.kubernetes.io/name: ts-admin-basic-info-service
+    app.kubernetes.io/part-of: ts-admin-basic-info
+    app.kubernetes.io/component: web
     runtime: jvm
 spec:
   selector:
     matchLabels:
-      app: ts-admin-basic-info-service
+      app.kubernetes.io/name: ts-admin-basic-info-service
+      app.kubernetes.io/part-of: ts-admin-basic-info
+      app.kubernetes.io/component: web
       runtime: jvm
   replicas: 1
   template:
     metadata:
       labels:
-        app: ts-admin-basic-info-service
+        app.kubernetes.io/name: ts-admin-basic-info-service
+        app.kubernetes.io/part-of: ts-admin-basic-info
+        app.kubernetes.io/component: web
         runtime: jvm
     spec:
       containers:
@@ -34,7 +41,7 @@ spec:
             cpu: 50m
             memory: 100Mi
           limits:
-            cpu: 200m
+            cpu: 100m
             memory: 500Mi
         readinessProbe:
           tcpSocket:
@@ -50,17 +57,24 @@ kind: Deployment
 metadata:
   name: ts-admin-order-service
   labels:
+    app.kubernetes.io/name: ts-admin-order-service
+    app.kubernetes.io/part-of: ts-admin-order
+    app.kubernetes.io/component: web
     runtime: jvm
 spec:
   selector:
     matchLabels:
-      app: ts-admin-order-service
+      app.kubernetes.io/name: ts-admin-order-service
+      app.kubernetes.io/part-of: ts-admin-order
+      app.kubernetes.io/component: web
       runtime: jvm
   replicas: 1
   template:
     metadata:
       labels:
-        app: ts-admin-order-service
+        app.kubernetes.io/name: ts-admin-order-service
+        app.kubernetes.io/part-of: ts-admin-order
+        app.kubernetes.io/component: web
         runtime: jvm
     spec:
       containers:
@@ -81,7 +95,7 @@ spec:
             cpu: 50m
             memory: 160Mi
           limits:
-            cpu: 200m
+            cpu: 100m
             memory: 500Mi
         readinessProbe:
           tcpSocket:
@@ -96,17 +110,24 @@ kind: Deployment
 metadata:
   name: ts-admin-route-service
   labels:
+    app.kubernetes.io/name: ts-admin-route-service
+    app.kubernetes.io/part-of: ts-admin-route
+    app.kubernetes.io/component: web
     runtime: jvm
 spec:
   selector:
     matchLabels:
-      app: ts-admin-route-service
+      app.kubernetes.io/name: ts-admin-route-service
+      app.kubernetes.io/part-of: ts-admin-route
+      app.kubernetes.io/component: web
       runtime: jvm
   replicas: 1
   template:
     metadata:
       labels:
-        app: ts-admin-route-service
+        app.kubernetes.io/name: ts-admin-route-service
+        app.kubernetes.io/part-of: ts-admin-route
+        app.kubernetes.io/component: web
         runtime: jvm
     spec:
       containers:
@@ -127,7 +148,7 @@ spec:
             cpu: 50m
             memory: 160Mi
           limits:
-            cpu: 200m
+            cpu: 100m
             memory: 500Mi
         readinessProbe:
           tcpSocket:
@@ -142,17 +163,24 @@ kind: Deployment
 metadata:
   name: ts-admin-travel-service
   labels:
+    app.kubernetes.io/name: ts-admin-travel-service
+    app.kubernetes.io/part-of: ts-admin-travel
+    app.kubernetes.io/component: web
     runtime: jvm
 spec:
   selector:
     matchLabels:
-      app: ts-admin-travel-service
+      app.kubernetes.io/name: ts-admin-travel-service
+      app.kubernetes.io/part-of: ts-admin-travel
+      app.kubernetes.io/component: web
       runtime: jvm
   replicas: 1
   template:
     metadata:
       labels:
-        app: ts-admin-travel-service
+        app.kubernetes.io/name: ts-admin-travel-service
+        app.kubernetes.io/part-of: ts-admin-travel
+        app.kubernetes.io/component: web
         runtime: jvm
     spec:
       containers:
@@ -173,7 +201,7 @@ spec:
             cpu: 50m
             memory: 160Mi
           limits:
-            cpu: 200m
+            cpu: 100m
             memory: 500Mi
         readinessProbe:
           tcpSocket:
@@ -188,17 +216,24 @@ kind: Deployment
 metadata:
   name: ts-admin-user-service
   labels:
+    app.kubernetes.io/name: ts-admin-user-service
+    app.kubernetes.io/part-of: ts-admin-user
+    app.kubernetes.io/component: web
     runtime: jvm
 spec:
   selector:
     matchLabels:
-      app: ts-admin-user-service
+      app.kubernetes.io/name: ts-admin-user-service
+      app.kubernetes.io/part-of: ts-admin-user
+      app.kubernetes.io/component: web
       runtime: jvm
   replicas: 1
   template:
     metadata:
       labels:
-        app: ts-admin-user-service
+        app.kubernetes.io/name: ts-admin-user-service
+        app.kubernetes.io/part-of: ts-admin-user
+        app.kubernetes.io/component: web
         runtime: jvm
     spec:
       containers:
@@ -219,7 +254,7 @@ spec:
             cpu: 50m
             memory: 160Mi
           limits:
-            cpu: 200m
+            cpu: 150m
             memory: 500Mi
         readinessProbe:
           tcpSocket:
@@ -234,17 +269,24 @@ kind: Deployment
 metadata:
   name: ts-assurance-service
   labels:
+    app.kubernetes.io/name: ts-assurance-service
+    app.kubernetes.io/part-of: ts-assurance
+    app.kubernetes.io/component: web
     runtime: jvm
 spec:
   selector:
     matchLabels:
-      app: ts-assurance-service
+      app.kubernetes.io/name: ts-assurance-service
+      app.kubernetes.io/part-of: ts-assurance
+      app.kubernetes.io/component: web
       runtime: jvm
   replicas: 1
   template:
     metadata:
       labels:
-        app: ts-assurance-service
+        app.kubernetes.io/name: ts-assurance-service
+        app.kubernetes.io/part-of: ts-assurance
+        app.kubernetes.io/component: web
         runtime: jvm
     spec:
       containers:
@@ -265,8 +307,8 @@ spec:
             cpu: 50m
             memory: 160Mi
           limits:
-            cpu: 200m
-            memory: 500Mi
+            cpu: 100m
+            memory: 400Mi
         readinessProbe:
           tcpSocket:
             port: 18888
@@ -280,17 +322,24 @@ kind: Deployment
 metadata:
   name: ts-basic-service
   labels:
+    app.kubernetes.io/name: ts-basic-service
+    app.kubernetes.io/part-of: ts-basic
+    app.kubernetes.io/component: web
     runtime: jvm
 spec:
   selector:
     matchLabels:
-      app: ts-basic-service
+      app.kubernetes.io/name: ts-basic-service
+      app.kubernetes.io/part-of: ts-basic
+      app.kubernetes.io/component: web
       runtime: jvm
   replicas: 1
   template:
     metadata:
       labels:
-        app: ts-basic-service
+        app.kubernetes.io/name: ts-basic-service
+        app.kubernetes.io/part-of: ts-basic
+        app.kubernetes.io/component: web
         runtime: jvm
     spec:
       containers:
@@ -326,17 +375,24 @@ kind: Deployment
 metadata:
   name: ts-cancel-service
   labels:
+    app.kubernetes.io/name: ts-cancel-service
+    app.kubernetes.io/part-of: ts-cancel
+    app.kubernetes.io/component: web
     runtime: jvm
 spec:
   selector:
     matchLabels:
-      app: ts-cancel-service
+      app.kubernetes.io/name: ts-cancel-service
+      app.kubernetes.io/part-of: ts-cancel
+      app.kubernetes.io/component: web
       runtime: jvm
   replicas: 1
   template:
     metadata:
       labels:
-        app: ts-cancel-service
+        app.kubernetes.io/name: ts-cancel-service
+        app.kubernetes.io/part-of: ts-cancel
+        app.kubernetes.io/component: web
         runtime: jvm
     spec:
       containers:
@@ -357,7 +413,7 @@ spec:
             cpu: 50m
             memory: 160Mi
           limits:
-            cpu: 200m
+            cpu: 100m
             memory: 500Mi
         readinessProbe:
           tcpSocket:
@@ -372,17 +428,24 @@ kind: Deployment
 metadata:
   name: ts-config-service
   labels:
+    app.kubernetes.io/name: ts-config-service
+    app.kubernetes.io/part-of: ts-config
+    app.kubernetes.io/component: web
     runtime: jvm
 spec:
   selector:
     matchLabels:
-      app: ts-config-service
+      app.kubernetes.io/name: ts-config-service
+      app.kubernetes.io/part-of: ts-config
+      app.kubernetes.io/component: web
       runtime: jvm
   replicas: 1
   template:
     metadata:
       labels:
-        app: ts-config-service
+        app.kubernetes.io/name: ts-config-service
+        app.kubernetes.io/part-of: ts-config
+        app.kubernetes.io/component: web
         runtime: jvm
     spec:
       containers:
@@ -403,7 +466,7 @@ spec:
             cpu: 50m
             memory: 160Mi
           limits:
-            cpu: 200m
+            cpu: 100m
             memory: 500Mi
         readinessProbe:
           tcpSocket:
@@ -418,17 +481,24 @@ kind: Deployment
 metadata:
   name: ts-consign-price-service
   labels:
+    app.kubernetes.io/name: ts-config-price-service
+    app.kubernetes.io/part-of: ts-config-price
+    app.kubernetes.io/component: web
     runtime: jvm
 spec:
   selector:
     matchLabels:
-      app: ts-consign-price-service
+      app.kubernetes.io/name: ts-config-price-service
+      app.kubernetes.io/part-of: ts-config-price
+      app.kubernetes.io/component: web
       runtime: jvm
   replicas: 1
   template:
     metadata:
       labels:
-        app: ts-consign-price-service
+        app.kubernetes.io/name: ts-config-price-service
+        app.kubernetes.io/part-of: ts-config-price
+        app.kubernetes.io/component: web
         runtime: jvm
     spec:
       containers:
@@ -449,7 +519,7 @@ spec:
             cpu: 50m
             memory: 160Mi
           limits:
-            cpu: 200m
+            cpu: 100m
             memory: 500Mi
         readinessProbe:
           tcpSocket:
@@ -464,17 +534,24 @@ kind: Deployment
 metadata:
   name: ts-consign-service
   labels:
+    app.kubernetes.io/name: ts-consign-service
+    app.kubernetes.io/part-of: ts-consign
+    app.kubernetes.io/component: web
     runtime: jvm
 spec:
   selector:
     matchLabels:
-      app: ts-consign-service
+      app.kubernetes.io/name: ts-consign-service
+      app.kubernetes.io/part-of: ts-consign
+      app.kubernetes.io/component: web
       runtime: jvm
   replicas: 1
   template:
     metadata:
       labels:
-        app: ts-consign-service
+        app.kubernetes.io/name: ts-consign-service
+        app.kubernetes.io/part-of: ts-consign
+        app.kubernetes.io/component: web
         runtime: jvm
     spec:
       containers:
@@ -495,7 +572,7 @@ spec:
             cpu: 50m
             memory: 160Mi
           limits:
-            cpu: 200m
+            cpu: 100m
             memory: 500Mi
         readinessProbe:
           tcpSocket:
@@ -510,17 +587,24 @@ kind: Deployment
 metadata:
   name: ts-contacts-service
   labels:
+    app.kubernetes.io/name: ts-contacts-service
+    app.kubernetes.io/part-of: ts-contacts
+    app.kubernetes.io/component: web
     runtime: jvm
 spec:
   selector:
     matchLabels:
-      app: ts-contacts-service
+      app.kubernetes.io/name: ts-contacts-service
+      app.kubernetes.io/part-of: ts-contacts
+      app.kubernetes.io/component: web
       runtime: jvm
   replicas: 1
   template:
     metadata:
       labels:
-        app: ts-contacts-service
+        app.kubernetes.io/name: ts-contacts-service
+        app.kubernetes.io/part-of: ts-contacts
+        app.kubernetes.io/component: web
         runtime: jvm
     spec:
       containers:
@@ -541,7 +625,7 @@ spec:
             cpu: 50m
             memory: 160Mi
           limits:
-            cpu: 200m
+            cpu: 100m
             memory: 500Mi
         readinessProbe:
           tcpSocket:
@@ -556,17 +640,24 @@ kind: Deployment
 metadata:
   name: ts-execute-service
   labels:
+    app.kubernetes.io/name: ts-execute-service
+    app.kubernetes.io/part-of: ts-execute
+    app.kubernetes.io/component: web
     runtime: jvm
 spec:
   selector:
     matchLabels:
-      app: ts-execute-service
+      app.kubernetes.io/name: ts-execute-service
+      app.kubernetes.io/part-of: ts-execute
+      app.kubernetes.io/component: web
       runtime: jvm
   replicas: 1
   template:
     metadata:
       labels:
-        app: ts-execute-service
+        app.kubernetes.io/name: ts-execute-service
+        app.kubernetes.io/part-of: ts-execute
+        app.kubernetes.io/component: web
         runtime: jvm
     spec:
       containers:
@@ -587,7 +678,7 @@ spec:
             cpu: 50m
             memory: 160Mi
           limits:
-            cpu: 200m
+            cpu: 100m
             memory: 500Mi
         readinessProbe:
           tcpSocket:
@@ -602,17 +693,24 @@ kind: Deployment
 metadata:
   name: ts-food-map-service
   labels:
+    app.kubernetes.io/name: ts-food-map-service
+    app.kubernetes.io/part-of: ts-food-map
+    app.kubernetes.io/component: web
     runtime: jvm
 spec:
   selector:
     matchLabels:
-      app: ts-food-map-service
+      app.kubernetes.io/name: ts-food-map-service
+      app.kubernetes.io/part-of: ts-food-map
+      app.kubernetes.io/component: web
       runtime: jvm
   replicas: 1
   template:
     metadata:
       labels:
-        app: ts-food-map-service
+        app.kubernetes.io/name: ts-food-map-service
+        app.kubernetes.io/part-of: ts-food-map
+        app.kubernetes.io/component: web
         runtime: jvm
     spec:
       containers:
@@ -633,7 +731,7 @@ spec:
             cpu: 50m
             memory: 160Mi
           limits:
-            cpu: 200m
+            cpu: 100m
             memory: 500Mi
         readinessProbe:
           tcpSocket:
@@ -648,17 +746,24 @@ kind: Deployment
 metadata:
   name: ts-food-service
   labels:
+    app.kubernetes.io/name: ts-food-service
+    app.kubernetes.io/part-of: ts-food
+    app.kubernetes.io/component: web
     runtime: jvm
 spec:
   selector:
     matchLabels:
-      app: ts-food-service
+      app.kubernetes.io/name: ts-food-service
+      app.kubernetes.io/part-of: ts-food
+      app.kubernetes.io/component: web
       runtime: jvm
   replicas: 1
   template:
     metadata:
       labels:
-        app: ts-food-service
+        app.kubernetes.io/name: ts-food-service
+        app.kubernetes.io/part-of: ts-food
+        app.kubernetes.io/component: web
         runtime: jvm
     spec:
       containers:
@@ -694,17 +799,24 @@ kind: Deployment
 metadata:
   name: ts-inside-payment-service
   labels:
+    app.kubernetes.io/name: ts-inside-payment-service
+    app.kubernetes.io/part-of: ts-inside-payment
+    app.kubernetes.io/component: web
     runtime: jvm
 spec:
   selector:
     matchLabels:
-      app: ts-inside-payment-service
+      app.kubernetes.io/name: ts-inside-payment-service
+      app.kubernetes.io/part-of: ts-inside-payment
+      app.kubernetes.io/component: web
       runtime: jvm
   replicas: 1
   template:
     metadata:
       labels:
-        app: ts-inside-payment-service
+        app.kubernetes.io/name: ts-inside-payment-service
+        app.kubernetes.io/part-of: ts-inside-payment
+        app.kubernetes.io/component: web
         runtime: jvm
     spec:
       containers:
@@ -725,7 +837,7 @@ spec:
             cpu: 50m
             memory: 160Mi
           limits:
-            cpu: 200m
+            cpu: 100m
             memory: 500Mi
         readinessProbe:
           tcpSocket:
@@ -740,23 +852,31 @@ kind: Deployment
 metadata:
   name: ts-auth-service
   labels:
+    app.kubernetes.io/name: ts-auth-service
+    app.kubernetes.io/part-of: ts-auth
+    app.kubernetes.io/component: web
     runtime: jvm
 spec:
   selector:
     matchLabels:
-      app: ts-auth-service
+      app.kubernetes.io/name: ts-auth-service
+      app.kubernetes.io/part-of: ts-auth
+      app.kubernetes.io/component: web
       runtime: jvm
   replicas: 1
   template:
     metadata:
       labels:
-        app: ts-auth-service
+        app.kubernetes.io/name: ts-auth-service
+        app.kubernetes.io/part-of: ts-auth
+        app.kubernetes.io/component: web
         runtime: jvm
     spec:
       containers:
       - name: ts-auth-service
         image: codewisdom/ts-auth-service-with-jaeger:v1
         imagePullPolicy: IfNotPresent
+        args: ["java", "-Xmx400m",  "-jar", "/app/ts-auth-service-1.0.jar"]
         env:
           - name: JAVA_TOOL_OPTIONS
             value: >-
@@ -768,11 +888,11 @@ spec:
         - containerPort: 12340
         resources:
           requests:
-            cpu: 500m
-            memory: 1200Mi
+            cpu: 700m
+            memory: 800Mi
           limits:
-            cpu: 1500m
-            memory: 1200Mi
+            cpu: 700m
+            memory: 800Mi
         readinessProbe:
           tcpSocket:
             port: 12340
@@ -786,17 +906,24 @@ kind: Deployment
 metadata:
   name: ts-news-service
   labels:
+    app.kubernetes.io/name: ts-news-service
+    app.kubernetes.io/part-of: ts-news
+    app.kubernetes.io/component: web
     runtime: go
 spec:
   selector:
     matchLabels:
-      app: ts-news-service
+      app.kubernetes.io/name: ts-news-service
+      app.kubernetes.io/part-of: ts-news
+      app.kubernetes.io/component: web
       runtime: go
   replicas: 1
   template:
     metadata:
       labels:
-        app: ts-news-service
+        app.kubernetes.io/name: ts-news-service
+        app.kubernetes.io/part-of: ts-news
+        app.kubernetes.io/component: web
         runtime: go
     spec:
       containers:
@@ -808,10 +935,10 @@ spec:
         resources:
           requests:
             cpu: 50m
-            memory: 160Mi
+            memory: 50Mi
           limits:
-            cpu: 200m
-            memory: 500Mi
+            cpu: 50m
+            memory: 50Mi
         readinessProbe:
           tcpSocket:
             port: 12862
@@ -825,17 +952,24 @@ kind: Deployment
 metadata:
   name: ts-notification-service
   labels:
+    app.kubernetes.io/name: ts-notification-service
+    app.kubernetes.io/part-of: ts-notification
+    app.kubernetes.io/component: web
     runtime: jvm
 spec:
   selector:
     matchLabels:
-      app: ts-notification-service
+      app.kubernetes.io/name: ts-notification-service
+      app.kubernetes.io/part-of: ts-notification
+      app.kubernetes.io/component: web
       runtime: jvm
   replicas: 1
   template:
     metadata:
       labels:
-        app: ts-notification-service
+        app.kubernetes.io/name: ts-notification-service
+        app.kubernetes.io/part-of: ts-notification
+        app.kubernetes.io/component: web
         runtime: jvm
     spec:
       containers:
@@ -856,7 +990,7 @@ spec:
             cpu: 50m
             memory: 160Mi
           limits:
-            cpu: 200m
+            cpu: 100m
             memory: 500Mi
         readinessProbe:
           tcpSocket:
@@ -871,17 +1005,24 @@ kind: Deployment
 metadata:
   name: ts-order-other-service
   labels:
+    app.kubernetes.io/name: ts-order-other-service
+    app.kubernetes.io/part-of: ts-order-other
+    app.kubernetes.io/component: web
     runtime: jvm
 spec:
   selector:
     matchLabels:
-      app: ts-order-other-service
+      app.kubernetes.io/name: ts-order-other-service
+      app.kubernetes.io/part-of: ts-order-other
+      app.kubernetes.io/component: web
       runtime: jvm
   replicas: 1
   template:
     metadata:
       labels:
-        app: ts-order-other-service
+        app.kubernetes.io/name: ts-order-other-service
+        app.kubernetes.io/part-of: ts-order-other
+        app.kubernetes.io/component: web
         runtime: jvm
     spec:
       containers:
@@ -917,17 +1058,24 @@ kind: Deployment
 metadata:
   name: ts-order-service
   labels:
+    app.kubernetes.io/name: ts-order-service
+    app.kubernetes.io/part-of: ts-order
+    app.kubernetes.io/component: web
     runtime: jvm
 spec:
   selector:
     matchLabels:
-      app: ts-order-service
+      app.kubernetes.io/name: ts-order-service
+      app.kubernetes.io/part-of: ts-order
+      app.kubernetes.io/component: web
       runtime: jvm
   replicas: 1
   template:
     metadata:
       labels:
-        app: ts-order-service
+        app.kubernetes.io/name: ts-order-service
+        app.kubernetes.io/part-of: ts-order
+        app.kubernetes.io/component: web
         runtime: jvm
     spec:
       containers:
@@ -963,17 +1111,24 @@ kind: Deployment
 metadata:
   name: ts-payment-service
   labels:
+    app.kubernetes.io/name: ts-payment-service
+    app.kubernetes.io/part-of: ts-payment
+    app.kubernetes.io/component: web
     runtime: jvm
 spec:
   selector:
     matchLabels:
-      app: ts-payment-service
+      app.kubernetes.io/name: ts-payment-service
+      app.kubernetes.io/part-of: ts-payment
+      app.kubernetes.io/component: web
       runtime: jvm
   replicas: 1
   template:
     metadata:
       labels:
-        app: ts-payment-service
+        app.kubernetes.io/name: ts-payment-service
+        app.kubernetes.io/part-of: ts-payment
+        app.kubernetes.io/component: web
         runtime: jvm
     spec:
       containers:
@@ -1009,17 +1164,24 @@ kind: Deployment
 metadata:
   name: ts-preserve-other-service
   labels:
+    app.kubernetes.io/name: ts-preserve-other-service
+    app.kubernetes.io/part-of: ts-preserve-other
+    app.kubernetes.io/component: web
     runtime: jvm
 spec:
   selector:
     matchLabels:
-      app: ts-preserve-other-service
+      app.kubernetes.io/name: ts-preserve-other-service
+      app.kubernetes.io/part-of: ts-preserve-other
+      app.kubernetes.io/component: web
       runtime: jvm
   replicas: 1
   template:
     metadata:
       labels:
-        app: ts-preserve-other-service
+        app.kubernetes.io/name: ts-preserve-other-service
+        app.kubernetes.io/part-of: ts-preserve-other
+        app.kubernetes.io/component: web
         runtime: jvm
     spec:
       containers:
@@ -1055,23 +1217,31 @@ kind: Deployment
 metadata:
   name: ts-preserve-service
   labels:
+    app.kubernetes.io/name: ts-preserve-service
+    app.kubernetes.io/part-of: ts-preserve
+    app.kubernetes.io/component: web
     runtime: jvm
 spec:
   selector:
     matchLabels:
-      app: ts-preserve-service
+      app.kubernetes.io/name: ts-preserve-service
+      app.kubernetes.io/part-of: ts-preserve
+      app.kubernetes.io/component: web
       runtime: jvm
   replicas: 1
   template:
     metadata:
       labels:
-        app: ts-preserve-service
+        app.kubernetes.io/name: ts-preserve-service
+        app.kubernetes.io/part-of: ts-preserve
+        app.kubernetes.io/component: web
         runtime: jvm
     spec:
       containers:
       - name: ts-preserve-service
         image: codewisdom/ts-preserve-service-with-jaeger:v1
         imagePullPolicy: IfNotPresent
+        args: ["java", "-Xmx400m",  "-jar", "/app/ts-preserve-service-1.0.jar"]
         env:
           - name: JAVA_TOOL_OPTIONS
             value: >-
@@ -1101,17 +1271,24 @@ kind: Deployment
 metadata:
   name: ts-price-service
   labels:
+    app.kubernetes.io/name: ts-price-service
+    app.kubernetes.io/part-of: ts-price
+    app.kubernetes.io/component: web
     runtime: jvm
 spec:
   selector:
     matchLabels:
-      app: ts-price-service
+      app.kubernetes.io/name: ts-price-service
+      app.kubernetes.io/part-of: ts-price
+      app.kubernetes.io/component: web
       runtime: jvm
   replicas: 1
   template:
     metadata:
       labels:
-        app: ts-price-service
+        app.kubernetes.io/name: ts-price-service
+        app.kubernetes.io/part-of: ts-price
+        app.kubernetes.io/component: web
         runtime: jvm
     spec:
       containers:
@@ -1147,17 +1324,24 @@ kind: Deployment
 metadata:
   name: ts-rebook-service
   labels:
+    app.kubernetes.io/name: ts-rebook-service
+    app.kubernetes.io/part-of: ts-rebook
+    app.kubernetes.io/component: web
     runtime: jvm
 spec:
   selector:
     matchLabels:
-      app: ts-rebook-service
+      app.kubernetes.io/name: ts-rebook-service
+      app.kubernetes.io/part-of: ts-rebook
+      app.kubernetes.io/component: web
       runtime: jvm
   replicas: 1
   template:
     metadata:
       labels:
-        app: ts-rebook-service
+        app.kubernetes.io/name: ts-rebook-service
+        app.kubernetes.io/part-of: ts-rebook
+        app.kubernetes.io/component: web
         runtime: jvm
     spec:
       containers:
@@ -1193,17 +1377,24 @@ kind: Deployment
 metadata:
   name: ts-route-plan-service
   labels:
+    app.kubernetes.io/name: ts-route-plan-service
+    app.kubernetes.io/part-of: ts-route-plan
+    app.kubernetes.io/component: web
     runtime: jvm
 spec:
   selector:
     matchLabels:
-      app: ts-route-plan-service
+      app.kubernetes.io/name: ts-route-plan-service
+      app.kubernetes.io/part-of: ts-route-plan
+      app.kubernetes.io/component: web
       runtime: jvm
   replicas: 1
   template:
     metadata:
       labels:
-        app: ts-route-plan-service
+        app.kubernetes.io/name: ts-route-plan-service
+        app.kubernetes.io/part-of: ts-route-plan
+        app.kubernetes.io/component: web
         runtime: jvm
     spec:
       containers:
@@ -1239,17 +1430,24 @@ kind: Deployment
 metadata:
   name: ts-route-service
   labels:
+    app.kubernetes.io/name: ts-route-service
+    app.kubernetes.io/part-of: ts-route
+    app.kubernetes.io/component: web
     runtime: jvm
 spec:
   selector:
     matchLabels:
-      app: ts-route-service
+      app.kubernetes.io/name: ts-route-service
+      app.kubernetes.io/part-of: ts-route
+      app.kubernetes.io/component: web
       runtime: jvm
   replicas: 1
   template:
     metadata:
       labels:
-        app: ts-route-service
+        app.kubernetes.io/name: ts-route-service
+        app.kubernetes.io/part-of: ts-route
+        app.kubernetes.io/component: web
         runtime: jvm
     spec:
       containers:
@@ -1285,17 +1483,24 @@ kind: Deployment
 metadata:
   name: ts-seat-service
   labels:
+    app.kubernetes.io/name: ts-seat-service
+    app.kubernetes.io/part-of: ts-seat
+    app.kubernetes.io/component: web
     runtime: jvm
 spec:
   selector:
     matchLabels:
-      app: ts-seat-service
+      app.kubernetes.io/name: ts-seat-service
+      app.kubernetes.io/part-of: ts-seat
+      app.kubernetes.io/component: web
       runtime: jvm
   replicas: 1
   template:
     metadata:
       labels:
-        app: ts-seat-service
+        app.kubernetes.io/name: ts-seat-service
+        app.kubernetes.io/part-of: ts-seat
+        app.kubernetes.io/component: web
         runtime: jvm
     spec:
       containers:
@@ -1331,17 +1536,24 @@ kind: Deployment
 metadata:
   name: ts-security-service
   labels:
+    app.kubernetes.io/name: ts-security-service
+    app.kubernetes.io/part-of: ts-security
+    app.kubernetes.io/component: web
     runtime: jvm
 spec:
   selector:
     matchLabels:
-      app: ts-security-service
+      app.kubernetes.io/name: ts-security-service
+      app.kubernetes.io/part-of: ts-security
+      app.kubernetes.io/component: web
       runtime: jvm
   replicas: 1
   template:
     metadata:
       labels:
-        app: ts-security-service
+        app.kubernetes.io/name: ts-security-service
+        app.kubernetes.io/part-of: ts-security
+        app.kubernetes.io/component: web
         runtime: jvm
     spec:
       containers:
@@ -1377,17 +1589,24 @@ kind: Deployment
 metadata:
   name: ts-user-service
   labels:
+    app.kubernetes.io/name: ts-user-service
+    app.kubernetes.io/part-of: ts-user
+    app.kubernetes.io/component: web
     runtime: jvm
 spec:
   selector:
     matchLabels:
-      app: ts-user-service
+      app.kubernetes.io/name: ts-user-service
+      app.kubernetes.io/part-of: ts-user
+      app.kubernetes.io/component: web
       runtime: jvm
   replicas: 1
   template:
     metadata:
       labels:
-        app: ts-user-service
+        app.kubernetes.io/name: ts-user-service
+        app.kubernetes.io/part-of: ts-user
+        app.kubernetes.io/component: web
         runtime: jvm
     spec:
       containers:
@@ -1423,17 +1642,24 @@ kind: Deployment
 metadata:
   name: ts-station-service
   labels:
+    app.kubernetes.io/name: ts-station-service
+    app.kubernetes.io/part-of: ts-station
+    app.kubernetes.io/component: web
     runtime: jvm
 spec:
   selector:
     matchLabels:
-      app: ts-station-service
+      app.kubernetes.io/name: ts-station-service
+      app.kubernetes.io/part-of: ts-station
+      app.kubernetes.io/component: web
       runtime: jvm
   replicas: 1
   template:
     metadata:
       labels:
-        app: ts-station-service
+        app.kubernetes.io/name: ts-station-service
+        app.kubernetes.io/part-of: ts-station
+        app.kubernetes.io/component: web
         runtime: jvm
     spec:
       containers:
@@ -1469,17 +1695,24 @@ kind: Deployment
 metadata:
   name: ts-ticket-office-service
   labels:
+    app.kubernetes.io/name: ts-ticket-office-service
+    app.kubernetes.io/part-of: ts-ticket-office
+    app.kubernetes.io/component: web
     runtime: nodejs
 spec:
   selector:
     matchLabels:
-      app: ts-ticket-office-service
+      app.kubernetes.io/name: ts-ticket-office-service
+      app.kubernetes.io/part-of: ts-ticket-office
+      app.kubernetes.io/component: web
       runtime: nodejs
   replicas: 1
   template:
     metadata:
       labels:
-        app: ts-ticket-office-service
+        app.kubernetes.io/name: ts-ticket-office-service
+        app.kubernetes.io/part-of: ts-ticket-office
+        app.kubernetes.io/component: web
         runtime: nodejs
     spec:
       containers:
@@ -1515,17 +1748,24 @@ kind: Deployment
 metadata:
   name: ts-ticketinfo-service
   labels:
+    app.kubernetes.io/name: ts-ticketinfo-service
+    app.kubernetes.io/part-of: ts-ticketinfo
+    app.kubernetes.io/component: web
     runtime: jvm
 spec:
   selector:
     matchLabels:
-      app: ts-ticketinfo-service
+      app.kubernetes.io/name: ts-ticketinfo-service
+      app.kubernetes.io/part-of: ts-ticketinfo
+      app.kubernetes.io/component: web
       runtime: jvm
   replicas: 1
   template:
     metadata:
       labels:
-        app: ts-ticketinfo-service
+        app.kubernetes.io/name: ts-ticketinfo-service
+        app.kubernetes.io/part-of: ts-ticketinfo
+        app.kubernetes.io/component: web
         runtime: jvm
     spec:
       containers:
@@ -1561,17 +1801,24 @@ kind: Deployment
 metadata:
   name: ts-train-service
   labels:
+    app.kubernetes.io/name: ts-train-service
+    app.kubernetes.io/part-of: ts-train
+    app.kubernetes.io/component: web
     runtime: jvm
 spec:
   selector:
     matchLabels:
-      app: ts-train-service
+      app.kubernetes.io/name: ts-train-service
+      app.kubernetes.io/part-of: ts-train
+      app.kubernetes.io/component: web
       runtime: jvm
   replicas: 1
   template:
     metadata:
       labels:
-        app: ts-train-service
+        app.kubernetes.io/name: ts-train-service
+        app.kubernetes.io/part-of: ts-train
+        app.kubernetes.io/component: web
         runtime: jvm
     spec:
       containers:
@@ -1607,23 +1854,31 @@ kind: Deployment
 metadata:
   name: ts-travel2-service
   labels:
+    app.kubernetes.io/name: ts-travel2-service
+    app.kubernetes.io/part-of: ts-travel2
+    app.kubernetes.io/component: web
     runtime: jvm
 spec:
   selector:
     matchLabels:
-      app: ts-travel2-service
+      app.kubernetes.io/name: ts-travel2-service
+      app.kubernetes.io/part-of: ts-travel2
+      app.kubernetes.io/component: web
       runtime: jvm
   replicas: 1
   template:
     metadata:
       labels:
-        app: ts-travel2-service
+        app.kubernetes.io/name: ts-travel2-service
+        app.kubernetes.io/part-of: ts-travel2
+        app.kubernetes.io/component: web
         runtime: jvm
     spec:
       containers:
       - name: ts-travel2-service
         image: codewisdom/ts-travel2-service-with-jaeger:v1
         imagePullPolicy: IfNotPresent
+        args: ["java", "-Xmx200m",  "-jar", "/app/ts-travel2-service-1.0.jar"]
         env:
           - name: JAVA_TOOL_OPTIONS
             value: >-
@@ -1635,11 +1890,11 @@ spec:
         - containerPort: 16346
         resources:
           requests:
-            cpu: 50m
-            memory: 160Mi
+            cpu: 100m
+            memory: 200Mi
           limits:
-            cpu: 200m
-            memory: 500Mi
+            cpu: 100m
+            memory: 400Mi
         readinessProbe:
           tcpSocket:
             port: 16346
@@ -1653,17 +1908,24 @@ kind: Deployment
 metadata:
   name: ts-travel-plan-service
   labels:
+    app.kubernetes.io/name: ts-travel-plan-service
+    app.kubernetes.io/part-of: ts-travel-plan
+    app.kubernetes.io/component: web
     runtime: jvm
 spec:
   selector:
     matchLabels:
-      app: ts-travel-plan-service
+      app.kubernetes.io/name: ts-travel-plan-service
+      app.kubernetes.io/part-of: ts-travel-plan
+      app.kubernetes.io/component: web
       runtime: jvm
   replicas: 1
   template:
     metadata:
       labels:
-        app: ts-travel-plan-service
+        app.kubernetes.io/name: ts-travel-plan-service
+        app.kubernetes.io/part-of: ts-travel-plan
+        app.kubernetes.io/component: web
         runtime: jvm
     spec:
       containers:
@@ -1699,23 +1961,31 @@ kind: Deployment
 metadata:
   name: ts-travel-service
   labels:
+    app.kubernetes.io/name: ts-travel-service
+    app.kubernetes.io/part-of: ts-travel
+    app.kubernetes.io/component: web
     runtime: jvm
 spec:
   selector:
     matchLabels:
-      app: ts-travel-service
+      app.kubernetes.io/name: ts-travel-service
+      app.kubernetes.io/part-of: ts-travel
+      app.kubernetes.io/component: web
       runtime: jvm
   replicas: 1
   template:
     metadata:
       labels:
-        app: ts-travel-service
+        app.kubernetes.io/name: ts-travel-service
+        app.kubernetes.io/part-of: ts-travel
+        app.kubernetes.io/component: web
         runtime: jvm
     spec:
       containers:
       - name: ts-travel-service
         image: codewisdom/ts-travel-service-with-jaeger:v1
         imagePullPolicy: IfNotPresent
+        args: ["java", "-Xmx400m",  "-jar", "/app/ts-travel-service-1.0.jar"]
         env:
           - name: JAVA_TOOL_OPTIONS
             value: >-
@@ -1727,11 +1997,11 @@ spec:
         - containerPort: 12346
         resources:
           requests:
-            cpu: 600m
-            memory: 1200Mi
+            cpu: 300m
+            memory: 800Mi
           limits:
             cpu: 600m
-            memory: 1200Mi
+            memory: 800Mi
         readinessProbe:
           tcpSocket:
             port: 12346
@@ -1745,17 +2015,24 @@ kind: Deployment
 metadata:
   name: ts-verification-code-service
   labels:
+    app.kubernetes.io/name: ts-verification-code-service
+    app.kubernetes.io/part-of: ts-verification-code
+    app.kubernetes.io/component: web
     runtime: jvm
 spec:
   selector:
     matchLabels:
-      app: ts-verification-code-service
+      app.kubernetes.io/name: ts-verification-code-service
+      app.kubernetes.io/part-of: ts-verification-code
+      app.kubernetes.io/component: web
       runtime: jvm
   replicas: 1
   template:
     metadata:
       labels:
-        app: ts-verification-code-service
+        app.kubernetes.io/name: ts-verification-code-service
+        app.kubernetes.io/part-of: ts-verification-code
+        app.kubernetes.io/component: web
         runtime: jvm
     spec:
       containers:
@@ -1791,17 +2068,24 @@ kind: Deployment
 metadata:
   name: ts-voucher-service
   labels:
+    app.kubernetes.io/name: ts-voucher-service
+    app.kubernetes.io/part-of: ts-voucher
+    app.kubernetes.io/component: web
     runtime: python
 spec:
   selector:
     matchLabels:
-      app: ts-voucher-service
+      app.kubernetes.io/name: ts-voucher-service
+      app.kubernetes.io/part-of: ts-voucher
+      app.kubernetes.io/component: web
       runtime: python
   replicas: 1
   template:
     metadata:
       labels:
-        app: ts-voucher-service
+        app.kubernetes.io/name: ts-voucher-service
+        app.kubernetes.io/part-of: ts-voucher
+        app.kubernetes.io/component: web
         runtime: python
     spec:
       containers:
@@ -1813,10 +2097,10 @@ spec:
         resources:
           requests:
             cpu: 50m
-            memory: 160Mi
+            memory: 50Mi
           limits:
-            cpu: 200m
-            memory: 500Mi
+            cpu: 50m
+            memory: 50Mi
         readinessProbe:
           tcpSocket:
             port: 16101
@@ -1829,12 +2113,18 @@ apiVersion: v1
 kind: Service
 metadata:
   name: ts-admin-basic-info-service
+  labels:
+    app.kubernetes.io/name: ts-admin-basic-info-service
+    app.kubernetes.io/part-of: ts-admin-basic-info
+    app.kubernetes.io/component: web
 spec:
   ports:
     - name: http
       port: 18767
   selector:
-    app: ts-admin-basic-info-service
+    app.kubernetes.io/name: ts-admin-basic-info-service
+    app.kubernetes.io/part-of: ts-admin-basic-info
+    app.kubernetes.io/component: web
 
 ---
 
@@ -1842,12 +2132,18 @@ apiVersion: v1
 kind: Service
 metadata:
   name: ts-admin-order-service
+  labels:
+    app.kubernetes.io/name: ts-admin-order-service
+    app.kubernetes.io/part-of: ts-admin-basic-info
+    app.kubernetes.io/component: web
 spec:
   ports:
     - name: http
       port: 16112
   selector:
-    app: ts-admin-order-service
+    app.kubernetes.io/name: ts-admin-order-service
+    app.kubernetes.io/part-of: ts-admin-basic-info
+    app.kubernetes.io/component: web
 
 ---
 
@@ -1855,12 +2151,18 @@ apiVersion: v1
 kind: Service
 metadata:
   name: ts-admin-route-service
+  labels:
+    app.kubernetes.io/name: ts-admin-route-service
+    app.kubernetes.io/part-of: ts-admin-route
+    app.kubernetes.io/component: web
 spec:
   ports:
     - name: http
       port: 16113
   selector:
-    app: ts-admin-route-service
+    app.kubernetes.io/name: ts-admin-route-service
+    app.kubernetes.io/part-of: ts-admin-route
+    app.kubernetes.io/component: web
 
 ---
 
@@ -1868,12 +2170,18 @@ apiVersion: v1
 kind: Service
 metadata:
   name: ts-admin-travel-service
+  labels:
+    app.kubernetes.io/name: ts-admin-travel-service
+    app.kubernetes.io/part-of: ts-admin-travel
+    app.kubernetes.io/component: web
 spec:
   ports:
     - name: http
       port: 16114
   selector:
-    app: ts-admin-travel-service
+    app.kubernetes.io/name: ts-admin-travel-service
+    app.kubernetes.io/part-of: ts-admin-travel
+    app.kubernetes.io/component: web
 
 ---
 
@@ -1881,12 +2189,18 @@ apiVersion: v1
 kind: Service
 metadata:
   name: ts-admin-user-service
+  labels:
+    app.kubernetes.io/name: ts-admin-user-service
+    app.kubernetes.io/part-of: ts-admin-user
+    app.kubernetes.io/component: web
 spec:
   ports:
     - name: http
       port: 16115
   selector:
-    app: ts-admin-user-service
+    app.kubernetes.io/name: ts-admin-user-service
+    app.kubernetes.io/part-of: ts-admin-user
+    app.kubernetes.io/component: web
 
 ---
 
@@ -1894,12 +2208,18 @@ apiVersion: v1
 kind: Service
 metadata:
   name: ts-assurance-service
+  labels:
+    app.kubernetes.io/name: ts-assurance-service
+    app.kubernetes.io/part-of: ts-assurance
+    app.kubernetes.io/component: web
 spec:
   ports:
     - name: http
       port: 18888
   selector:
-    app: ts-assurance-service
+    app.kubernetes.io/name: ts-assurance-service
+    app.kubernetes.io/part-of: ts-assurance
+    app.kubernetes.io/component: web
 
 ---
 
@@ -1907,12 +2227,18 @@ apiVersion: v1
 kind: Service
 metadata:
   name: ts-basic-service
+  labels:
+    app.kubernetes.io/name: ts-basic-service
+    app.kubernetes.io/part-of: ts-basic
+    app.kubernetes.io/component: web
 spec:
   ports:
     - name: http
       port: 15680
   selector:
-    app: ts-basic-service
+    app.kubernetes.io/name: ts-basic-service
+    app.kubernetes.io/part-of: ts-basic
+    app.kubernetes.io/component: web
 
 ---
 
@@ -1920,12 +2246,18 @@ apiVersion: v1
 kind: Service
 metadata:
   name: ts-cancel-service
+  labels:
+    app.kubernetes.io/name: ts-cancel-service
+    app.kubernetes.io/part-of: ts-cancel
+    app.kubernetes.io/component: web
 spec:
   ports:
     - name: http
       port: 18885
   selector:
-    app: ts-cancel-service
+    app.kubernetes.io/name: ts-cancel-service
+    app.kubernetes.io/part-of: ts-cancel
+    app.kubernetes.io/component: web
 
 ---
 
@@ -1933,12 +2265,18 @@ apiVersion: v1
 kind: Service
 metadata:
   name: ts-config-service
+  labels:
+    app.kubernetes.io/name: ts-config-service
+    app.kubernetes.io/part-of: ts-config
+    app.kubernetes.io/component: web
 spec:
   ports:
     - name: http
       port: 15679
   selector:
-    app: ts-config-service
+    app.kubernetes.io/name: ts-config-service
+    app.kubernetes.io/part-of: ts-config
+    app.kubernetes.io/component: web
 
 ---
 
@@ -1946,12 +2284,18 @@ apiVersion: v1
 kind: Service
 metadata:
   name: ts-consign-price-service
+  labels:
+    app.kubernetes.io/name: ts-consign-price-service
+    app.kubernetes.io/part-of: ts-consign-price
+    app.kubernetes.io/component: web
 spec:
   ports:
     - name: http
       port: 16110
   selector:
-    app: ts-consign-price-service
+    app.kubernetes.io/name: ts-consign-price-service
+    app.kubernetes.io/part-of: ts-consign-price
+    app.kubernetes.io/component: web
 
 ---
 
@@ -1959,12 +2303,18 @@ apiVersion: v1
 kind: Service
 metadata:
   name: ts-consign-service
+  labels:
+    app.kubernetes.io/name: ts-consign-service
+    app.kubernetes.io/part-of: ts-consign
+    app.kubernetes.io/component: web
 spec:
   ports:
     - name: http
       port: 16111
   selector:
-    app: ts-consign-service
+    app.kubernetes.io/name: ts-consign-service
+    app.kubernetes.io/part-of: ts-consign
+    app.kubernetes.io/component: web
 
 ---
 
@@ -1972,12 +2322,18 @@ apiVersion: v1
 kind: Service
 metadata:
   name: ts-contacts-service
+  labels:
+    app.kubernetes.io/name: ts-contacts-service
+    app.kubernetes.io/part-of: ts-contacts
+    app.kubernetes.io/component: web
 spec:
   ports:
     - name: http
       port: 12347
   selector:
-    app: ts-contacts-service
+    app.kubernetes.io/name: ts-contacts-service
+    app.kubernetes.io/part-of: ts-contacts
+    app.kubernetes.io/component: web
 
 ---
 
@@ -1985,12 +2341,18 @@ apiVersion: v1
 kind: Service
 metadata:
   name: ts-execute-service
+  labels:
+    app.kubernetes.io/name: ts-execute-service
+    app.kubernetes.io/part-of: ts-execute
+    app.kubernetes.io/component: web
 spec:
   ports:
     - name: http
       port: 12386
   selector:
-    app: ts-execute-service
+    app.kubernetes.io/name: ts-execute-service
+    app.kubernetes.io/part-of: ts-execute
+    app.kubernetes.io/component: web
 
 ---
 
@@ -1998,12 +2360,18 @@ apiVersion: v1
 kind: Service
 metadata:
   name: ts-food-map-service
+  labels:
+    app.kubernetes.io/name: ts-food-map-service
+    app.kubernetes.io/part-of: ts-food-map
+    app.kubernetes.io/component: web
 spec:
   ports:
     - name: http
       port: 18855
   selector:
-    app: ts-food-map-service
+    app.kubernetes.io/name: ts-food-map-service
+    app.kubernetes.io/part-of: ts-food-map
+    app.kubernetes.io/component: web
 
 ---
 
@@ -2011,12 +2379,18 @@ apiVersion: v1
 kind: Service
 metadata:
   name: ts-food-service
+  labels:
+    app.kubernetes.io/name: ts-food-service
+    app.kubernetes.io/part-of: ts-food
+    app.kubernetes.io/component: web
 spec:
   ports:
     - name: http
       port: 18856
   selector:
-    app: ts-food-service
+    app.kubernetes.io/name: ts-food-service
+    app.kubernetes.io/part-of: ts-food
+    app.kubernetes.io/component: web
 
 ---
 
@@ -2024,12 +2398,18 @@ apiVersion: v1
 kind: Service
 metadata:
   name: ts-inside-payment-service
+  labels:
+    app.kubernetes.io/name: ts-inside-payment-service
+    app.kubernetes.io/part-of: ts-inside-payment
+    app.kubernetes.io/component: web
 spec:
   ports:
     - name: http
       port: 18673
   selector:
-    app: ts-inside-payment-service
+    app.kubernetes.io/name: ts-inside-payment-service
+    app.kubernetes.io/part-of: ts-inside-payment
+    app.kubernetes.io/component: web
 
 ---
 
@@ -2037,12 +2417,18 @@ apiVersion: v1
 kind: Service
 metadata:
   name: ts-user-service
+  labels:
+    app.kubernetes.io/name: ts-user-service
+    app.kubernetes.io/part-of: ts-user
+    app.kubernetes.io/component: web
 spec:
   ports:
     - name: http
       port: 12342
   selector:
-    app: ts-user-service
+    app.kubernetes.io/name: ts-user-service
+    app.kubernetes.io/part-of: ts-user
+    app.kubernetes.io/component: web
 
 ---
 
@@ -2050,12 +2436,18 @@ apiVersion: v1
 kind: Service
 metadata:
   name: ts-notification-service
+  labels:
+    app.kubernetes.io/name: ts-notification-service
+    app.kubernetes.io/part-of: ts-notification
+    app.kubernetes.io/component: web
 spec:
   ports:
     - name: http
       port: 17853
   selector:
-    app: ts-notification-service
+    app.kubernetes.io/name: ts-notification-service
+    app.kubernetes.io/part-of: ts-notification
+    app.kubernetes.io/component: web
 
 ---
 
@@ -2063,12 +2455,18 @@ apiVersion: v1
 kind: Service
 metadata:
   name: ts-news-service
+  labels:
+    app.kubernetes.io/name: ts-news-service
+    app.kubernetes.io/part-of: ts-news
+    app.kubernetes.io/component: web
 spec:
   ports:
     - name: http
       port: 12862
   selector:
-    app: ts-news-service
+    app.kubernetes.io/name: ts-news-service
+    app.kubernetes.io/part-of: ts-news
+    app.kubernetes.io/component: web
 
 ---
 
@@ -2076,12 +2474,18 @@ apiVersion: v1
 kind: Service
 metadata:
   name: ts-order-other-service
+  labels:
+    app.kubernetes.io/name: ts-order-other-service
+    app.kubernetes.io/part-of: ts-order-other
+    app.kubernetes.io/component: web
 spec:
   ports:
     - name: http
       port: 12032
   selector:
-    app: ts-order-other-service
+    app.kubernetes.io/name: ts-order-other-service
+    app.kubernetes.io/part-of: ts-order-other
+    app.kubernetes.io/component: web
 
 ---
 
@@ -2089,12 +2493,18 @@ apiVersion: v1
 kind: Service
 metadata:
   name: ts-order-service
+  labels:
+    app.kubernetes.io/name: ts-order-service
+    app.kubernetes.io/part-of: ts-order
+    app.kubernetes.io/component: web
 spec:
   ports:
     - name: http
       port: 12031
   selector:
-    app: ts-order-service
+    app.kubernetes.io/name: ts-order-service
+    app.kubernetes.io/part-of: ts-order
+    app.kubernetes.io/component: web
 
 ---
 
@@ -2102,12 +2512,18 @@ apiVersion: v1
 kind: Service
 metadata:
   name: ts-payment-service
+  labels:
+    app.kubernetes.io/name: ts-payment-service
+    app.kubernetes.io/part-of: ts-payment
+    app.kubernetes.io/component: web
 spec:
   ports:
     - name: http
       port: 19001
   selector:
-    app: ts-payment-service
+    app.kubernetes.io/name: ts-payment-service
+    app.kubernetes.io/part-of: ts-payment
+    app.kubernetes.io/component: web
 
 ---
 
@@ -2115,12 +2531,18 @@ apiVersion: v1
 kind: Service
 metadata:
   name: ts-preserve-other-service
+  labels:
+    app.kubernetes.io/name: ts-preserve-other-service
+    app.kubernetes.io/part-of: ts-preserve-other
+    app.kubernetes.io/component: web
 spec:
   ports:
     - name: http
       port: 14569
   selector:
-    app: ts-preserve-other-service
+    app.kubernetes.io/name: ts-preserve-other-service
+    app.kubernetes.io/part-of: ts-preserve-other
+    app.kubernetes.io/component: web
 
 ---
 
@@ -2128,12 +2550,18 @@ apiVersion: v1
 kind: Service
 metadata:
   name: ts-preserve-service
+  labels:
+    app.kubernetes.io/name: ts-preserve-service
+    app.kubernetes.io/part-of: ts-preserve
+    app.kubernetes.io/component: web
 spec:
   ports:
     - name: http
       port: 14568
   selector:
-    app: ts-preserve-service
+    app.kubernetes.io/name: ts-preserve-service
+    app.kubernetes.io/part-of: ts-preserve
+    app.kubernetes.io/component: web
 
 ---
 
@@ -2141,12 +2569,18 @@ apiVersion: v1
 kind: Service
 metadata:
   name: ts-price-service
+  labels:
+    app.kubernetes.io/name: ts-price-service
+    app.kubernetes.io/part-of: ts-price
+    app.kubernetes.io/component: web
 spec:
   ports:
     - name: http
       port: 16579
   selector:
-    app: ts-price-service
+    app.kubernetes.io/name: ts-price-service
+    app.kubernetes.io/part-of: ts-price
+    app.kubernetes.io/component: web
 
 ---
 
@@ -2154,12 +2588,18 @@ apiVersion: v1
 kind: Service
 metadata:
   name: ts-rebook-service
+  labels:
+    app.kubernetes.io/name: ts-rebook-service
+    app.kubernetes.io/part-of: ts-rebook
+    app.kubernetes.io/component: web
 spec:
   ports:
     - name: http
       port: 18886
   selector:
-    app: ts-rebook-service
+    app.kubernetes.io/name: ts-rebook-service
+    app.kubernetes.io/part-of: ts-rebook
+    app.kubernetes.io/component: web
 
 ---
 
@@ -2167,12 +2607,18 @@ apiVersion: v1
 kind: Service
 metadata:
   name: ts-route-plan-service
+  labels:
+    app.kubernetes.io/name: ts-route-plan-service
+    app.kubernetes.io/part-of: ts-route-plan
+    app.kubernetes.io/component: web
 spec:
   ports:
     - name: http
       port: 14578
   selector:
-    app: ts-route-plan-service
+    app.kubernetes.io/name: ts-route-plan-service
+    app.kubernetes.io/part-of: ts-route-plan
+    app.kubernetes.io/component: web
 
 ---
 
@@ -2180,12 +2626,18 @@ apiVersion: v1
 kind: Service
 metadata:
   name: ts-route-service
+  labels:
+    app.kubernetes.io/name: ts-route-service
+    app.kubernetes.io/part-of: ts-route
+    app.kubernetes.io/component: web
 spec:
   ports:
     - name: http
       port: 11178
   selector:
-    app: ts-route-service
+    app.kubernetes.io/name: ts-route-service
+    app.kubernetes.io/part-of: ts-route
+    app.kubernetes.io/component: web
 
 ---
 
@@ -2193,12 +2645,18 @@ apiVersion: v1
 kind: Service
 metadata:
   name: ts-seat-service
+  labels:
+    app.kubernetes.io/name: ts-seat-service
+    app.kubernetes.io/part-of: ts-seat
+    app.kubernetes.io/component: web
 spec:
   ports:
     - name: http
       port: 18898
   selector:
-    app: ts-seat-service
+    app.kubernetes.io/name: ts-seat-service
+    app.kubernetes.io/part-of: ts-seat
+    app.kubernetes.io/component: web
 
 ---
 
@@ -2206,12 +2664,18 @@ apiVersion: v1
 kind: Service
 metadata:
   name: ts-security-service
+  labels:
+    app.kubernetes.io/name: ts-security-service
+    app.kubernetes.io/part-of: ts-security
+    app.kubernetes.io/component: web
 spec:
   ports:
     - name: http
       port: 11188
   selector:
-    app: ts-security-service
+    app.kubernetes.io/name: ts-security-service
+    app.kubernetes.io/part-of: ts-security
+    app.kubernetes.io/component: web
 
 ---
 
@@ -2219,13 +2683,19 @@ apiVersion: v1
 kind: Service
 metadata:
   name: ts-auth-service
+  labels:
+    app.kubernetes.io/name: ts-auth-service
+    app.kubernetes.io/part-of: ts-auth
+    app.kubernetes.io/component: web
 spec:
   type: LoadBalancer
   ports:
     - name: http
       port: 12340
   selector:
-    app: ts-auth-service
+    app.kubernetes.io/name: ts-auth-service
+    app.kubernetes.io/part-of: ts-auth
+    app.kubernetes.io/component: web
 
 ---
 
@@ -2233,12 +2703,18 @@ apiVersion: v1
 kind: Service
 metadata:
   name: ts-station-service
+  labels:
+    app.kubernetes.io/name: ts-station-service
+    app.kubernetes.io/part-of: ts-station
+    app.kubernetes.io/component: web
 spec:
   ports:
     - name: http
       port: 12345
   selector:
-    app: ts-station-service
+    app.kubernetes.io/name: ts-station-service
+    app.kubernetes.io/part-of: ts-station
+    app.kubernetes.io/component: web
 
 ---
 
@@ -2246,12 +2722,18 @@ apiVersion: v1
 kind: Service
 metadata:
   name: ts-ticket-office-service
+  labels:
+    app.kubernetes.io/name: ts-ticket-office-service
+    app.kubernetes.io/part-of: ts-ticket-office
+    app.kubernetes.io/component: web
 spec:
   ports:
     - name: http
       port: 16108
   selector:
-    app: ts-ticket-office-service
+    app.kubernetes.io/name: ts-ticket-office-service
+    app.kubernetes.io/part-of: ts-ticket-office
+    app.kubernetes.io/component: web
 
 ---
 
@@ -2259,12 +2741,18 @@ apiVersion: v1
 kind: Service
 metadata:
   name: ts-ticketinfo-service
+  labels:
+    app.kubernetes.io/name: ts-ticketinfo-service
+    app.kubernetes.io/part-of: ts-ticketinfo
+    app.kubernetes.io/component: web
 spec:
   ports:
     - name: http
       port: 15681
   selector:
-    app: ts-ticketinfo-service
+    app.kubernetes.io/name: ts-ticketinfo-service
+    app.kubernetes.io/part-of: ts-ticketinfo
+    app.kubernetes.io/component: web
 
 ---
 
@@ -2272,12 +2760,18 @@ apiVersion: v1
 kind: Service
 metadata:
   name: ts-train-service
+  labels:
+    app.kubernetes.io/name: ts-train-service
+    app.kubernetes.io/part-of: ts-train
+    app.kubernetes.io/component: web
 spec:
   ports:
     - name: http
       port: 14567
   selector:
-    app: ts-train-service
+    app.kubernetes.io/name: ts-train-service
+    app.kubernetes.io/part-of: ts-train
+    app.kubernetes.io/component: web
 
 ---
 
@@ -2285,12 +2779,18 @@ apiVersion: v1
 kind: Service
 metadata:
   name: ts-travel2-service
+  labels:
+    app.kubernetes.io/name: ts-travel2-service
+    app.kubernetes.io/part-of: ts-travel2
+    app.kubernetes.io/component: web
 spec:
   ports:
     - name: http
       port: 16346
   selector:
-    app: ts-travel2-service
+    app.kubernetes.io/name: ts-travel2-service
+    app.kubernetes.io/part-of: ts-travel2
+    app.kubernetes.io/component: web
 
 ---
 
@@ -2298,12 +2798,18 @@ apiVersion: v1
 kind: Service
 metadata:
   name: ts-travel-plan-service
+  labels:
+    app.kubernetes.io/name: ts-travel-plan-service
+    app.kubernetes.io/part-of: ts-travel-plan
+    app.kubernetes.io/component: web
 spec:
   ports:
     - name: http
       port: 14322
   selector:
-    app: ts-travel-plan-service
+    app.kubernetes.io/name: ts-travel-plan-service
+    app.kubernetes.io/part-of: ts-travel-plan
+    app.kubernetes.io/component: web
 
 ---
 
@@ -2311,12 +2817,18 @@ apiVersion: v1
 kind: Service
 metadata:
   name: ts-travel-service
+  labels:
+    app.kubernetes.io/name: ts-travel-service
+    app.kubernetes.io/part-of: ts-travel
+    app.kubernetes.io/component: web
 spec:
   ports:
     - name: http
       port: 12346
   selector:
-    app: ts-travel-service
+    app.kubernetes.io/name: ts-travel-service
+    app.kubernetes.io/part-of: ts-travel
+    app.kubernetes.io/component: web
 
 
 ---
@@ -2325,12 +2837,18 @@ apiVersion: v1
 kind: Service
 metadata:
   name: ts-verification-code-service
+  labels:
+    app.kubernetes.io/name: ts-verification-code-service
+    app.kubernetes.io/part-of: ts-verification-code
+    app.kubernetes.io/component: web
 spec:
   ports:
     - name: http
       port: 15678
   selector:
-    app: ts-verification-code-service
+    app.kubernetes.io/name: ts-verification-code-service
+    app.kubernetes.io/part-of: ts-verification-code
+    app.kubernetes.io/component: web
 
 
 ---
@@ -2339,9 +2857,15 @@ apiVersion: v1
 kind: Service
 metadata:
   name: ts-voucher-service
+  labels:
+    app.kubernetes.io/name: ts-voucher-service
+    app.kubernetes.io/part-of: ts-voucher
+    app.kubernetes.io/component: web
 spec:
   ports:
     - name: http
       port: 16101
   selector:
-    app: ts-voucher-service
+    app.kubernetes.io/name: ts-voucher-service
+    app.kubernetes.io/part-of: ts-voucher
+    app.kubernetes.io/component: web

@@ -4,7 +4,9 @@ kind: Deployment
 metadata:
   name: rabbitmq
   labels:
-    name: rabbitmq
+    app.kubernetes.io/name: rabbitmq
+    app.kubernetes.io/part-of: shipping
+    app.kubernetes.io/component: queue-db
     app: sock-shop
   annotations:
     litmuschaos.io/chaos: "true"
@@ -13,12 +15,16 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      name: rabbitmq
+      app.kubernetes.io/name: rabbitmq
+      app.kubernetes.io/part-of: shipping
+      app.kubernetes.io/component: queue-db
       app: sock-shop
   template:
     metadata:
       labels:
-        name: rabbitmq
+        app.kubernetes.io/name: rabbitmq
+        app.kubernetes.io/part-of: shipping
+        app.kubernetes.io/component: queue-db
         app: sock-shop
       annotations:
         prometheus.io/scrape: "false"

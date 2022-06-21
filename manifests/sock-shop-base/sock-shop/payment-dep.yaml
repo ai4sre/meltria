@@ -4,7 +4,9 @@ kind: Deployment
 metadata:
   name: payment
   labels:
-    name: payment
+    app.kubernetes.io/name: payment
+    app.kubernetes.io/part-of: payment
+    app.kubernetes.io/component: web
     app: sock-shop
   annotations:
     litmuschaos.io/chaos: "true"
@@ -13,12 +15,16 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      name: payment
+      app.kubernetes.io/name: payment
+      app.kubernetes.io/part-of: payment
+      app.kubernetes.io/component: web
       app: sock-shop
   template:
     metadata:
       labels:
-        name: payment
+        app.kubernetes.io/name: payment
+        app.kubernetes.io/part-of: payment
+        app.kubernetes.io/component: web
         app: sock-shop
     spec:
       containers:

@@ -1,17 +1,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: load-test
+  name: load-test-master
   labels:
-    name: load-test
-  namespace: loadtest
+    app.kubernetes.io/name: load-test-master
+    app.kubernetes.io/parts-of: load-test-cluster
+    app.kubernetes.io/component: locust-master
 spec:
   template:
     spec:
       containers:
-      - name: load-test
+      - name: load-test-master
         env:
           - name: LOCUST_USERS
-            value: '500'
+            value: '100'
           - name: LOCUST_SPAWN_RATE
             value: '1'

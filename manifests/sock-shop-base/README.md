@@ -75,7 +75,7 @@ $ kubectl annotate serviceaccount --namespace litmus argo-chaos iam.gke.io/gcp-s
 1. Prepare to access Litmus 2.0 Portal.
 
 ```shell-session
-$ kubectl port-forward svc/litmusportal-frontend-service -n litmus --address 0.0.0.0 9091:9091
+$ kubectl port-forward svc/chaos-litmus-frontend-service -n litmus --address 0.0.0.0 9091:9091
 ```
 
 2. Access and Login <http://localhost:9091> with username/password: `admin/litmus` <https://litmuschaos.github.io/tutorials/tutorial-getting-started/index.html#2>.

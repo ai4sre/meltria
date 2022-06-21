@@ -4,7 +4,9 @@ kind: Deployment
 metadata:
   name: front-end
   labels:
-    name: front-end
+    app.kubernetes.io/name: front-end
+    app.kubernetes.io/part-of: front-end
+    app.kubernetes.io/component: web
     app: sock-shop
   annotations:
     litmuschaos.io/chaos: "true"
@@ -13,12 +15,16 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      name: front-end
+      app.kubernetes.io/name: front-end
+      app.kubernetes.io/part-of: front-end
+      app.kubernetes.io/component: web
       app: sock-shop
   template:
     metadata:
       labels:
-        name: front-end
+        app.kubernetes.io/name: front-end
+        app.kubernetes.io/part-of: front-end
+        app.kubernetes.io/component: web
         app: sock-shop
     spec:
       containers:

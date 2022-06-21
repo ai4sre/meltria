@@ -4,6 +4,7 @@ from typing import Any
 from prometheus.fetcher import PromFetcher
 from tsutil import tsutil
 
+TARGET_APP_NAME = 'train-ticket'
 APP_LABEL = 'train-ticket'
 APP_NODEPOOL = 'default-pool'
 GRAFANA_DASHBOARD = ''
@@ -84,7 +85,7 @@ def metrics_as_result(
             continue
         # TODO: want to rename 'kubernetes-name' in prometheus config because it is not intuitive.
         # sockshop is 'kubernetes_name', but trainticket is 'app'.
-        container = metric['metric'].get('kubernetes_name', metric['metric']['app'])
+        container = metric['metric'].get('kubernetes_name', metric['metric']['app_kubernetes_io_name'])
         data['middlewares'].setdefault(container, [])
         values = tsutil.interpotate_time_series(metric['values'], time_meta)
         m = {
@@ -172,7 +173,7 @@ def collect_metrics(
     assert len(container_metrics) != 0
 
     # get pod metrics
-    pod_selector = 'app=~"ts-.+",kubernetes_namespace="train-ticket"'
+    pod_selector = 'app_kubernetes_io_name=~"ts-.+",kubernetes_namespace="train-ticket"'
     pod_targets = fetcher.request_targets(pod_selector)
     pod_metrics = fetcher.get_metrics(pod_targets, pod_selector)
     assert len(pod_metrics) != 0

@@ -58,10 +58,13 @@ scrape_configs:
     regex: __meta_kubernetes_node_label_cloud_google_com_gke_nodepool
     replacement: nodepool
   metric_relabel_configs:
-  - source_labels: ['pod', 'pod_name']
-    regex: '^(ts-[a-zA-Z\d]+-[a-zA-Z\d]+)-.+$'  # eg. "ts-notification-service-bcd6b59dc-7qwch"
+  - source_labels: [pod_name]
+    action: replace
+    target_label: pod
+  - source_labels: [pod]
+    regex: '^([a-zA-Z0-9-]+)?-([0-9a-f]{7,10})?-([a-z0-9]{5}|\d+)$'  # eg. "ts-notification-service-bcd6b59dc-7qwch"
     replacement: ${1}
-    target_label: app
+    target_label: pod_group
 
 - job_name: 'kubernetes-services'
   kubernetes_sd_configs:

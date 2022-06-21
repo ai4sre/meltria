@@ -4,7 +4,9 @@ kind: Deployment
 metadata:
   name: orders-db
   labels:
-    name: orders-db
+    app.kubernetes.io/name: orders-db
+    app.kubernetes.io/part-of: orders
+    app.kubernetes.io/component: db
     app: sock-shop
   annotations:
     litmuschaos.io/chaos: "true"
@@ -13,12 +15,16 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      name: orders-db
+      app.kubernetes.io/name: orders-db
+      app.kubernetes.io/part-of: orders
+      app.kubernetes.io/component: db
       app: sock-shop
   template:
     metadata:
       labels:
-        name: orders-db
+        app.kubernetes.io/name: orders-db
+        app.kubernetes.io/part-of: orders
+        app.kubernetes.io/component: db
         app: sock-shop
       annotations:
         prometheus.io/scrape: "true"

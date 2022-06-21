@@ -1,6 +1,7 @@
 namespace: loadtest
 resources:
 - loadtest-ns.yaml
+- loadtest-svc.yaml
 - loadtest-dep.yaml
 
 configMapGenerator:

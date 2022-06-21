@@ -1,0 +1,4 @@
+namespace: litmus
+resources:
+- ./litmus-ns.yaml
+- ./argo-access.yaml

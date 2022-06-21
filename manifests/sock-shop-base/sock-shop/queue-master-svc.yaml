@@ -4,7 +4,9 @@ kind: Service
 metadata:
   name: queue-master
   labels:
-    name: queue-master
+    app.kubernetes.io/name: queue-master
+    app.kubernetes.io/part-of: shipping
+    app.kubernetes.io/component: queue-web
     app: sock-shop
   annotations:
     prometheus.io/path: "/prometheus"
@@ -15,5 +17,7 @@ spec:
   - port: 80
     targetPort: 80
   selector:
-    name: queue-master
+    app.kubernetes.io/name: queue-master
+    app.kubernetes.io/part-of: shipping
+    app.kubernetes.io/component: queue-web
     app: sock-shop

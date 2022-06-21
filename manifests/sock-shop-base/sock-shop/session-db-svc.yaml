@@ -4,7 +4,9 @@ kind: Service
 metadata:
   name: session-db
   labels:
-    name: session-db
+    app.kubernetes.io/name: session-db
+    app.kubernetes.io/part-of: front-end
+    app.kubernetes.io/component: db
     app: sock-shop
   namespace: sock-shop
 spec:
@@ -13,5 +15,7 @@ spec:
   - port: 6379
     targetPort: 6379
   selector:
-    name: session-db
+    app.kubernetes.io/name: session-db
+    app.kubernetes.io/part-of: front-end
+    app.kubernetes.io/component: db
     app: sock-shop

@@ -34,6 +34,12 @@ import "strings"
 		name: "pod-cpu-hog"
 		spec: {
 			components: env: [{
+				name: "CONTAINER_RUNTIME"
+				value: "containerd"
+			}, {
+				name: "SOCKET_PATH"
+				value: "/var/run/containerd/containerd.sock"
+			}, {
 				name:  "TARGET_CONTAINER"
 				value: "{{inputs.parameters.appLabel}}"
 			}, {
@@ -49,6 +55,12 @@ import "strings"
 		name: "pod-memory-hog"
 		spec: {
 			components: env: [{
+				name: "CONTAINER_RUNTIME"
+				value: "containerd"
+			}, {
+				name: "SOCKET_PATH"
+				value: "/var/run/containerd/containerd.sock"
+			}, {
 				name:  "TARGET_CONTAINER"
 				value: "{{inputs.parameters.appLabel}}"
 			}, {
@@ -64,6 +76,12 @@ import "strings"
 		name: "pod-network-loss"
 		spec: {
 			components: env: [{
+				name: "CONTAINER_RUNTIME"
+				value: "containerd"
+			}, {
+				name: "SOCKET_PATH"
+				value: "/var/run/containerd/containerd.sock"
+			}, {
 				name:  "TARGET_CONTAINER"
 				value: "{{inputs.parameters.appLabel}}"
 			}, {
@@ -82,6 +100,12 @@ import "strings"
 		name: "pod-network-latency"
 		spec: {
 			components: env: [{
+				name: "CONTAINER_RUNTIME"
+				value: "containerd"
+			}, {
+				name: "SOCKET_PATH"
+				value: "/var/run/containerd/containerd.sock"
+			}, {
 				name:  "TARGET_CONTAINER"
 				value: "{{inputs.parameters.appLabel}}"
 			}, {
@@ -265,11 +289,12 @@ spec: {
 		container: {
 			image: "ghcr.io/ai4sre/meltria/collectors-metrics:latest"
 			imagePullPolicy: "Always"
+			// `command must be specified for containers.` https://argoproj.github.io/argo-workflows/workflow-executors/#emissary-emissary
+			command: ["/usr/src/app/bin/get_metrics_from_prom.py"],
 			args: [
-				"--prometheus-url",
-				"http://prometheus.monitoring.svc.cluster.local:9090",
-				"--grafana-url",
-				"http://grafana.monitoring.svc.cluster.local:3000",
+				"--target", "{{workflow.parameters.appNamespace}}",
+				"--prometheus-url", "http://prometheus.monitoring.svc.cluster.local:9090",
+				"--grafana-url", "http://grafana.monitoring.svc.cluster.local:3000",
 				"--end", "{{inputs.parameters.endTimestamp}}",
 				"--chaos-injected-component", "{{inputs.parameters.appLabel}}",
 				"--injected-chaos-type", "{{inputs.parameters.chaosType}}",
@@ -327,7 +352,7 @@ spec: {
 						engineState:     "active"
 						appinfo: {
 							appns: "{{workflow.parameters.appNamespace}}"
-							applabel: "name={{inputs.parameters.appLabel}}"
+							applabel: "app.kubernetes.io/name={{inputs.parameters.appLabel}}"
 							appkind:  "deployment"
 						}
 						chaosServiceAccount: "{{workflow.parameters.chaosServiceAccount}}"

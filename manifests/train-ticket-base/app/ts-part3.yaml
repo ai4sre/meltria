@@ -2,15 +2,20 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ts-ui-dashboard
+  labels:
+    app.kubernetes.io/name: ts-ui-dashboard
+    app.kubernetes.io/component: proxy
 spec:
   selector:
     matchLabels:
-      app: ts-ui-dashboard
+      app.kubernetes.io/name: ts-ui-dashboard
+      app.kubernetes.io/component: proxy
   replicas: 1
   template:
     metadata:
       labels:
-        app: ts-ui-dashboard
+        app.kubernetes.io/name: ts-ui-dashboard
+        app.kubernetes.io/component: proxy
       annotations:
         prometheus.io/scrape: "true"
         prometheus.io/port: "4040"
@@ -55,6 +60,9 @@ apiVersion: v1
 kind: Service
 metadata:
   name: ts-ui-dashboard
+  labels:
+    app.kubernetes.io/name: ts-ui-dashboard
+    app.kubernetes.io/component: proxy
 spec:
   type: NodePort
   ports:
@@ -62,5 +70,6 @@ spec:
       port: 8080
       nodePort: 32677
   selector:
-    app: ts-ui-dashboard
+    app.kubernetes.io/name: ts-ui-dashboard
+    app.kubernetes.io/component: proxy
 ---

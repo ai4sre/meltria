@@ -4,7 +4,9 @@ kind: Service
 metadata:
   name: shipping
   labels:
-    name: shipping
+    app.kubernetes.io/name: shipping
+    app.kubernetes.io/part-of: shipping
+    app.kubernetes.io/component: web
     app: sock-shop
   namespace: sock-shop
 spec:
@@ -13,5 +15,7 @@ spec:
   - port: 80
     targetPort: 80
   selector:
-    name: shipping
+    app.kubernetes.io/name: shipping
+    app.kubernetes.io/part-of: shipping
+    app.kubernetes.io/component: web
     app: sock-shop

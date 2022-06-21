@@ -3,6 +3,7 @@ from typing import Any
 from prometheus.fetcher import PromFetcher
 from tsutil import tsutil
 
+TARGET_APP_NAME = 'sock-shop'
 COMPONENT_LABELS = {
     "front-end", "orders", "orders-db", "carts", "carts-db",
     "shipping", "user", "user-db", "payment", "catalogue", "catalogue-db",
