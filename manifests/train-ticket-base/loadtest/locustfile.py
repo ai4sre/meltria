@@ -82,6 +82,7 @@ def login(client):
         response = client.post(
             url="/api/v1/adminuserservice/users", headers=headers, json=body,
             name=get_name_suffix("admin_create_user"))
+        response_as_json = get_json_from_response(response)
         return response_as_json, response_as_json["status"]
 
     response_as_json = try_until_success(api_call_admin_create_user)
@@ -107,6 +108,7 @@ def login(client):
         response = client.post(
             url="/api/v1/contactservice/contacts", headers=headers, json=body,
             name=get_name_suffix("admin_create_contact"))
+        response_as_json = get_json_from_response(response)
         return response_as_json, response_as_json["status"]
 
     try_until_success(api_call_create_contact_for_user)
