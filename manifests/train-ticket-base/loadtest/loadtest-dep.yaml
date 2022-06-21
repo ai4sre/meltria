@@ -1,34 +1,88 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: load-test
+  name: load-test-master
   labels:
-    name: load-test
-  namespace: loadtest
+    app.kubernetes.io/name: load-test-master
+    app.kubernetes.io/parts-of: load-test-cluster
+    app.kubernetes.io/component: locust-master
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
-      name: load-test
+      app.kubernetes.io/name: load-test-master
+      app.kubernetes.io/parts-of: load-test-cluster
+      app.kubernetes.io/component: locust-master
   template:
     metadata:
       labels:
-        name: load-test
+        app.kubernetes.io/name: load-test-master
+        app.kubernetes.io/parts-of: load-test-cluster
+        app.kubernetes.io/component: locust-master
     spec:
       containers:
-      - name: load-test
+      - name: load-test-master
         image: locustio/locust:2.9.0
-        command: ["/bin/sh"]
-        # locust log: 'Your selected spawn rate is very high (>100), and this is known to sometimes cause issues. Do you really need to ramp up that fast?'
-        args: ["-c", "while true; do locust --host http://ts-ui-dashboard.train-ticket.svc.cluster.local:8080 -f /config/locustfile.py --headless --users $(LOCUST_USERS) --spawn-rate $(LOCUST_SPAWN_RATE) --run-time 30s --only-summary; done"]
+        args: ["-f", "/config/locustfile.py", "--master"]
         volumeMounts:
           - name: locustfile-volume
             mountPath: /config
         env:
+          - name: LOCUST_HOST
+            value: 'http://ts-ui-dashboard.train-ticket.svc.cluster.local:8080'
           - name: LOCUST_USERS
             value: '5'
           - name: LOCUST_SPAWN_RATE
             value: '5'
+          - name: LOCUST_AUTOSTART
+            value: '1'
+        ports:
+          - name: master-web
+            containerPort: 8089
+            protocol: TCP
+          - name: master-p1
+            containerPort: 5557
+            protocol: TCP
+      volumes:
+        - name: locustfile-volume
+          configMap:
+            name: locustfile
+      nodeSelector:
+        kubernetes.io/os: linux
+        cloud.google.com/gke-nodepool: "load-pool"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: load-test-worker
+  labels:
+    app.kubernetes.io/name: load-test-worker
+    app.kubernetes.io/parts-of: load-test-cluster
+    app.kubernetes.io/component: locust-worker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: load-test-worker
+      app.kubernetes.io/parts-of: load-test-cluster
+      app.kubernetes.io/component: locust-worker
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: load-test-worker
+        app.kubernetes.io/parts-of: load-test-cluster
+        app.kubernetes.io/component: locust-worker
+    spec:
+      containers:
+      - name: load-test-worker
+        image: locustio/locust:2.9.0
+        args: ["-f", "/config/locustfile.py", "--worker"]
+        volumeMounts:
+          - name: locustfile-volume
+            mountPath: /config
+        env:
+          - name: LOCUST_MASTER_NODE_HOST
+            value: 'load-test-master.loadtest.svc.cluster.local'
       volumes:
         - name: locustfile-volume
           configMap:

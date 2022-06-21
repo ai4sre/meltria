@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: load-test-master
+  labels:
+    app.kubernetes.io/name: load-test-master
+    app.kubernetes.io/parts-of: load-test-cluster
+    app.kubernetes.io/component: locust-master
+spec:
+  ports:
+  - name: master-web
+    nodePort: 30060
+    port: 8089
+    protocol: TCP
+    targetPort: master-web
+  - name: master-p1
+    nodePort: 30061
+    port: 5557
+    protocol: TCP
+    targetPort: master-p1
+  type: NodePort
+  selector:
+    app.kubernetes.io/name: load-test-master
+    app.kubernetes.io/parts-of: load-test-cluster
+    app.kubernetes.io/component: locust-master
