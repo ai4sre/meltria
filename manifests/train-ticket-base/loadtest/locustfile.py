@@ -10,8 +10,8 @@ from requests.adapters import HTTPAdapter
 
 locust.stats.PERCENTILES_TO_REPORT = [0.25, 0.50, 0.75, 0.80, 0.90, 0.95, 0.98, 0.99, 0.999, 0.9999, 1.0]
 LOG_STATISTICS_IN_HALF_MINUTE_CHUNKS = (1 == 1)
-RETRY_ON_ERROR = True
-MAX_RETRIES = 10
+RETRY_ON_ERROR = False
+MAX_RETRIES = 3
 
 STATUS_BOOKED = 0
 STATUS_PAID = 1
@@ -22,15 +22,30 @@ STATUS_EXECUTED = 6
 spawning_complete = False
 
 
+class TrainTicketRequestException(Exception):
+    def __init__(self, message):
+        super().__init__(message)
+
+
 @events.spawning_complete.add_listener
 def on_spawning_complete(user_count, **kwargs):
     global spawning_complete
     spawning_complete = True
 
 
+@events.request_failure.add_listener
+def request_failure_handler(request_type, name, response_time, exception, **kwargs):
+    logging.error(
+        f"Request Failed! time:{datetime.now()}, response_time:{response_time} name:{name}, exception:{exception}")
+
+
 def get_json_from_response(response):
     response_as_text = response.content.decode('UTF-8')
-    response_as_json = json.loads(response_as_text)
+    try:
+        response_as_json = json.loads(response_as_text)
+    except json.decoder.JSONDecodeError as e:
+        msg = f"json decode error: {e}, {response_as_text}"
+        raise TrainTicketRequestException(msg)
     return response_as_json
 
 
@@ -38,24 +53,24 @@ def try_until_success(f):
     for attempt in range(MAX_RETRIES):
         logging.debug(f"Calling function {f.__name__}, attempt {attempt}...")
 
-        try:
-            result, status = f()
-            result_as_string = str(result)
-            logging.debug(f"Result of calling function {f.__name__} was: {result_as_string}.")
-            if status == 1:
-                return result
-            else:
-                logging.debug(f"Failed calling function {f.__name__}, response was {result_as_string}, trying again:")
-                time.sleep(1)
-        except Exception as e:
-            exception_as_text = str(e)
-            logging.debug(f"Failed calling function {f.__name__}, exception was: {exception_as_text}, trying again.")
+        # try:
+        result, status = f()
+        result_as_string = str(result)
+        logging.debug(f"Result of calling function {f.__name__} was: {result_as_string}.")
+        if status == 1:
+            return result
+        else:
+            logging.debug(f"Failed calling function {f.__name__}, response was {result_as_string}, trying again:")
             time.sleep(1)
+        # except Exception as e:
+        #     exception_as_text = str(e)
+        #     logging.debug(f"Failed calling function {f.__name__}, exception was: {exception_as_text}, trying again.")
+        #     time.sleep(1)
 
         if not RETRY_ON_ERROR:
             break
 
-    raise Exception("Weird... Cannot call endpoint.")
+    raise TrainTicketRequestException(f"Weird... Cannot call endpoint {f.__name__}")
 
 
 def login(client):
