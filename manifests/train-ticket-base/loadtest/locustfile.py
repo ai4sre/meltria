@@ -358,7 +358,7 @@ def get_voucher(client, user_id):
 
 
 class UserNoLogin(HttpUser):
-    weight = 1
+    weight = 2
 
     def on_start(self):
         self.client.headers.update({"Content-Type": "application/json"})
