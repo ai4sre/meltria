@@ -1096,7 +1096,7 @@ spec:
             cpu: 50m
             memory: 160Mi
           limits:
-            cpu: 200m
+            cpu: 500m
             memory: 500Mi
         readinessProbe:
           tcpSocket:
@@ -1468,7 +1468,7 @@ spec:
             cpu: 50m
             memory: 160Mi
           limits:
-            cpu: 200m
+            cpu: 500m
             memory: 500Mi
         readinessProbe:
           tcpSocket:
@@ -1521,7 +1521,7 @@ spec:
             cpu: 50m
             memory: 160Mi
           limits:
-            cpu: 200m
+            cpu: 500m
             memory: 700Mi
         readinessProbe:
           tcpSocket:
@@ -1786,7 +1786,7 @@ spec:
             cpu: 50m
             memory: 160Mi
           limits:
-            cpu: 200m
+            cpu: 500m
             memory: 500Mi
         readinessProbe:
           tcpSocket:
