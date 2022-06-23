@@ -5,7 +5,7 @@ namespace: train-ticket
 
 resources:
 - ts-ns.yaml
-- jaeger.yaml
+# - jaeger.yaml
 - ts-part1.yaml
 - ts-part2.yaml
 - ts-part3.yaml
