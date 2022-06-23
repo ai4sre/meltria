@@ -8,7 +8,7 @@ releases:
   - name: chaos
     namespace: litmus
     chart: litmuschaos/litmus
-    version: ~2.10.1
+    version: ~2.10.0
     values:
       - mongo:
           nodeSelector:
