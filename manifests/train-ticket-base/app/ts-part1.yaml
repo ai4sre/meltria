@@ -28,7 +28,7 @@ spec:
         - containerPort: 27017
         resources:
           requests:
-            cpu: 100m
+            cpu: 50m
             memory: 100Mi
 ---
 
@@ -62,7 +62,7 @@ spec:
         - containerPort: 27017
         resources:
           requests:
-            cpu: 100m
+            cpu: 50m
             memory: 100Mi
 ---
 
@@ -96,7 +96,7 @@ spec:
         - containerPort: 27017
         resources:
           requests:
-            cpu: 100m
+            cpu: 50m
             memory: 100Mi
 
 ---
@@ -131,7 +131,7 @@ spec:
         - containerPort: 27017
         resources:
           requests:
-            cpu: 100m
+            cpu: 50m
             memory: 100Mi
 
 ---
@@ -166,7 +166,7 @@ spec:
         - containerPort: 27017
         resources:
           requests:
-            cpu: 100m
+            cpu: 50m
             memory: 100Mi
 
 ---
@@ -201,7 +201,7 @@ spec:
         - containerPort: 27017
         resources:
           requests:
-            cpu: 100m
+            cpu: 50m
             memory: 100Mi
 
 ---
@@ -236,7 +236,7 @@ spec:
         - containerPort: 27017
         resources:
           requests:
-            cpu: 100m
+            cpu: 50m
             memory: 100Mi
 
 ---
@@ -271,7 +271,7 @@ spec:
         - containerPort: 27017
         resources:
           requests:
-            cpu: 100m
+            cpu: 50m
             memory: 100Mi
 
 ---
@@ -306,7 +306,7 @@ spec:
         - containerPort: 27017
         resources:
           requests:
-            cpu: 100m
+            cpu: 50m
             memory: 100Mi
 
 ---
@@ -341,7 +341,7 @@ spec:
         - containerPort: 27017
         resources:
           requests:
-            cpu: 100m
+            cpu: 50m
             memory: 100Mi
 
 ---
@@ -376,7 +376,7 @@ spec:
         - containerPort: 27017
         resources:
           requests:
-            cpu: 100m
+            cpu: 50m
             memory: 100Mi
 
 ---
@@ -411,7 +411,7 @@ spec:
         - containerPort: 27017
         resources:
           requests:
-            cpu: 100m
+            cpu: 50m
             memory: 100Mi
 
 ---
@@ -446,7 +446,7 @@ spec:
         - containerPort: 27017
         resources:
           requests:
-            cpu: 100m
+            cpu: 50m
             memory: 100Mi
 
 ---
@@ -481,7 +481,7 @@ spec:
         - containerPort: 27017
         resources:
           requests:
-            cpu: 100m
+            cpu: 50m
             memory: 100Mi
 
 ---
@@ -516,7 +516,7 @@ spec:
         - containerPort: 27017
         resources:
           requests:
-            cpu: 100m
+            cpu: 50m
             memory: 100Mi
 
 ---
@@ -551,7 +551,7 @@ spec:
         - containerPort: 27017
         resources:
           requests:
-            cpu: 100m
+            cpu: 50m
             memory: 100Mi
 
 ---
@@ -586,7 +586,7 @@ spec:
         - containerPort: 27017
         resources:
           requests:
-            cpu: 100m
+            cpu: 50m
             memory: 100Mi
 
 
@@ -626,7 +626,7 @@ spec:
         - containerPort: 3306
         resources:
           requests:
-            cpu: 100m
+            cpu: 50m
             memory: 100Mi
 
 ---
@@ -661,7 +661,7 @@ spec:
         - containerPort: 27017
         resources:
           requests:
-            cpu: 100m
+            cpu: 50m
             memory: 100Mi
 
 ---
@@ -696,7 +696,7 @@ spec:
         - containerPort: 27017
         resources:
           requests:
-            cpu: 100m
+            cpu: 50m
             memory: 100Mi
 
 ---
@@ -731,7 +731,7 @@ spec:
         - containerPort: 27017
         resources:
           requests:
-            cpu: 100m
+            cpu: 50m
             memory: 100Mi
 
 ---
@@ -766,7 +766,7 @@ spec:
         - containerPort: 27017
         resources:
           requests:
-            cpu: 100m
+            cpu: 50m
             memory: 100Mi
 ---
 
@@ -800,7 +800,7 @@ spec:
             - containerPort: 27017
           resources:
             requests:
-              cpu: 100m
+              cpu: 50m
               memory: 100Mi
 ---
 
@@ -834,7 +834,7 @@ spec:
             - containerPort: 27017
           resources:
             requests:
-              cpu: 100m
+              cpu: 50m
               memory: 100Mi
 ---
 
@@ -865,7 +865,7 @@ spec:
             - containerPort: 5672
           resources:
             requests:
-              cpu: 100m
+              cpu: 50m
               memory: 200Mi
             limits:
               cpu: 500m

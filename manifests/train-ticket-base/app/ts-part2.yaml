@@ -38,7 +38,7 @@ spec:
         - containerPort: 18767
         resources:
           requests:
-            cpu: 100m
+            cpu: 50m
             memory: 100Mi
           limits:
             cpu: 200m
@@ -92,7 +92,7 @@ spec:
         - containerPort: 16112
         resources:
           requests:
-            cpu: 100m
+            cpu: 50m
             memory: 160Mi
           limits:
             cpu: 200m
@@ -198,7 +198,7 @@ spec:
         - containerPort: 16114
         resources:
           requests:
-            cpu: 100m
+            cpu: 50m
             memory: 160Mi
           limits:
             cpu: 200m
@@ -304,7 +304,7 @@ spec:
         - containerPort: 18888
         resources:
           requests:
-            cpu: 100m
+            cpu: 50m
             memory: 160Mi
           limits:
             cpu: 200m
@@ -357,7 +357,7 @@ spec:
         - containerPort: 15680
         resources:
           requests:
-            cpu: 100m
+            cpu: 50m
             memory: 160Mi
           limits:
             cpu: 500m
@@ -675,7 +675,7 @@ spec:
         - containerPort: 12386
         resources:
           requests:
-            cpu: 100m
+            cpu: 50m
             memory: 160Mi
           limits:
             cpu: 200m
@@ -728,7 +728,7 @@ spec:
         - containerPort: 18855
         resources:
           requests:
-            cpu: 100m
+            cpu: 50m
             memory: 160Mi
           limits:
             cpu: 200m
@@ -785,7 +785,7 @@ spec:
         - containerPort: 18856
         resources:
           requests:
-            cpu: 100m
+            cpu: 50m
             memory: 160Mi
           limits:
             cpu: 200m
@@ -838,7 +838,7 @@ spec:
         - containerPort: 18673
         resources:
           requests:
-            cpu: 100m
+            cpu: 50m
             memory: 160Mi
           limits:
             cpu: 200m
@@ -1587,7 +1587,7 @@ spec:
         - containerPort: 11188
         resources:
           requests:
-            cpu: 100m
+            cpu: 50m
             memory: 160Mi
           limits:
             cpu: 500m
@@ -1746,11 +1746,11 @@ spec:
         - containerPort: 16108
         resources:
           requests:
-            cpu: 100m
-            memory: 160Mi
+            cpu: 50m
+            memory: 100Mi
           limits:
             cpu: 500m
-            memory: 500Mi
+            memory: 300Mi
         readinessProbe:
           tcpSocket:
             port: 16108
@@ -2067,7 +2067,7 @@ spec:
           - containerPort: 18808
         resources:
           requests:
-            cpu: 100m
+            cpu: 50m
             memory: 100Mi
           limits:
             cpu: 500m
@@ -2120,7 +2120,7 @@ spec:
         - containerPort: 15678
         resources:
           requests:
-            cpu: 100m
+            cpu: 50m
             memory: 160Mi
           limits:
             cpu: 200m
@@ -2209,8 +2209,8 @@ spec:
         - containerPort: 17001
         resources:
           requests:
-            cpu: 100m
-            memory: 200Mi
+            cpu: 50m
+            memory: 160Mi
           limits:
             cpu: 200m
             memory: 500Mi
