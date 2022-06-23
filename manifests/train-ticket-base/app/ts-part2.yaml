@@ -1104,8 +1104,8 @@ spec:
             cpu: 100m
             memory: 160Mi
           limits:
-            cpu: 500m
-            memory: 500Mi
+            cpu: 800m
+            memory: 800Mi
         readinessProbe:
           tcpSocket:
             port: 12031
