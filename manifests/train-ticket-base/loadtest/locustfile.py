@@ -56,7 +56,10 @@ def request_post_to_api(client, url, body, name, headers={}):
             response.failure(
                 f"failed to request status:{response.status_code} body:{response.content.decode('UTF-8')[0:10]}")
     response_as_json = response.json()
-    return response_as_json, response_as_json["status"]
+    if 'status' in response_as_json:
+        return response_as_json, response_as_json["status"]
+    else:
+        return response_as_json, 1
 
 
 def try_until_success(f):
