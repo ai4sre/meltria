@@ -25,7 +25,7 @@ spec:
     spec:
       containers:
       - name: ts-admin-basic-info-service
-        image: codewisdom/ts-admin-basic-info-service-with-jaeger:v1
+        image: codewisdom/ts-admin-basic-info-service:0.2.0
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -41,7 +41,7 @@ spec:
             cpu: 50m
             memory: 100Mi
           limits:
-            cpu: 100m
+            cpu: 200m
             memory: 500Mi
         readinessProbe:
           tcpSocket:
@@ -79,7 +79,7 @@ spec:
     spec:
       containers:
       - name: ts-admin-order-service
-        image: codewisdom/ts-admin-order-service-with-jaeger:v1
+        image: codewisdom/ts-admin-order-service:0.2.0
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -95,7 +95,7 @@ spec:
             cpu: 50m
             memory: 160Mi
           limits:
-            cpu: 100m
+            cpu: 200m
             memory: 500Mi
         readinessProbe:
           tcpSocket:
@@ -132,7 +132,7 @@ spec:
     spec:
       containers:
       - name: ts-admin-route-service
-        image: codewisdom/ts-admin-route-service-with-jaeger:v1
+        image: codewisdom/ts-admin-route-service:0.2.0
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -148,7 +148,7 @@ spec:
             cpu: 50m
             memory: 160Mi
           limits:
-            cpu: 100m
+            cpu: 200m
             memory: 500Mi
         readinessProbe:
           tcpSocket:
@@ -185,7 +185,7 @@ spec:
     spec:
       containers:
       - name: ts-admin-travel-service
-        image: codewisdom/ts-admin-travel-service-with-jaeger:v1
+        image: codewisdom/ts-admin-travel-service:0.2.0
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -201,7 +201,7 @@ spec:
             cpu: 50m
             memory: 160Mi
           limits:
-            cpu: 100m
+            cpu: 200m
             memory: 500Mi
         readinessProbe:
           tcpSocket:
@@ -238,7 +238,7 @@ spec:
     spec:
       containers:
       - name: ts-admin-user-service
-        image: codewisdom/ts-admin-user-service-with-jaeger:v1
+        image: codewisdom/ts-admin-user-service:0.2.0
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -254,7 +254,7 @@ spec:
             cpu: 50m
             memory: 160Mi
           limits:
-            cpu: 150m
+            cpu: 200m
             memory: 500Mi
         readinessProbe:
           tcpSocket:
@@ -291,7 +291,7 @@ spec:
     spec:
       containers:
       - name: ts-assurance-service
-        image: codewisdom/ts-assurance-service-with-jaeger:v1
+        image: codewisdom/ts-assurance-service:0.2.0
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -307,7 +307,7 @@ spec:
             cpu: 50m
             memory: 160Mi
           limits:
-            cpu: 100m
+            cpu: 200m
             memory: 400Mi
         readinessProbe:
           tcpSocket:
@@ -344,7 +344,7 @@ spec:
     spec:
       containers:
       - name: ts-basic-service
-        image: codewisdom/ts-basic-service-with-jaeger:v1
+        image: codewisdom/ts-basic-service:0.2.0
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -360,7 +360,7 @@ spec:
             cpu: 50m
             memory: 160Mi
           limits:
-            cpu: 200m
+            cpu: 500m
             memory: 500Mi
         readinessProbe:
           tcpSocket:
@@ -397,7 +397,7 @@ spec:
     spec:
       containers:
       - name: ts-cancel-service
-        image: codewisdom/ts-cancel-service-with-jaeger:v1
+        image: codewisdom/ts-cancel-service:0.2.0
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -413,7 +413,7 @@ spec:
             cpu: 50m
             memory: 160Mi
           limits:
-            cpu: 100m
+            cpu: 200m
             memory: 500Mi
         readinessProbe:
           tcpSocket:
@@ -450,7 +450,7 @@ spec:
     spec:
       containers:
       - name: ts-config-service
-        image: codewisdom/ts-config-service-with-jaeger:v1
+        image: codewisdom/ts-config-service:0.2.0
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -463,10 +463,10 @@ spec:
         - containerPort: 15679
         resources:
           requests:
-            cpu: 50m
+            cpu: 100m
             memory: 160Mi
           limits:
-            cpu: 100m
+            cpu: 500m
             memory: 500Mi
         readinessProbe:
           tcpSocket:
@@ -503,7 +503,7 @@ spec:
     spec:
       containers:
       - name: ts-consign-price-service
-        image: codewisdom/ts-consign-price-service-with-jaeger:v1
+        image: codewisdom/ts-consign-price-service:0.2.0
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -519,7 +519,7 @@ spec:
             cpu: 50m
             memory: 160Mi
           limits:
-            cpu: 100m
+            cpu: 200m
             memory: 500Mi
         readinessProbe:
           tcpSocket:
@@ -556,7 +556,7 @@ spec:
     spec:
       containers:
       - name: ts-consign-service
-        image: codewisdom/ts-consign-service-with-jaeger:v1
+        image: codewisdom/ts-consign-service:0.2.0
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -572,7 +572,7 @@ spec:
             cpu: 50m
             memory: 160Mi
           limits:
-            cpu: 100m
+            cpu: 200m
             memory: 500Mi
         readinessProbe:
           tcpSocket:
@@ -609,7 +609,7 @@ spec:
     spec:
       containers:
       - name: ts-contacts-service
-        image: codewisdom/ts-contacts-service-with-jaeger:v1
+        image: codewisdom/ts-contacts-service:0.2.0
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -622,10 +622,10 @@ spec:
         - containerPort: 12347
         resources:
           requests:
-            cpu: 50m
+            cpu: 100m
             memory: 160Mi
           limits:
-            cpu: 100m
+            cpu: 500m
             memory: 500Mi
         readinessProbe:
           tcpSocket:
@@ -662,7 +662,7 @@ spec:
     spec:
       containers:
       - name: ts-execute-service
-        image: codewisdom/ts-execute-service-with-jaeger:v1
+        image: codewisdom/ts-execute-service:0.2.0
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -678,7 +678,7 @@ spec:
             cpu: 50m
             memory: 160Mi
           limits:
-            cpu: 100m
+            cpu: 200m
             memory: 500Mi
         readinessProbe:
           tcpSocket:
@@ -715,7 +715,7 @@ spec:
     spec:
       containers:
       - name: ts-food-map-service
-        image: codewisdom/ts-food-map-service-with-jaeger:v1
+        image: codewisdom/ts-food-map-service:0.2.0
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -731,7 +731,7 @@ spec:
             cpu: 50m
             memory: 160Mi
           limits:
-            cpu: 100m
+            cpu: 200m
             memory: 500Mi
         readinessProbe:
           tcpSocket:
@@ -768,7 +768,7 @@ spec:
     spec:
       containers:
       - name: ts-food-service
-        image: codewisdom/ts-food-service-with-jaeger:v1
+        image: codewisdom/ts-food-service:0.2.0
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -821,7 +821,7 @@ spec:
     spec:
       containers:
       - name: ts-inside-payment-service
-        image: codewisdom/ts-inside-payment-service-with-jaeger:v1
+        image: codewisdom/ts-inside-payment-service:0.2.0
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -837,7 +837,7 @@ spec:
             cpu: 50m
             memory: 160Mi
           limits:
-            cpu: 100m
+            cpu: 200m
             memory: 500Mi
         readinessProbe:
           tcpSocket:
@@ -874,7 +874,7 @@ spec:
     spec:
       containers:
       - name: ts-auth-service
-        image: codewisdom/ts-auth-service-with-jaeger:v1
+        image: codewisdom/ts-auth-service:0.2.0
         imagePullPolicy: IfNotPresent
         args: ["java", "-Xmx400m",  "-jar", "/app/ts-auth-service-1.0.jar"]
         env:
@@ -888,8 +888,8 @@ spec:
         - containerPort: 12340
         resources:
           requests:
-            cpu: 700m
-            memory: 800Mi
+            cpu: 500m
+            memory: 500Mi
           limits:
             cpu: 700m
             memory: 800Mi
@@ -928,7 +928,7 @@ spec:
     spec:
       containers:
       - name: ts-news-service
-        image: codewisdom/ts-news-service-with-jaeger:v1
+        image: codewisdom/ts-news-service:0.2.0
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 12862
@@ -937,7 +937,7 @@ spec:
             cpu: 50m
             memory: 50Mi
           limits:
-            cpu: 50m
+            cpu: 200m
             memory: 50Mi
         readinessProbe:
           tcpSocket:
@@ -974,7 +974,7 @@ spec:
     spec:
       containers:
       - name: ts-notification-service
-        image: codewisdom/ts-notification-service-with-jaeger:v1
+        image: codewisdom/ts-notification-service:0.2.0
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -990,7 +990,7 @@ spec:
             cpu: 50m
             memory: 160Mi
           limits:
-            cpu: 100m
+            cpu: 200m
             memory: 500Mi
         readinessProbe:
           tcpSocket:
@@ -1027,7 +1027,7 @@ spec:
     spec:
       containers:
       - name: ts-order-other-service
-        image: codewisdom/ts-order-other-service-with-jaeger:v1
+        image: codewisdom/ts-order-other-service:0.2.0
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -1080,7 +1080,7 @@ spec:
     spec:
       containers:
       - name: ts-order-service
-        image: codewisdom/ts-order-service-with-jaeger:v1
+        image: codewisdom/ts-order-service:0.2.0
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -1096,7 +1096,7 @@ spec:
             cpu: 50m
             memory: 160Mi
           limits:
-            cpu: 200m
+            cpu: 500m
             memory: 500Mi
         readinessProbe:
           tcpSocket:
@@ -1133,7 +1133,7 @@ spec:
     spec:
       containers:
       - name: ts-payment-service
-        image: codewisdom/ts-payment-service-with-jaeger:v1
+        image: codewisdom/ts-payment-service:0.2.0
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -1186,7 +1186,7 @@ spec:
     spec:
       containers:
       - name: ts-preserve-other-service
-        image: codewisdom/ts-preserve-other-service-with-jaeger:v1
+        image: codewisdom/ts-preserve-other-service:0.2.0
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -1239,7 +1239,7 @@ spec:
     spec:
       containers:
       - name: ts-preserve-service
-        image: codewisdom/ts-preserve-service-with-jaeger:v1
+        image: codewisdom/ts-preserve-service:0.2.0
         imagePullPolicy: IfNotPresent
         args: ["java", "-Xmx400m",  "-jar", "/app/ts-preserve-service-1.0.jar"]
         env:
@@ -1293,7 +1293,7 @@ spec:
     spec:
       containers:
       - name: ts-price-service
-        image: codewisdom/ts-price-service-with-jaeger:v1
+        image: codewisdom/ts-price-service:0.2.0
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -1346,7 +1346,7 @@ spec:
     spec:
       containers:
       - name: ts-rebook-service
-        image: codewisdom/ts-rebook-service-with-jaeger:v1
+        image: codewisdom/ts-rebook-service:0.2.0
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -1399,7 +1399,7 @@ spec:
     spec:
       containers:
       - name: ts-route-plan-service
-        image: codewisdom/ts-route-plan-service-with-jaeger:v1
+        image: codewisdom/ts-route-plan-service:0.2.0
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -1452,7 +1452,7 @@ spec:
     spec:
       containers:
       - name: ts-route-service
-        image: codewisdom/ts-route-service-with-jaeger:v1
+        image: codewisdom/ts-route-service:0.2.0
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -1468,7 +1468,7 @@ spec:
             cpu: 50m
             memory: 160Mi
           limits:
-            cpu: 200m
+            cpu: 500m
             memory: 500Mi
         readinessProbe:
           tcpSocket:
@@ -1505,7 +1505,7 @@ spec:
     spec:
       containers:
       - name: ts-seat-service
-        image: codewisdom/ts-seat-service-with-jaeger:v1
+        image: codewisdom/ts-seat-service:0.2.0
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -1521,8 +1521,8 @@ spec:
             cpu: 50m
             memory: 160Mi
           limits:
-            cpu: 200m
-            memory: 500Mi
+            cpu: 500m
+            memory: 700Mi
         readinessProbe:
           tcpSocket:
             port: 18898
@@ -1558,7 +1558,7 @@ spec:
     spec:
       containers:
       - name: ts-security-service
-        image: codewisdom/ts-security-service-with-jaeger:v1
+        image: codewisdom/ts-security-service:0.2.0
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -1611,7 +1611,7 @@ spec:
     spec:
       containers:
       - name: ts-user-service
-        image: codewisdom/ts-user-service-with-jaeger:v1
+        image: codewisdom/ts-user-service:0.2.0
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -1664,7 +1664,7 @@ spec:
     spec:
       containers:
       - name: ts-station-service
-        image: codewisdom/ts-station-service-with-jaeger:v1
+        image: codewisdom/ts-station-service:0.2.0
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -1717,7 +1717,7 @@ spec:
     spec:
       containers:
       - name: ts-ticket-office-service
-        image: codewisdom/ts-ticket-office-service-with-jaeger:v1
+        image: codewisdom/ts-ticket-office-service:0.2.0
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -1770,7 +1770,7 @@ spec:
     spec:
       containers:
       - name: ts-ticketinfo-service
-        image: codewisdom/ts-ticketinfo-service-with-jaeger:v1
+        image: codewisdom/ts-ticketinfo-service:0.2.0
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -1786,7 +1786,7 @@ spec:
             cpu: 50m
             memory: 160Mi
           limits:
-            cpu: 200m
+            cpu: 500m
             memory: 500Mi
         readinessProbe:
           tcpSocket:
@@ -1823,7 +1823,7 @@ spec:
     spec:
       containers:
       - name: ts-train-service
-        image: codewisdom/ts-train-service-with-jaeger:v1
+        image: codewisdom/ts-train-service:0.2.0
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -1876,7 +1876,7 @@ spec:
     spec:
       containers:
       - name: ts-travel2-service
-        image: codewisdom/ts-travel2-service-with-jaeger:v1
+        image: codewisdom/ts-travel2-service:0.2.0
         imagePullPolicy: IfNotPresent
         args: ["java", "-Xmx200m",  "-jar", "/app/ts-travel2-service-1.0.jar"]
         env:
@@ -1893,7 +1893,7 @@ spec:
             cpu: 100m
             memory: 200Mi
           limits:
-            cpu: 100m
+            cpu: 200m
             memory: 400Mi
         readinessProbe:
           tcpSocket:
@@ -1930,7 +1930,7 @@ spec:
     spec:
       containers:
       - name: ts-travel-plan-service
-        image: codewisdom/ts-travel-plan-service-with-jaeger:v1
+        image: codewisdom/ts-travel-plan-service:0.2.0
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -1983,9 +1983,9 @@ spec:
     spec:
       containers:
       - name: ts-travel-service
-        image: codewisdom/ts-travel-service-with-jaeger:v1
+        image: codewisdom/ts-travel-service:0.2.0
         imagePullPolicy: IfNotPresent
-        args: ["java", "-Xmx400m",  "-jar", "/app/ts-travel-service-1.0.jar"]
+        args: ["java", "-Xmx500m",  "-jar", "/app/ts-travel-service-1.0.jar"]
         env:
           - name: JAVA_TOOL_OPTIONS
             value: >-
@@ -1997,11 +1997,11 @@ spec:
         - containerPort: 12346
         resources:
           requests:
-            cpu: 300m
-            memory: 800Mi
+            cpu: 200m
+            memory: 600Mi
           limits:
             cpu: 600m
-            memory: 800Mi
+            memory: 1000Mi
         readinessProbe:
           tcpSocket:
             port: 12346
@@ -2037,7 +2037,7 @@ spec:
     spec:
       containers:
       - name: ts-verification-code-service
-        image: codewisdom/ts-verification-code-service-with-jaeger:v1
+        image: codewisdom/ts-verification-code-service:0.2.0
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -2090,7 +2090,7 @@ spec:
     spec:
       containers:
       - name: ts-voucher-service
-        image: codewisdom/ts-voucher-service-with-jaeger:v1
+        image: codewisdom/ts-voucher-service:0.2.0
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 16101
@@ -2104,6 +2104,49 @@ spec:
         readinessProbe:
           tcpSocket:
             port: 16101
+          initialDelaySeconds: 160
+          periodSeconds: 10
+          timeoutSeconds: 5
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-avatar-service
+  labels:
+    app.kubernetes.io/name: ts-avatar-service
+    app.kubernetes.io/part-of: ts-avatar
+    app.kubernetes.io/component: web
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: ts-avatar-service
+      app.kubernetes.io/part-of: ts-avatar
+      app.kubernetes.io/component: web
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: ts-avatar-service
+        app.kubernetes.io/part-of: ts-avatar
+        app.kubernetes.io/component: web
+    spec:
+      containers:
+      - name: ts-avatar-service
+        image: codewisdom/ts-avatar-service:0.2.0
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 17001
+        resources:
+          requests:
+            cpu: 50m
+            memory: 200Mi
+          limits:
+            cpu: 200m
+            memory: 500Mi
+        readinessProbe:
+          tcpSocket:
+            port: 17001
           initialDelaySeconds: 160
           periodSeconds: 10
           timeoutSeconds: 5
@@ -2868,4 +2911,22 @@ spec:
   selector:
     app.kubernetes.io/name: ts-voucher-service
     app.kubernetes.io/part-of: ts-voucher
+    app.kubernetes.io/component: web
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-avatar-service
+  labels:
+    app.kubernetes.io/name: ts-avatar-service
+    app.kubernetes.io/part-of: ts-avatar
+    app.kubernetes.io/component: web
+spec:
+  ports:
+    - name: http
+      port: 17001
+  selector:
+    app.kubernetes.io/name: ts-avatar-service
+    app.kubernetes.io/part-of: ts-avatar
     app.kubernetes.io/component: web

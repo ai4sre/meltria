@@ -1,4 +1,3 @@
-import json
 import logging
 import time
 import uuid
@@ -10,8 +9,8 @@ from requests.adapters import HTTPAdapter
 
 locust.stats.PERCENTILES_TO_REPORT = [0.25, 0.50, 0.75, 0.80, 0.90, 0.95, 0.98, 0.99, 0.999, 0.9999, 1.0]
 LOG_STATISTICS_IN_HALF_MINUTE_CHUNKS = (1 == 1)
-RETRY_ON_ERROR = True
-MAX_RETRIES = 10
+RETRY_ON_ERROR = False
+MAX_RETRIES = 3
 
 STATUS_BOOKED = 0
 STATUS_PAID = 1
@@ -22,40 +21,66 @@ STATUS_EXECUTED = 6
 spawning_complete = False
 
 
+class TrainTicketRequestException(Exception):
+    def __init__(self, message):
+        super().__init__(message)
+
+
 @events.spawning_complete.add_listener
 def on_spawning_complete(user_count, **kwargs):
     global spawning_complete
     spawning_complete = True
 
 
-def get_json_from_response(response):
-    response_as_text = response.content.decode('UTF-8')
-    response_as_json = json.loads(response_as_text)
-    return response_as_json
+@events.request_failure.add_listener
+def request_failure_handler(request_type, name, response_time, exception, **kwargs):
+    logging.error(
+        f"Request Failed! time:{datetime.now()}, response_time:{response_time} name:{name}, exception:{exception}")
+
+
+def request_get_to_api(client, url, name):
+    with client.get(url=url, catch_response=True, name=get_name_suffix(name)) as response:
+        if response.status_code not in [200, 201, 404]:
+            response.failure(
+                f"failed to request status:{response.status_code} body:{response.content.decode('UTF-8')[0:10]}")
+    response_as_json = response.json()
+    return response_as_json, response_as_json["status"]
+
+
+def request_post_to_api(client, url, body, name, headers={}):
+    with client.post(
+        url=url, headers=headers, json=body, catch_response=True,
+        name=get_name_suffix(name),
+    ) as response:
+        if response.status_code not in [200, 201, 404]:
+            response.failure(
+                f"failed to request status:{response.status_code} body:{response.content.decode('UTF-8')[0:10]}")
+    response_as_json = response.json()
+    return response_as_json, response_as_json["status"]
 
 
 def try_until_success(f):
     for attempt in range(MAX_RETRIES):
         logging.debug(f"Calling function {f.__name__}, attempt {attempt}...")
 
-        try:
-            result, status = f()
-            result_as_string = str(result)
-            logging.debug(f"Result of calling function {f.__name__} was: {result_as_string}.")
-            if status == 1:
-                return result
-            else:
-                logging.debug(f"Failed calling function {f.__name__}, response was {result_as_string}, trying again:")
-                time.sleep(1)
-        except Exception as e:
-            exception_as_text = str(e)
-            logging.debug(f"Failed calling function {f.__name__}, exception was: {exception_as_text}, trying again.")
+        # try:
+        result, status = f()
+        result_as_string = str(result)
+        logging.debug(f"Result of calling function {f.__name__} was: {result_as_string}.")
+        if status == 1:
+            return result
+        else:
+            logging.debug(f"Failed calling function {f.__name__}, response was {result_as_string}, trying again:")
             time.sleep(1)
+        # except Exception as e:
+        #     exception_as_text = str(e)
+        #     logging.debug(f"Failed calling function {f.__name__}, exception was: {exception_as_text}, trying again.")
+        #     time.sleep(1)
 
         if not RETRY_ON_ERROR:
             break
 
-    raise Exception("Weird... Cannot call endpoint.")
+    raise TrainTicketRequestException(f"Weird... Cannot call endpoint {f.__name__}")
 
 
 def login(client):
@@ -65,9 +90,8 @@ def login(client):
     def api_call_admin_login():
         headers = {"Accept": "application/json", "Content-Type": "application/json"}
         body = {"username": "admin", "password": "222222"}
-        response = client.post(url="/api/v1/users/login", headers=headers, json=body, name=get_name_suffix("admin_login"))
-        response_as_json = get_json_from_response(response)
-        return response_as_json, response_as_json["status"]
+        return request_post_to_api(
+            client, url="/api/v1/users/login", headers=headers, body=body, name="admin_login")
 
     response_as_json = try_until_success(api_call_admin_login)
     data = response_as_json["data"]
@@ -79,20 +103,16 @@ def login(client):
             "documentNum": None, "documentType": 0, "email": "string", "gender": 0,
             "password": password, "userName": user_name,
         }
-        response = client.post(
-            url="/api/v1/adminuserservice/users", headers=headers, json=body,
-            name=get_name_suffix("admin_create_user"))
-        response_as_json = get_json_from_response(response)
-        return response_as_json, response_as_json["status"]
+        return request_post_to_api(
+            client, url="/api/v1/adminuserservice/users", headers=headers, body=body, name="admin_create_user")
 
     response_as_json = try_until_success(api_call_admin_create_user)
 
     def api_call_login():
         headers = {"Accept": "application/json", "Content-Type": "application/json"}
         body = {"username": user_name, "password": password}
-        response = client.post(url="/api/v1/users/login", headers=headers, json=body, name=get_name_suffix("login"))
-        response_as_json = get_json_from_response(response)
-        return response_as_json, response_as_json["status"]
+        return request_post_to_api(
+            client, url="/api/v1/users/login", headers=headers, body=body, name="admin_create_user")
 
     response_as_json = try_until_success(api_call_login)
     data = response_as_json["data"]
@@ -105,11 +125,8 @@ def login(client):
             "name": user_name, "accountId": user_id, "documentType": "1",
             "documentNumber": "123456", "phoneNumber": "123456",
         }
-        response = client.post(
-            url="/api/v1/contactservice/contacts", headers=headers, json=body,
-            name=get_name_suffix("admin_create_contact"))
-        response_as_json = get_json_from_response(response)
-        return response_as_json, response_as_json["status"]
+        return request_post_to_api(
+            client, url="/api/v1/contactservice/contacts", headers=headers, body=body, name="admin_create_contact")
 
     try_until_success(api_call_create_contact_for_user)
 
@@ -138,7 +155,8 @@ def get_name_suffix(name):
 
 
 def home(client):
-    client.get("/index.html", name=get_name_suffix("home"))
+    # the response not to be JSON data
+    return client.get(url="/index.html", name=get_name_suffix("home"))
 
 
 def get_departure_date():
@@ -154,11 +172,8 @@ def get_trip_information(client, from_station, to_station):
 
     def api_call_get_trip_information():
         body = {"startingPlace": from_station, "endPlace": to_station, "departureTime": departure_date}
-        response = client.post(
-            url="/api/v1/travelservice/trips/left", json=body, catch_response=True,
-            name=get_name_suffix("get_trip_information"))
-        response_as_json = get_json_from_response(response)
-        return response_as_json, response_as_json["status"]
+        return request_post_to_api(
+            client, url="/api/v1/travelservice/trips/left", headers={}, body=body, name="get_trip_information")
 
     try_until_success(api_call_get_trip_information)
 
@@ -178,25 +193,23 @@ def book(client, user_id):
     departure_date = next_monday.strftime("%Y-%m-%d")
 
     def api_call_insurance():
-        response = client.get(
-            url="/api/v1/assuranceservice/assurances/types",
-            name=get_name_suffix("get_assurance_types"))
-        response_as_json = get_json_from_response(response)
-        return response_as_json, response_as_json["status"]
+        return request_get_to_api(
+            client, url="/api/v1/assuranceservice/assurances/types", name="get_assurance_types",
+        )
 
     def api_call_food():
-        response = client.get(
+        return request_get_to_api(
+            client,
             url=f"/api/v1/foodservice/foods/{departure_date}/Shang%20Hai/Su%20Zhou/D1345",
-            name=get_name_suffix("get_food_types"))
-        response_as_json = get_json_from_response(response)
-        return response_as_json, response_as_json["status"]
+            name="get_food_types",
+        )
 
     def api_call_contacts():
-        response = client.get(
+        return request_get_to_api(
+            client,
             url=f"/api/v1/contactservice/contacts/account/{user_id}",
-            name=get_name_suffix("query_contacts"))
-        response_as_json = get_json_from_response(response)
-        return response_as_json, response_as_json["status"]
+            name="query_contacts",
+        )
 
     try_until_success(api_call_insurance)
     try_until_success(api_call_food)
@@ -210,11 +223,7 @@ def book(client, user_id):
             "date": departure_date, "from": "Shang Hai", "to": "Su Zhou", "assurance": "0",
             "foodType": 1, "foodName": "Bone Soup", "foodPrice": 2.5, "stationName": "", "storeName": "",
         }
-        response = client.post(
-            url="/api/v1/preserveservice/preserve", json=body, catch_response=True,
-            name=get_name_suffix("preserve_ticket"))
-        response_as_json = get_json_from_response(response)
-        return response_as_json, response_as_json["status"]
+        return request_post_to_api(client, url="/api/v1/preserveservice/preserve", body=body, name="preserve_ticket")
 
     try_until_success(api_call_ticket)
 
@@ -226,10 +235,10 @@ def get_last_order(client, user_id, expected_status):
             "enableBoughtDateQuery": "false", "travelDateStart": "null", "travelDateEnd": "null",
             "boughtDateStart": "null", "boughtDateEnd": "null",
         }
-        response = client.post(
-            url="/api/v1/orderservice/order/refresh", json=body, name=get_name_suffix("get_order_information"))
-        response_as_json = get_json_from_response(response)
-        return response_as_json, response_as_json["status"]
+        return request_post_to_api(
+            client,
+            url="/api/v1/orderservice/order/refresh", body=body, name="get_order_information",
+        )
 
     response_as_json = try_until_success(api_call_query)
     data = response_as_json["data"]
@@ -258,10 +267,10 @@ def pay(client, user_id):
 
     def api_call_pay():
         body = {"orderId": order_id, "tripId": "D1345"}
-        response = client.post(
-            url="/api/v1/inside_pay_service/inside_payment", json=body, name=get_name_suffix("pay_order"))
-        response_as_json = get_json_from_response(response)
-        return response_as_json, response_as_json["status"]
+        return request_post_to_api(
+            client,
+            url="/api/v1/inside_pay_service/inside_payment", body=body, name="pay_order",
+        )
 
     try_until_success(api_call_pay)
 
@@ -272,10 +281,10 @@ def cancel(client, user_id):
         raise Exception("Weird... There is no order to cancel.")
 
     def api_call_cancel():
-        response = client.get(
-            url=f"/api/v1/cancelservice/cancel/{order_id}/{user_id}", name=get_name_suffix("cancel_order"))
-        response_as_json = get_json_from_response(response)
-        return response_as_json, response_as_json["status"]
+        return request_get_to_api(
+            client,
+            url=f"/api/v1/cancelservice/cancel/{order_id}/{user_id}", name="cancel_order",
+        )
 
     try_until_success(api_call_cancel)
 
@@ -291,10 +300,10 @@ def consign(client, user_id):
             "accountId": user_id, "handleDate": departure_date, "from": "Shang Hai", "to": "Su Zhou",
             "orderId": order_id, "consignee": order_id, "phone": "123", "weight": "1", "id": "", "isWithin": "false",
         }
-        response = client.put(
-            url="/api/v1/consignservice/consigns", json=body, name=get_name_suffix("create_consign"))
-        response_as_json = get_json_from_response(response)
-        return response_as_json, response_as_json["status"]
+        return request_post_to_api(
+            client,
+            url="/api/v1/consignservice/consigns", body=body, name="create_consign",
+        )
 
     try_until_success(api_call_consign)
 
@@ -305,10 +314,10 @@ def collect_and_use(client, user_id):
         raise Exception("Weird... There is no order to collect.")
 
     def api_call_collect_ticket():
-        response = client.get(
-            url=f"/api/v1/executeservice/execute/collected/{order_id}", name=get_name_suffix("collect_ticket"))
-        response_as_json = get_json_from_response(response)
-        return response_as_json, response_as_json["status"]
+        return request_get_to_api(
+            client,
+            url=f"/api/v1/executeservice/execute/collected/{order_id}", name="collect_ticket",
+        )
 
     try_until_success(api_call_collect_ticket)
 
@@ -317,10 +326,10 @@ def collect_and_use(client, user_id):
         raise Exception("Weird... There is no order to execute.")
 
     def api_call_enter_station():
-        response = client.get(
-            url=f"/api/v1/executeservice/execute/execute/{order_id}", name=get_name_suffix("enter_station"))
-        response_as_json = get_json_from_response(response)
-        return response_as_json, response_as_json["status"]
+        return request_get_to_api(
+            client,
+            url=f"/api/v1/executeservice/execute/execute/{order_id}", name="enter_station",
+        )
 
     try_until_success(api_call_enter_station)
 
@@ -332,9 +341,9 @@ def get_voucher(client, user_id):
 
     def api_call_get_voucher():
         body = {"orderId": order_id, "type": 1}
-        response = client.post(url="/getVoucher", json=body, name=get_name_suffix("get_voucher"))
-        response_as_json = get_json_from_response(response)
-        return response_as_json, response_as_json["status"]
+        return request_post_to_api(
+            client, url="/getVoucher", body=body, name="get_voucher",
+        )
 
     try_until_success(api_call_get_voucher)
 
@@ -346,6 +355,7 @@ def get_voucher(client, user_id):
 
 
 class UserNoLogin(HttpUser):
+    weight = 50
 
     def on_start(self):
         self.client.headers.update({"Content-Type": "application/json"})
@@ -362,6 +372,7 @@ class UserNoLogin(HttpUser):
 
 
 class UserBooking(HttpUser):
+    weight = 10
 
     def on_start(self):
         user_id, token = login(self.client)
@@ -384,6 +395,7 @@ class UserBooking(HttpUser):
 
 
 class UserConsignTicket(HttpUser):
+    weight = 5
 
     def on_start(self):
         user_id, token = login(self.client)
@@ -405,6 +417,7 @@ class UserConsignTicket(HttpUser):
 
 
 class UserCancelNoRefund(HttpUser):
+    weight = 1
 
     def on_start(self):
         user_id, token = login(self.client)
@@ -426,6 +439,7 @@ class UserCancelNoRefund(HttpUser):
 
 
 class UserRefundVoucher(HttpUser):
+    weight = 1
 
     def on_start(self):
         user_id, token = login(self.client)
