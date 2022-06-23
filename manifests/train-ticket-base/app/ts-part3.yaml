@@ -39,11 +39,8 @@ spec:
             cpu: 500m
             memory: 200Mi
       - name: nginxlog-exporter
-        image: ghcr.io/martin-helmich/prometheus-nginxlog-exporter/exporter:v1
-        args: [
-          "--parser", "json",
-          "-config-file", "/etc/prometheus-nginxlog-exporter/nginxlog-exporter.config.hcl",
-        ]
+        image: ghcr.io/martin-helmich/prometheus-nginxlog-exporter/exporter:v1.9.2
+        args: ["-config-file", "/etc/prometheus-nginxlog-exporter/nginxlog-exporter.config.hcl"]
         ports:
           - name: exporter
             containerPort: 4040
