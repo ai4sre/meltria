@@ -166,8 +166,7 @@ def get_departure_date():
     # We always start next Monday because there a train from Shang Hai to Su Zhou starts.
     tomorrow = datetime.now() + timedelta(1)
     next_monday = next_weekday(tomorrow, 0)
-    departure_date = next_monday.strftime("%Y-%m-%d")
-    return departure_date
+    return next_monday.strftime("%Y-%m-%d")
 
 
 def get_trip_information(client, from_station, to_station):
@@ -293,10 +292,11 @@ def cancel(client, user_id):
 
 
 def consign(client, user_id):
-    departure_date = get_departure_date()
     order_id = get_last_order_id(client, user_id, STATUS_BOOKED)
     if order_id is None:
         raise Exception("Weird... There is no order to consign.")
+
+    departure_date = get_departure_date()
 
     def api_call_consign():
         body = {
@@ -358,7 +358,7 @@ def get_voucher(client, user_id):
 
 
 class UserNoLogin(HttpUser):
-    weight = 50
+    weight = 1
 
     def on_start(self):
         self.client.headers.update({"Content-Type": "application/json"})
@@ -375,7 +375,7 @@ class UserNoLogin(HttpUser):
 
 
 class UserBooking(HttpUser):
-    weight = 10
+    weight = 1
 
     def on_start(self):
         user_id, token = login(self.client)
@@ -398,7 +398,7 @@ class UserBooking(HttpUser):
 
 
 class UserConsignTicket(HttpUser):
-    weight = 5
+    weight = 1
 
     def on_start(self):
         user_id, token = login(self.client)
