@@ -27,6 +27,8 @@ spec:
         ports:
         - containerPort: 8080
         volumeMounts:
+        - name: nginxconfig-vol
+          mountPath: /usr/local/openresty/nginx/conf/
         - name: nginxlog-vol
           mountPath: /usr/local/openresty/nginx/logs/
         resources:
@@ -38,7 +40,10 @@ spec:
             memory: 200Mi
       - name: nginxlog-exporter
         image: ghcr.io/martin-helmich/prometheus-nginxlog-exporter/exporter:v1
-        args: ["-config-file", "/etc/prometheus-nginxlog-exporter/nginxlog-exporter.config.hcl"]
+        args: [
+          "--parser", "json",
+          "-config-file", "/etc/prometheus-nginxlog-exporter/nginxlog-exporter.config.hcl",
+        ]
         ports:
           - name: exporter
             containerPort: 4040
@@ -48,6 +53,9 @@ spec:
         - name: nginxlog-exporter-config
           mountPath: /etc/prometheus-nginxlog-exporter
       volumes:
+      - name: nginxconfig-vol
+        configMap:
+          name: nginx-config
       - name: nginxlog-vol
         emptyDir: {}
       - name: nginxlog-exporter-config
