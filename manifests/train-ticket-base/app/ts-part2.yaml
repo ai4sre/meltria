@@ -46,7 +46,7 @@ spec:
         readinessProbe:
           tcpSocket:
             port: 18767
-          initialDelaySeconds: 160
+          initialDelaySeconds: 60
           periodSeconds: 10
           timeoutSeconds: 5
 ---
@@ -100,7 +100,7 @@ spec:
         readinessProbe:
           tcpSocket:
             port: 16112
-          initialDelaySeconds: 160
+          initialDelaySeconds: 60
           periodSeconds: 10
           timeoutSeconds: 5
 ---
@@ -153,7 +153,7 @@ spec:
         readinessProbe:
           tcpSocket:
             port: 16113
-          initialDelaySeconds: 160
+          initialDelaySeconds: 60
           periodSeconds: 10
           timeoutSeconds: 5
 ---
@@ -206,7 +206,7 @@ spec:
         readinessProbe:
           tcpSocket:
             port: 16114
-          initialDelaySeconds: 160
+          initialDelaySeconds: 60
           periodSeconds: 10
           timeoutSeconds: 5
 ---
@@ -259,7 +259,7 @@ spec:
         readinessProbe:
           tcpSocket:
             port: 16115
-          initialDelaySeconds: 160
+          initialDelaySeconds: 60
           periodSeconds: 10
           timeoutSeconds: 5
 ---
@@ -312,7 +312,7 @@ spec:
         readinessProbe:
           tcpSocket:
             port: 18888
-          initialDelaySeconds: 160
+          initialDelaySeconds: 60
           periodSeconds: 10
           timeoutSeconds: 5
 ---
@@ -365,7 +365,7 @@ spec:
         readinessProbe:
           tcpSocket:
             port: 15680
-          initialDelaySeconds: 160
+          initialDelaySeconds: 60
           periodSeconds: 10
           timeoutSeconds: 5
 ---
@@ -418,7 +418,7 @@ spec:
         readinessProbe:
           tcpSocket:
             port: 18885
-          initialDelaySeconds: 160
+          initialDelaySeconds: 60
           periodSeconds: 10
           timeoutSeconds: 5
 ---
@@ -471,7 +471,7 @@ spec:
         readinessProbe:
           tcpSocket:
             port: 15679
-          initialDelaySeconds: 160
+          initialDelaySeconds: 60
           periodSeconds: 10
           timeoutSeconds: 5
 ---
@@ -524,7 +524,7 @@ spec:
         readinessProbe:
           tcpSocket:
             port: 16110
-          initialDelaySeconds: 160
+          initialDelaySeconds: 60
           periodSeconds: 10
           timeoutSeconds: 5
 ---
@@ -577,7 +577,7 @@ spec:
         readinessProbe:
           tcpSocket:
             port: 16111
-          initialDelaySeconds: 160
+          initialDelaySeconds: 60
           periodSeconds: 10
           timeoutSeconds: 5
 ---
@@ -630,7 +630,7 @@ spec:
         readinessProbe:
           tcpSocket:
             port: 12347
-          initialDelaySeconds: 160
+          initialDelaySeconds: 60
           periodSeconds: 10
           timeoutSeconds: 5
 ---
@@ -683,7 +683,7 @@ spec:
         readinessProbe:
           tcpSocket:
             port: 12386
-          initialDelaySeconds: 160
+          initialDelaySeconds: 60
           periodSeconds: 10
           timeoutSeconds: 5
 ---
@@ -736,7 +736,7 @@ spec:
         readinessProbe:
           tcpSocket:
             port: 18855
-          initialDelaySeconds: 160
+          initialDelaySeconds: 60
           periodSeconds: 10
           timeoutSeconds: 5
 ---
@@ -793,7 +793,7 @@ spec:
         readinessProbe:
           tcpSocket:
             port: 18856
-          initialDelaySeconds: 160
+          initialDelaySeconds: 60
           periodSeconds: 10
           timeoutSeconds: 5
 ---
@@ -846,7 +846,7 @@ spec:
         readinessProbe:
           tcpSocket:
             port: 18673
-          initialDelaySeconds: 160
+          initialDelaySeconds: 60
           periodSeconds: 10
           timeoutSeconds: 5
 ---
@@ -900,7 +900,7 @@ spec:
         readinessProbe:
           tcpSocket:
             port: 12340
-          initialDelaySeconds: 160
+          initialDelaySeconds: 60
           periodSeconds: 10
           timeoutSeconds: 5
 ---
@@ -946,7 +946,7 @@ spec:
         readinessProbe:
           tcpSocket:
             port: 12862
-          initialDelaySeconds: 160
+          initialDelaySeconds: 60
           periodSeconds: 10
           timeoutSeconds: 5
 ---
@@ -1003,7 +1003,7 @@ spec:
         readinessProbe:
           tcpSocket:
             port: 17853
-          initialDelaySeconds: 160
+          initialDelaySeconds: 60
           periodSeconds: 10
           timeoutSeconds: 5
 ---
@@ -1056,7 +1056,7 @@ spec:
         readinessProbe:
           tcpSocket:
             port: 12032
-          initialDelaySeconds: 160
+          initialDelaySeconds: 60
           periodSeconds: 10
           timeoutSeconds: 5
 ---
@@ -1109,7 +1109,7 @@ spec:
         readinessProbe:
           tcpSocket:
             port: 12031
-          initialDelaySeconds: 160
+          initialDelaySeconds: 60
           periodSeconds: 10
           timeoutSeconds: 5
 ---
@@ -1162,7 +1162,7 @@ spec:
         readinessProbe:
           tcpSocket:
             port: 19001
-          initialDelaySeconds: 160
+          initialDelaySeconds: 60
           periodSeconds: 10
           timeoutSeconds: 5
 ---
@@ -1219,7 +1219,7 @@ spec:
         readinessProbe:
           tcpSocket:
             port: 14569
-          initialDelaySeconds: 160
+          initialDelaySeconds: 60
           periodSeconds: 10
           timeoutSeconds: 5
 ---
@@ -1277,7 +1277,7 @@ spec:
         readinessProbe:
           tcpSocket:
             port: 14568
-          initialDelaySeconds: 160
+          initialDelaySeconds: 60
           periodSeconds: 10
           timeoutSeconds: 5
 ---
@@ -1330,7 +1330,7 @@ spec:
         readinessProbe:
           tcpSocket:
             port: 16579
-          initialDelaySeconds: 160
+          initialDelaySeconds: 60
           periodSeconds: 10
           timeoutSeconds: 5
 ---
@@ -1383,7 +1383,7 @@ spec:
         readinessProbe:
           tcpSocket:
             port: 18886
-          initialDelaySeconds: 160
+          initialDelaySeconds: 60
           periodSeconds: 10
           timeoutSeconds: 5
 ---
@@ -1436,7 +1436,7 @@ spec:
         readinessProbe:
           tcpSocket:
             port: 14578
-          initialDelaySeconds: 160
+          initialDelaySeconds: 60
           periodSeconds: 10
           timeoutSeconds: 5
 ---
@@ -1489,7 +1489,7 @@ spec:
         readinessProbe:
           tcpSocket:
             port: 11178
-          initialDelaySeconds: 160
+          initialDelaySeconds: 60
           periodSeconds: 10
           timeoutSeconds: 5
 ---
@@ -1542,7 +1542,7 @@ spec:
         readinessProbe:
           tcpSocket:
             port: 18898
-          initialDelaySeconds: 160
+          initialDelaySeconds: 60
           periodSeconds: 10
           timeoutSeconds: 5
 ---
@@ -1595,7 +1595,7 @@ spec:
         readinessProbe:
           tcpSocket:
             port: 11188
-          initialDelaySeconds: 160
+          initialDelaySeconds: 60
           periodSeconds: 10
           timeoutSeconds: 5
 ---
@@ -1648,7 +1648,7 @@ spec:
         readinessProbe:
           tcpSocket:
             port: 12342
-          initialDelaySeconds: 160
+          initialDelaySeconds: 60
           periodSeconds: 10
           timeoutSeconds: 5
 ---
@@ -1701,7 +1701,7 @@ spec:
         readinessProbe:
           tcpSocket:
             port: 12345
-          initialDelaySeconds: 160
+          initialDelaySeconds: 60
           periodSeconds: 10
           timeoutSeconds: 5
 ---
@@ -1754,7 +1754,7 @@ spec:
         readinessProbe:
           tcpSocket:
             port: 16108
-          initialDelaySeconds: 160
+          initialDelaySeconds: 60
           periodSeconds: 10
           timeoutSeconds: 5
 ---
@@ -1807,7 +1807,7 @@ spec:
         readinessProbe:
           tcpSocket:
             port: 15681
-          initialDelaySeconds: 160
+          initialDelaySeconds: 60
           periodSeconds: 10
           timeoutSeconds: 5
 ---
@@ -1860,7 +1860,7 @@ spec:
         readinessProbe:
           tcpSocket:
             port: 14567
-          initialDelaySeconds: 160
+          initialDelaySeconds: 60
           periodSeconds: 10
           timeoutSeconds: 5
 ---
@@ -1914,7 +1914,7 @@ spec:
         readinessProbe:
           tcpSocket:
             port: 16346
-          initialDelaySeconds: 160
+          initialDelaySeconds: 60
           periodSeconds: 10
           timeoutSeconds: 5
 ---
@@ -1967,7 +1967,7 @@ spec:
         readinessProbe:
           tcpSocket:
             port: 14322
-          initialDelaySeconds: 160
+          initialDelaySeconds: 60
           periodSeconds: 10
           timeoutSeconds: 5
 ---
@@ -2021,7 +2021,7 @@ spec:
         readinessProbe:
           tcpSocket:
             port: 12346
-          initialDelaySeconds: 160
+          initialDelaySeconds: 60
           periodSeconds: 10
           timeoutSeconds: 5
 ---
@@ -2128,7 +2128,7 @@ spec:
         readinessProbe:
           tcpSocket:
             port: 15678
-          initialDelaySeconds: 160
+          initialDelaySeconds: 60
           periodSeconds: 10
           timeoutSeconds: 5
 ---
@@ -2174,7 +2174,7 @@ spec:
         readinessProbe:
           tcpSocket:
             port: 16101
-          initialDelaySeconds: 160
+          initialDelaySeconds: 60
           periodSeconds: 10
           timeoutSeconds: 5
 ---
@@ -2217,7 +2217,7 @@ spec:
         readinessProbe:
           tcpSocket:
             port: 17001
-          initialDelaySeconds: 160
+          initialDelaySeconds: 60
           periodSeconds: 10
           timeoutSeconds: 5
 ---
