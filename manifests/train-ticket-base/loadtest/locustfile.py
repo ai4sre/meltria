@@ -377,7 +377,7 @@ class UserNoLogin(HttpUser):
 class UserBooking(HttpUser):
     weight = 1
 
-    def on_start(self):
+    def _login(self):
         user_id, token = login(self.client)
         self.client.headers.update({"Authorization": f"Bearer {token}"})
         self.client.headers.update({"Content-Type": "application/json"})
@@ -386,6 +386,8 @@ class UserBooking(HttpUser):
 
     @task
     def perform_task(self):
+        self._login()
+
         request_id = str(uuid.uuid4())
         logging.debug(f'Running user "booking" with request id {request_id}...')
 
@@ -400,7 +402,7 @@ class UserBooking(HttpUser):
 class UserConsignTicket(HttpUser):
     weight = 1
 
-    def on_start(self):
+    def _login(self):
         user_id, token = login(self.client)
         self.client.headers.update({"Authorization": f"Bearer {token}"})
         self.client.headers.update({"Content-Type": "application/json"})
@@ -409,6 +411,8 @@ class UserConsignTicket(HttpUser):
 
     @task
     def perform_task(self):
+        self._login()
+
         request_id = str(uuid.uuid4())
         logging.debug(f'Running user "consign ticket" with request id {request_id}...')
 
@@ -422,7 +426,7 @@ class UserConsignTicket(HttpUser):
 class UserCancelNoRefund(HttpUser):
     weight = 1
 
-    def on_start(self):
+    def _login(self):
         user_id, token = login(self.client)
         self.client.headers.update({"Authorization": f"Bearer {token}"})
         self.client.headers.update({"Content-Type": "application/json"})
@@ -431,6 +435,8 @@ class UserCancelNoRefund(HttpUser):
 
     @task
     def perform_task(self):
+        self._login()
+
         request_id = str(uuid.uuid4())
         logging.debug(f'Running user "cancel no refund" with request id {request_id}...')
 
@@ -444,7 +450,7 @@ class UserCancelNoRefund(HttpUser):
 class UserRefundVoucher(HttpUser):
     weight = 1
 
-    def on_start(self):
+    def _login(self):
         user_id, token = login(self.client)
         self.client.headers.update({"Authorization": f"Bearer {token}"})
         self.client.headers.update({"Content-Type": "application/json"})
@@ -453,6 +459,8 @@ class UserRefundVoucher(HttpUser):
 
     @task
     def perform_task(self):
+        self._login()
+
         request_id = str(uuid.uuid4())
         logging.debug(f'Running user "cancel no refund" with request id {request_id}...')
 
