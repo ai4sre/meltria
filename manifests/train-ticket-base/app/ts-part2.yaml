@@ -622,8 +622,8 @@ spec:
         - containerPort: 12347
         resources:
           requests:
-            cpu: 100m
-            memory: 160Mi
+            cpu: 50m
+            memory: 100Mi
           limits:
             cpu: 500m
             memory: 500Mi
@@ -839,7 +839,7 @@ spec:
         resources:
           requests:
             cpu: 50m
-            memory: 160Mi
+            memory: 300Mi
           limits:
             cpu: 200m
             memory: 500Mi
@@ -938,7 +938,7 @@ spec:
         - containerPort: 12862
         resources:
           requests:
-            cpu: 50m
+            cpu: 10m
             memory: 50Mi
           limits:
             cpu: 200m
@@ -1048,8 +1048,8 @@ spec:
         - containerPort: 12032
         resources:
           requests:
-            cpu: 100m
-            memory: 160Mi
+            cpu: 50m
+            memory: 100Mi
           limits:
             cpu: 200m
             memory: 500Mi
@@ -1090,6 +1090,7 @@ spec:
       - name: ts-order-service
         image: codewisdom/ts-order-service:0.2.1
         imagePullPolicy: IfNotPresent
+        args: ["java", "-Xmx400m",  "-jar", "/app/ts-order-service-1.0.jar"]
         env:
           - name: JAVA_TOOL_OPTIONS
             value: >-
@@ -1154,7 +1155,7 @@ spec:
         - containerPort: 19001
         resources:
           requests:
-            cpu: 100m
+            cpu: 50m
             memory: 160Mi
           limits:
             cpu: 500m
@@ -1211,7 +1212,7 @@ spec:
         - containerPort: 14569
         resources:
           requests:
-            cpu: 100m
+            cpu: 50m
             memory: 160Mi
           limits:
             cpu: 500m
@@ -1269,8 +1270,8 @@ spec:
         - containerPort: 14568
         resources:
           requests:
-            cpu: 100m
-            memory: 160Mi
+            cpu: 50m
+            memory: 400Mi
           limits:
             cpu: 500m
             memory: 800Mi
@@ -1375,7 +1376,7 @@ spec:
         - containerPort: 18886
         resources:
           requests:
-            cpu: 100m
+            cpu: 50m
             memory: 160Mi
           limits:
             cpu: 500m
@@ -1428,7 +1429,7 @@ spec:
         - containerPort: 14578
         resources:
           requests:
-            cpu: 100m
+            cpu: 50m
             memory: 160Mi
           limits:
             cpu: 500m
@@ -1746,7 +1747,7 @@ spec:
         - containerPort: 16108
         resources:
           requests:
-            cpu: 50m
+            cpu: 10m
             memory: 100Mi
           limits:
             cpu: 500m
@@ -1894,7 +1895,6 @@ spec:
       - name: ts-travel2-service
         image: codewisdom/ts-travel2-service:0.2.1
         imagePullPolicy: IfNotPresent
-        args: ["java", "-Xmx200m",  "-jar", "/app/ts-travel2-service-1.0.jar"]
         env:
           - name: JAVA_TOOL_OPTIONS
             value: >-
@@ -1906,8 +1906,8 @@ spec:
         - containerPort: 16346
         resources:
           requests:
-            cpu: 100m
-            memory: 200Mi
+            cpu: 50m
+            memory: 300Mi
           limits:
             cpu: 500m
             memory: 400Mi
@@ -1959,8 +1959,8 @@ spec:
         - containerPort: 14322
         resources:
           requests:
-            cpu: 100m
-            memory: 160Mi
+            cpu: 50m
+            memory: 300Mi
           limits:
             cpu: 500m
             memory: 500Mi
@@ -2067,10 +2067,10 @@ spec:
           - containerPort: 18808
         resources:
           requests:
-            cpu: 50m
+            cpu: 10m
             memory: 100Mi
           limits:
-            cpu: 500m
+            cpu: 200m
             memory: 500Mi
         readinessProbe:
           tcpSocket:
@@ -2166,7 +2166,7 @@ spec:
         - containerPort: 16101
         resources:
           requests:
-            cpu: 50m
+            cpu: 10m
             memory: 50Mi
           limits:
             cpu: 100m
@@ -2209,7 +2209,7 @@ spec:
         - containerPort: 17001
         resources:
           requests:
-            cpu: 50m
+            cpu: 10m
             memory: 160Mi
           limits:
             cpu: 200m
