@@ -8,14 +8,25 @@ releases:
   - name: chaos
     namespace: litmus
     chart: litmuschaos/litmus
-    version: ~2.9.0
+    version: ~2.10.0
     values:
-      - nodeSelector:
-          cloud.google.com/gke-nodepool: control-pool
+      - mongo:
+          nodeSelector:
+            cloud.google.com/gke-nodepool: control-pool
+      - portal:
+          frontend:
+            nodeSelector:
+              cloud.google.com/gke-nodepool: control-pool
+          server:
+            nodeSelector:
+              cloud.google.com/gke-nodepool: control-pool
+          upgradeAgent:
+            nodeSelector:
+              cloud.google.com/gke-nodepool: control-pool
   - name: kubernetes-chaos
     namespace: litmus
     chart: litmuschaos/kubernetes-chaos
-    version: ~2.23.0
+    version: ~2.24.0
     values:
       - image:
           litmusGO:

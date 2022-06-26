@@ -5,12 +5,16 @@ namespace: train-ticket
 
 resources:
 - ts-ns.yaml
-- jaeger.yaml
+# - jaeger.yaml
 - ts-part1.yaml
 - ts-part2.yaml
 - ts-part3.yaml
 
 configMapGenerator:
+- name: nginx-config
+  files:
+  - ts-ui-dashboard.nginx/nginx.conf
+  - ts-ui-dashboard.nginx/mime.types
 - name: nginxlog-exporter-config
   files:
   - nginxlog-exporter.config.hcl

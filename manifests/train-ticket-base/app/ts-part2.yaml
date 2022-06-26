@@ -25,7 +25,7 @@ spec:
     spec:
       containers:
       - name: ts-admin-basic-info-service
-        image: codewisdom/ts-admin-basic-info-service:0.2.0
+        image: codewisdom/ts-admin-basic-info-service:0.2.1
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -46,7 +46,7 @@ spec:
         readinessProbe:
           tcpSocket:
             port: 18767
-          initialDelaySeconds: 160
+          initialDelaySeconds: 60
           periodSeconds: 10
           timeoutSeconds: 5
 ---
@@ -79,7 +79,7 @@ spec:
     spec:
       containers:
       - name: ts-admin-order-service
-        image: codewisdom/ts-admin-order-service:0.2.0
+        image: codewisdom/ts-admin-order-service:0.2.1
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -100,7 +100,7 @@ spec:
         readinessProbe:
           tcpSocket:
             port: 16112
-          initialDelaySeconds: 160
+          initialDelaySeconds: 60
           periodSeconds: 10
           timeoutSeconds: 5
 ---
@@ -132,7 +132,7 @@ spec:
     spec:
       containers:
       - name: ts-admin-route-service
-        image: codewisdom/ts-admin-route-service:0.2.0
+        image: codewisdom/ts-admin-route-service:0.2.1
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -145,7 +145,7 @@ spec:
         - containerPort: 16113
         resources:
           requests:
-            cpu: 50m
+            cpu: 100m
             memory: 160Mi
           limits:
             cpu: 200m
@@ -153,7 +153,7 @@ spec:
         readinessProbe:
           tcpSocket:
             port: 16113
-          initialDelaySeconds: 160
+          initialDelaySeconds: 60
           periodSeconds: 10
           timeoutSeconds: 5
 ---
@@ -185,7 +185,7 @@ spec:
     spec:
       containers:
       - name: ts-admin-travel-service
-        image: codewisdom/ts-admin-travel-service:0.2.0
+        image: codewisdom/ts-admin-travel-service:0.2.1
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -206,7 +206,7 @@ spec:
         readinessProbe:
           tcpSocket:
             port: 16114
-          initialDelaySeconds: 160
+          initialDelaySeconds: 60
           periodSeconds: 10
           timeoutSeconds: 5
 ---
@@ -238,7 +238,7 @@ spec:
     spec:
       containers:
       - name: ts-admin-user-service
-        image: codewisdom/ts-admin-user-service:0.2.0
+        image: codewisdom/ts-admin-user-service:0.2.1
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -251,7 +251,7 @@ spec:
         - containerPort: 16115
         resources:
           requests:
-            cpu: 50m
+            cpu: 100m
             memory: 160Mi
           limits:
             cpu: 200m
@@ -259,7 +259,7 @@ spec:
         readinessProbe:
           tcpSocket:
             port: 16115
-          initialDelaySeconds: 160
+          initialDelaySeconds: 60
           periodSeconds: 10
           timeoutSeconds: 5
 ---
@@ -291,7 +291,7 @@ spec:
     spec:
       containers:
       - name: ts-assurance-service
-        image: codewisdom/ts-assurance-service:0.2.0
+        image: codewisdom/ts-assurance-service:0.2.1
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -312,7 +312,7 @@ spec:
         readinessProbe:
           tcpSocket:
             port: 18888
-          initialDelaySeconds: 160
+          initialDelaySeconds: 60
           periodSeconds: 10
           timeoutSeconds: 5
 ---
@@ -344,7 +344,7 @@ spec:
     spec:
       containers:
       - name: ts-basic-service
-        image: codewisdom/ts-basic-service:0.2.0
+        image: codewisdom/ts-basic-service:0.2.1
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -365,7 +365,7 @@ spec:
         readinessProbe:
           tcpSocket:
             port: 15680
-          initialDelaySeconds: 160
+          initialDelaySeconds: 60
           periodSeconds: 10
           timeoutSeconds: 5
 ---
@@ -397,7 +397,7 @@ spec:
     spec:
       containers:
       - name: ts-cancel-service
-        image: codewisdom/ts-cancel-service:0.2.0
+        image: codewisdom/ts-cancel-service:0.2.1
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -410,7 +410,7 @@ spec:
         - containerPort: 18885
         resources:
           requests:
-            cpu: 50m
+            cpu: 100m
             memory: 160Mi
           limits:
             cpu: 200m
@@ -418,7 +418,7 @@ spec:
         readinessProbe:
           tcpSocket:
             port: 18885
-          initialDelaySeconds: 160
+          initialDelaySeconds: 60
           periodSeconds: 10
           timeoutSeconds: 5
 ---
@@ -450,7 +450,7 @@ spec:
     spec:
       containers:
       - name: ts-config-service
-        image: codewisdom/ts-config-service:0.2.0
+        image: codewisdom/ts-config-service:0.2.1
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -471,7 +471,7 @@ spec:
         readinessProbe:
           tcpSocket:
             port: 15679
-          initialDelaySeconds: 160
+          initialDelaySeconds: 60
           periodSeconds: 10
           timeoutSeconds: 5
 ---
@@ -481,29 +481,29 @@ kind: Deployment
 metadata:
   name: ts-consign-price-service
   labels:
-    app.kubernetes.io/name: ts-config-price-service
-    app.kubernetes.io/part-of: ts-config-price
+    app.kubernetes.io/name: ts-consign-price-service
+    app.kubernetes.io/part-of: ts-consign-price
     app.kubernetes.io/component: web
     runtime: jvm
 spec:
   selector:
     matchLabels:
-      app.kubernetes.io/name: ts-config-price-service
-      app.kubernetes.io/part-of: ts-config-price
+      app.kubernetes.io/name: ts-consign-price-service
+      app.kubernetes.io/part-of: ts-consign-price
       app.kubernetes.io/component: web
       runtime: jvm
   replicas: 1
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: ts-config-price-service
-        app.kubernetes.io/part-of: ts-config-price
+        app.kubernetes.io/name: ts-consign-price-service
+        app.kubernetes.io/part-of: ts-consign-price
         app.kubernetes.io/component: web
         runtime: jvm
     spec:
       containers:
       - name: ts-consign-price-service
-        image: codewisdom/ts-consign-price-service:0.2.0
+        image: codewisdom/ts-consign-price-service:0.2.1
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -516,7 +516,7 @@ spec:
         - containerPort: 16110
         resources:
           requests:
-            cpu: 50m
+            cpu: 100m
             memory: 160Mi
           limits:
             cpu: 200m
@@ -524,7 +524,7 @@ spec:
         readinessProbe:
           tcpSocket:
             port: 16110
-          initialDelaySeconds: 160
+          initialDelaySeconds: 60
           periodSeconds: 10
           timeoutSeconds: 5
 ---
@@ -556,7 +556,7 @@ spec:
     spec:
       containers:
       - name: ts-consign-service
-        image: codewisdom/ts-consign-service:0.2.0
+        image: codewisdom/ts-consign-service:0.2.1
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -569,7 +569,7 @@ spec:
         - containerPort: 16111
         resources:
           requests:
-            cpu: 50m
+            cpu: 100m
             memory: 160Mi
           limits:
             cpu: 200m
@@ -577,7 +577,7 @@ spec:
         readinessProbe:
           tcpSocket:
             port: 16111
-          initialDelaySeconds: 160
+          initialDelaySeconds: 60
           periodSeconds: 10
           timeoutSeconds: 5
 ---
@@ -609,7 +609,7 @@ spec:
     spec:
       containers:
       - name: ts-contacts-service
-        image: codewisdom/ts-contacts-service:0.2.0
+        image: codewisdom/ts-contacts-service:0.2.1
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -622,15 +622,15 @@ spec:
         - containerPort: 12347
         resources:
           requests:
-            cpu: 100m
-            memory: 160Mi
+            cpu: 50m
+            memory: 100Mi
           limits:
             cpu: 500m
             memory: 500Mi
         readinessProbe:
           tcpSocket:
             port: 12347
-          initialDelaySeconds: 160
+          initialDelaySeconds: 60
           periodSeconds: 10
           timeoutSeconds: 5
 ---
@@ -662,7 +662,7 @@ spec:
     spec:
       containers:
       - name: ts-execute-service
-        image: codewisdom/ts-execute-service:0.2.0
+        image: codewisdom/ts-execute-service:0.2.1
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -683,7 +683,7 @@ spec:
         readinessProbe:
           tcpSocket:
             port: 12386
-          initialDelaySeconds: 160
+          initialDelaySeconds: 60
           periodSeconds: 10
           timeoutSeconds: 5
 ---
@@ -715,7 +715,7 @@ spec:
     spec:
       containers:
       - name: ts-food-map-service
-        image: codewisdom/ts-food-map-service:0.2.0
+        image: codewisdom/ts-food-map-service:0.2.1
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -736,7 +736,7 @@ spec:
         readinessProbe:
           tcpSocket:
             port: 18855
-          initialDelaySeconds: 160
+          initialDelaySeconds: 60
           periodSeconds: 10
           timeoutSeconds: 5
 ---
@@ -768,7 +768,7 @@ spec:
     spec:
       containers:
       - name: ts-food-service
-        image: codewisdom/ts-food-service:0.2.0
+        image: codewisdom/ts-food-service:0.2.1
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -777,6 +777,10 @@ spec:
                   -Dcom.sun.management.jmxremote.port=5555
                   -Dcom.sun.management.jmxremote.authenticate=false
                   -Dcom.sun.management.jmxremote.ssl=false
+          - name: rabbitmq_host
+            value: "rabbitmq"
+          - name: rabbitmq_port
+            value: "5672"
         ports:
         - containerPort: 18856
         resources:
@@ -789,7 +793,7 @@ spec:
         readinessProbe:
           tcpSocket:
             port: 18856
-          initialDelaySeconds: 160
+          initialDelaySeconds: 60
           periodSeconds: 10
           timeoutSeconds: 5
 ---
@@ -821,7 +825,7 @@ spec:
     spec:
       containers:
       - name: ts-inside-payment-service
-        image: codewisdom/ts-inside-payment-service:0.2.0
+        image: codewisdom/ts-inside-payment-service:0.2.1
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -835,14 +839,14 @@ spec:
         resources:
           requests:
             cpu: 50m
-            memory: 160Mi
+            memory: 300Mi
           limits:
             cpu: 200m
             memory: 500Mi
         readinessProbe:
           tcpSocket:
             port: 18673
-          initialDelaySeconds: 160
+          initialDelaySeconds: 60
           periodSeconds: 10
           timeoutSeconds: 5
 ---
@@ -874,7 +878,7 @@ spec:
     spec:
       containers:
       - name: ts-auth-service
-        image: codewisdom/ts-auth-service:0.2.0
+        image: codewisdom/ts-auth-service:0.2.1
         imagePullPolicy: IfNotPresent
         args: ["java", "-Xmx400m",  "-jar", "/app/ts-auth-service-1.0.jar"]
         env:
@@ -888,7 +892,7 @@ spec:
         - containerPort: 12340
         resources:
           requests:
-            cpu: 500m
+            cpu: 200m
             memory: 500Mi
           limits:
             cpu: 700m
@@ -896,7 +900,7 @@ spec:
         readinessProbe:
           tcpSocket:
             port: 12340
-          initialDelaySeconds: 160
+          initialDelaySeconds: 60
           periodSeconds: 10
           timeoutSeconds: 5
 ---
@@ -928,13 +932,13 @@ spec:
     spec:
       containers:
       - name: ts-news-service
-        image: codewisdom/ts-news-service:0.2.0
+        image: codewisdom/ts-news-service:0.2.1
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 12862
         resources:
           requests:
-            cpu: 50m
+            cpu: 10m
             memory: 50Mi
           limits:
             cpu: 200m
@@ -942,7 +946,7 @@ spec:
         readinessProbe:
           tcpSocket:
             port: 12862
-          initialDelaySeconds: 160
+          initialDelaySeconds: 60
           periodSeconds: 10
           timeoutSeconds: 5
 ---
@@ -974,7 +978,7 @@ spec:
     spec:
       containers:
       - name: ts-notification-service
-        image: codewisdom/ts-notification-service:0.2.0
+        image: codewisdom/ts-notification-service:0.2.1
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -983,19 +987,23 @@ spec:
                   -Dcom.sun.management.jmxremote.port=5555
                   -Dcom.sun.management.jmxremote.authenticate=false
                   -Dcom.sun.management.jmxremote.ssl=false
+          - name: rabbitmq_host
+            value: "rabbitmq"
+          - name: rabbitmq_port
+            value: "5672"
         ports:
         - containerPort: 17853
         resources:
           requests:
-            cpu: 50m
+            cpu: 100m
             memory: 160Mi
           limits:
-            cpu: 200m
+            cpu: 500m
             memory: 500Mi
         readinessProbe:
           tcpSocket:
             port: 17853
-          initialDelaySeconds: 160
+          initialDelaySeconds: 60
           periodSeconds: 10
           timeoutSeconds: 5
 ---
@@ -1027,7 +1035,7 @@ spec:
     spec:
       containers:
       - name: ts-order-other-service
-        image: codewisdom/ts-order-other-service:0.2.0
+        image: codewisdom/ts-order-other-service:0.2.1
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -1041,14 +1049,14 @@ spec:
         resources:
           requests:
             cpu: 50m
-            memory: 160Mi
+            memory: 100Mi
           limits:
             cpu: 200m
             memory: 500Mi
         readinessProbe:
           tcpSocket:
             port: 12032
-          initialDelaySeconds: 160
+          initialDelaySeconds: 60
           periodSeconds: 10
           timeoutSeconds: 5
 ---
@@ -1080,8 +1088,9 @@ spec:
     spec:
       containers:
       - name: ts-order-service
-        image: codewisdom/ts-order-service:0.2.0
+        image: codewisdom/ts-order-service:0.2.1
         imagePullPolicy: IfNotPresent
+        args: ["java", "-Xmx400m",  "-jar", "/app/ts-order-service-1.0.jar"]
         env:
           - name: JAVA_TOOL_OPTIONS
             value: >-
@@ -1093,15 +1102,15 @@ spec:
         - containerPort: 12031
         resources:
           requests:
-            cpu: 50m
+            cpu: 100m
             memory: 160Mi
           limits:
-            cpu: 500m
-            memory: 500Mi
+            cpu: 800m
+            memory: 800Mi
         readinessProbe:
           tcpSocket:
             port: 12031
-          initialDelaySeconds: 160
+          initialDelaySeconds: 60
           periodSeconds: 10
           timeoutSeconds: 5
 ---
@@ -1133,7 +1142,7 @@ spec:
     spec:
       containers:
       - name: ts-payment-service
-        image: codewisdom/ts-payment-service:0.2.0
+        image: codewisdom/ts-payment-service:0.2.1
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -1149,12 +1158,12 @@ spec:
             cpu: 50m
             memory: 160Mi
           limits:
-            cpu: 200m
+            cpu: 500m
             memory: 500Mi
         readinessProbe:
           tcpSocket:
             port: 19001
-          initialDelaySeconds: 160
+          initialDelaySeconds: 60
           periodSeconds: 10
           timeoutSeconds: 5
 ---
@@ -1186,7 +1195,7 @@ spec:
     spec:
       containers:
       - name: ts-preserve-other-service
-        image: codewisdom/ts-preserve-other-service:0.2.0
+        image: codewisdom/ts-preserve-other-service:0.2.1
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -1195,6 +1204,10 @@ spec:
                   -Dcom.sun.management.jmxremote.port=5555
                   -Dcom.sun.management.jmxremote.authenticate=false
                   -Dcom.sun.management.jmxremote.ssl=false
+          - name: rabbitmq_host
+            value: "rabbitmq"
+          - name: rabbitmq_port
+            value: "5672"
         ports:
         - containerPort: 14569
         resources:
@@ -1202,12 +1215,12 @@ spec:
             cpu: 50m
             memory: 160Mi
           limits:
-            cpu: 200m
+            cpu: 500m
             memory: 500Mi
         readinessProbe:
           tcpSocket:
             port: 14569
-          initialDelaySeconds: 160
+          initialDelaySeconds: 60
           periodSeconds: 10
           timeoutSeconds: 5
 ---
@@ -1239,7 +1252,7 @@ spec:
     spec:
       containers:
       - name: ts-preserve-service
-        image: codewisdom/ts-preserve-service:0.2.0
+        image: codewisdom/ts-preserve-service:0.2.1
         imagePullPolicy: IfNotPresent
         args: ["java", "-Xmx400m",  "-jar", "/app/ts-preserve-service-1.0.jar"]
         env:
@@ -1249,19 +1262,23 @@ spec:
                   -Dcom.sun.management.jmxremote.port=5555
                   -Dcom.sun.management.jmxremote.authenticate=false
                   -Dcom.sun.management.jmxremote.ssl=false
+          - name: rabbitmq_host
+            value: "rabbitmq"
+          - name: rabbitmq_port
+            value: "5672"
         ports:
         - containerPort: 14568
         resources:
           requests:
             cpu: 50m
-            memory: 160Mi
+            memory: 400Mi
           limits:
-            cpu: 200m
+            cpu: 500m
             memory: 800Mi
         readinessProbe:
           tcpSocket:
             port: 14568
-          initialDelaySeconds: 160
+          initialDelaySeconds: 60
           periodSeconds: 10
           timeoutSeconds: 5
 ---
@@ -1293,7 +1310,7 @@ spec:
     spec:
       containers:
       - name: ts-price-service
-        image: codewisdom/ts-price-service:0.2.0
+        image: codewisdom/ts-price-service:0.2.1
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -1306,15 +1323,15 @@ spec:
         - containerPort: 16579
         resources:
           requests:
-            cpu: 50m
+            cpu: 100m
             memory: 160Mi
           limits:
-            cpu: 200m
+            cpu: 500m
             memory: 500Mi
         readinessProbe:
           tcpSocket:
             port: 16579
-          initialDelaySeconds: 160
+          initialDelaySeconds: 60
           periodSeconds: 10
           timeoutSeconds: 5
 ---
@@ -1346,7 +1363,7 @@ spec:
     spec:
       containers:
       - name: ts-rebook-service
-        image: codewisdom/ts-rebook-service:0.2.0
+        image: codewisdom/ts-rebook-service:0.2.1
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -1362,12 +1379,12 @@ spec:
             cpu: 50m
             memory: 160Mi
           limits:
-            cpu: 200m
+            cpu: 500m
             memory: 500Mi
         readinessProbe:
           tcpSocket:
             port: 18886
-          initialDelaySeconds: 160
+          initialDelaySeconds: 60
           periodSeconds: 10
           timeoutSeconds: 5
 ---
@@ -1399,7 +1416,7 @@ spec:
     spec:
       containers:
       - name: ts-route-plan-service
-        image: codewisdom/ts-route-plan-service:0.2.0
+        image: codewisdom/ts-route-plan-service:0.2.1
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -1415,12 +1432,12 @@ spec:
             cpu: 50m
             memory: 160Mi
           limits:
-            cpu: 200m
+            cpu: 500m
             memory: 500Mi
         readinessProbe:
           tcpSocket:
             port: 14578
-          initialDelaySeconds: 160
+          initialDelaySeconds: 60
           periodSeconds: 10
           timeoutSeconds: 5
 ---
@@ -1452,7 +1469,7 @@ spec:
     spec:
       containers:
       - name: ts-route-service
-        image: codewisdom/ts-route-service:0.2.0
+        image: codewisdom/ts-route-service:0.2.1
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -1465,7 +1482,7 @@ spec:
         - containerPort: 11178
         resources:
           requests:
-            cpu: 50m
+            cpu: 100m
             memory: 160Mi
           limits:
             cpu: 500m
@@ -1473,7 +1490,7 @@ spec:
         readinessProbe:
           tcpSocket:
             port: 11178
-          initialDelaySeconds: 160
+          initialDelaySeconds: 60
           periodSeconds: 10
           timeoutSeconds: 5
 ---
@@ -1505,7 +1522,7 @@ spec:
     spec:
       containers:
       - name: ts-seat-service
-        image: codewisdom/ts-seat-service:0.2.0
+        image: codewisdom/ts-seat-service:0.2.1
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -1518,7 +1535,7 @@ spec:
         - containerPort: 18898
         resources:
           requests:
-            cpu: 50m
+            cpu: 100m
             memory: 160Mi
           limits:
             cpu: 500m
@@ -1526,7 +1543,7 @@ spec:
         readinessProbe:
           tcpSocket:
             port: 18898
-          initialDelaySeconds: 160
+          initialDelaySeconds: 60
           periodSeconds: 10
           timeoutSeconds: 5
 ---
@@ -1558,7 +1575,7 @@ spec:
     spec:
       containers:
       - name: ts-security-service
-        image: codewisdom/ts-security-service:0.2.0
+        image: codewisdom/ts-security-service:0.2.1
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -1574,12 +1591,12 @@ spec:
             cpu: 50m
             memory: 160Mi
           limits:
-            cpu: 200m
+            cpu: 500m
             memory: 500Mi
         readinessProbe:
           tcpSocket:
             port: 11188
-          initialDelaySeconds: 160
+          initialDelaySeconds: 60
           periodSeconds: 10
           timeoutSeconds: 5
 ---
@@ -1611,7 +1628,7 @@ spec:
     spec:
       containers:
       - name: ts-user-service
-        image: codewisdom/ts-user-service:0.2.0
+        image: codewisdom/ts-user-service:0.2.1
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -1624,15 +1641,15 @@ spec:
         - containerPort: 12342
         resources:
           requests:
-            cpu: 50m
+            cpu: 100m
             memory: 160Mi
           limits:
-            cpu: 200m
+            cpu: 500m
             memory: 500Mi
         readinessProbe:
           tcpSocket:
             port: 12342
-          initialDelaySeconds: 160
+          initialDelaySeconds: 60
           periodSeconds: 10
           timeoutSeconds: 5
 ---
@@ -1664,7 +1681,7 @@ spec:
     spec:
       containers:
       - name: ts-station-service
-        image: codewisdom/ts-station-service:0.2.0
+        image: codewisdom/ts-station-service:0.2.1
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -1677,7 +1694,7 @@ spec:
         - containerPort: 12345
         resources:
           requests:
-            cpu: 50m
+            cpu: 100m
             memory: 160Mi
           limits:
             cpu: 600m
@@ -1685,7 +1702,7 @@ spec:
         readinessProbe:
           tcpSocket:
             port: 12345
-          initialDelaySeconds: 160
+          initialDelaySeconds: 60
           periodSeconds: 10
           timeoutSeconds: 5
 ---
@@ -1717,7 +1734,7 @@ spec:
     spec:
       containers:
       - name: ts-ticket-office-service
-        image: codewisdom/ts-ticket-office-service:0.2.0
+        image: codewisdom/ts-ticket-office-service:0.2.1
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -1730,15 +1747,15 @@ spec:
         - containerPort: 16108
         resources:
           requests:
-            cpu: 50m
-            memory: 160Mi
+            cpu: 10m
+            memory: 100Mi
           limits:
-            cpu: 200m
-            memory: 500Mi
+            cpu: 500m
+            memory: 300Mi
         readinessProbe:
           tcpSocket:
             port: 16108
-          initialDelaySeconds: 160
+          initialDelaySeconds: 60
           periodSeconds: 10
           timeoutSeconds: 5
 ---
@@ -1770,7 +1787,7 @@ spec:
     spec:
       containers:
       - name: ts-ticketinfo-service
-        image: codewisdom/ts-ticketinfo-service:0.2.0
+        image: codewisdom/ts-ticketinfo-service:0.2.1
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -1783,7 +1800,7 @@ spec:
         - containerPort: 15681
         resources:
           requests:
-            cpu: 50m
+            cpu: 100m
             memory: 160Mi
           limits:
             cpu: 500m
@@ -1791,7 +1808,7 @@ spec:
         readinessProbe:
           tcpSocket:
             port: 15681
-          initialDelaySeconds: 160
+          initialDelaySeconds: 60
           periodSeconds: 10
           timeoutSeconds: 5
 ---
@@ -1823,7 +1840,7 @@ spec:
     spec:
       containers:
       - name: ts-train-service
-        image: codewisdom/ts-train-service:0.2.0
+        image: codewisdom/ts-train-service:0.2.1
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -1836,15 +1853,15 @@ spec:
         - containerPort: 14567
         resources:
           requests:
-            cpu: 50m
+            cpu: 100m
             memory: 160Mi
           limits:
-            cpu: 200m
+            cpu: 500m
             memory: 500Mi
         readinessProbe:
           tcpSocket:
             port: 14567
-          initialDelaySeconds: 160
+          initialDelaySeconds: 60
           periodSeconds: 10
           timeoutSeconds: 5
 ---
@@ -1876,9 +1893,8 @@ spec:
     spec:
       containers:
       - name: ts-travel2-service
-        image: codewisdom/ts-travel2-service:0.2.0
+        image: codewisdom/ts-travel2-service:0.2.1
         imagePullPolicy: IfNotPresent
-        args: ["java", "-Xmx200m",  "-jar", "/app/ts-travel2-service-1.0.jar"]
         env:
           - name: JAVA_TOOL_OPTIONS
             value: >-
@@ -1890,15 +1906,15 @@ spec:
         - containerPort: 16346
         resources:
           requests:
-            cpu: 100m
-            memory: 200Mi
+            cpu: 50m
+            memory: 300Mi
           limits:
-            cpu: 200m
+            cpu: 500m
             memory: 400Mi
         readinessProbe:
           tcpSocket:
             port: 16346
-          initialDelaySeconds: 160
+          initialDelaySeconds: 60
           periodSeconds: 10
           timeoutSeconds: 5
 ---
@@ -1930,7 +1946,7 @@ spec:
     spec:
       containers:
       - name: ts-travel-plan-service
-        image: codewisdom/ts-travel-plan-service:0.2.0
+        image: codewisdom/ts-travel-plan-service:0.2.1
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -1944,14 +1960,14 @@ spec:
         resources:
           requests:
             cpu: 50m
-            memory: 160Mi
+            memory: 300Mi
           limits:
-            cpu: 200m
+            cpu: 500m
             memory: 500Mi
         readinessProbe:
           tcpSocket:
             port: 14322
-          initialDelaySeconds: 160
+          initialDelaySeconds: 60
           periodSeconds: 10
           timeoutSeconds: 5
 ---
@@ -1983,7 +1999,7 @@ spec:
     spec:
       containers:
       - name: ts-travel-service
-        image: codewisdom/ts-travel-service:0.2.0
+        image: codewisdom/ts-travel-service:0.2.1
         imagePullPolicy: IfNotPresent
         args: ["java", "-Xmx500m",  "-jar", "/app/ts-travel-service-1.0.jar"]
         env:
@@ -2000,12 +2016,66 @@ spec:
             cpu: 200m
             memory: 600Mi
           limits:
-            cpu: 600m
+            cpu: 1000m
             memory: 1000Mi
         readinessProbe:
           tcpSocket:
             port: 12346
-          initialDelaySeconds: 160
+          initialDelaySeconds: 60
+          periodSeconds: 10
+          timeoutSeconds: 5
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-delivery-service
+  labels:
+    app.kubernetes.io/name: ts-delivery-service
+    app.kubernetes.io/part-of: ts-delivery
+    app.kubernetes.io/component: web
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: ts-delivery-service
+      app.kubernetes.io/part-of: ts-delivery
+      app.kubernetes.io/component: web
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: ts-delivery-service
+        app.kubernetes.io/part-of: ts-delivery
+        app.kubernetes.io/component: web
+    spec:
+      containers:
+      - name: ts-delivery-service
+        image: codewisdom/ts-delivery-service:0.2.1
+        imagePullPolicy: IfNotPresent
+        env:
+          - name: rabbitmq_host
+            value: "rabbitmq"
+          - name: rabbitmq_port
+            value: "5672"
+          - name: JAVA_TOOL_OPTIONS
+            value: >-
+                  -Dcom.sun.management.jmxremote
+                  -Dcom.sun.management.jmxremote.port=5555
+                  -Dcom.sun.management.jmxremote.authenticate=false
+                  -Dcom.sun.management.jmxremote.ssl=false
+        ports:
+          - containerPort: 18808
+        resources:
+          requests:
+            cpu: 10m
+            memory: 100Mi
+          limits:
+            cpu: 200m
+            memory: 500Mi
+        readinessProbe:
+          tcpSocket:
+            port: 18808
+          initialDelaySeconds: 60
           periodSeconds: 10
           timeoutSeconds: 5
 ---
@@ -2037,7 +2107,7 @@ spec:
     spec:
       containers:
       - name: ts-verification-code-service
-        image: codewisdom/ts-verification-code-service:0.2.0
+        image: codewisdom/ts-verification-code-service:0.2.1
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -2058,7 +2128,7 @@ spec:
         readinessProbe:
           tcpSocket:
             port: 15678
-          initialDelaySeconds: 160
+          initialDelaySeconds: 60
           periodSeconds: 10
           timeoutSeconds: 5
 ---
@@ -2090,21 +2160,21 @@ spec:
     spec:
       containers:
       - name: ts-voucher-service
-        image: codewisdom/ts-voucher-service:0.2.0
+        image: codewisdom/ts-voucher-service:0.2.1
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 16101
         resources:
           requests:
-            cpu: 50m
+            cpu: 10m
             memory: 50Mi
           limits:
-            cpu: 50m
+            cpu: 100m
             memory: 50Mi
         readinessProbe:
           tcpSocket:
             port: 16101
-          initialDelaySeconds: 160
+          initialDelaySeconds: 60
           periodSeconds: 10
           timeoutSeconds: 5
 ---
@@ -2133,21 +2203,21 @@ spec:
     spec:
       containers:
       - name: ts-avatar-service
-        image: codewisdom/ts-avatar-service:0.2.0
+        image: codewisdom/ts-avatar-service:0.2.1
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 17001
         resources:
           requests:
-            cpu: 50m
-            memory: 200Mi
+            cpu: 10m
+            memory: 160Mi
           limits:
             cpu: 200m
             memory: 500Mi
         readinessProbe:
           tcpSocket:
             port: 17001
-          initialDelaySeconds: 160
+          initialDelaySeconds: 60
           periodSeconds: 10
           timeoutSeconds: 5
 ---
@@ -2731,7 +2801,6 @@ metadata:
     app.kubernetes.io/part-of: ts-auth
     app.kubernetes.io/component: web
 spec:
-  type: LoadBalancer
   ports:
     - name: http
       port: 12340
@@ -2893,6 +2962,23 @@ spec:
     app.kubernetes.io/part-of: ts-verification-code
     app.kubernetes.io/component: web
 
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-delivery-service
+  labels:
+    app.kubernetes.io/name: ts-delivery-service
+    app.kubernetes.io/part-of: ts-delivery
+    app.kubernetes.io/component: web
+spec:
+  ports:
+    - name: http
+      port: 18808
+  selector:
+    app.kubernetes.io/name: ts-delivery-service
+    app.kubernetes.io/part-of: ts-delivery
+    app.kubernetes.io/component: web
 
 ---
 

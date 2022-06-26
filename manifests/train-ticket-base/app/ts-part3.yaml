@@ -22,22 +22,24 @@ spec:
     spec:
       containers:
       - name: ts-ui-dashboard
-        image: codewisdom/ts-ui-dashboard:0.2.0
+        image: codewisdom/ts-ui-dashboard:0.2.1
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8080
         volumeMounts:
+        - name: nginxconfig-vol
+          mountPath: /usr/local/openresty/nginx/conf/
         - name: nginxlog-vol
           mountPath: /usr/local/openresty/nginx/logs/
         resources:
           requests:
             cpu: 50m
-            memory: 100Mi
+            memory: 50Mi
           limits:
             cpu: 500m
-            memory: 500Mi
+            memory: 200Mi
       - name: nginxlog-exporter
-        image: ghcr.io/martin-helmich/prometheus-nginxlog-exporter/exporter:v1
+        image: ghcr.io/martin-helmich/prometheus-nginxlog-exporter/exporter:v1.9.2
         args: ["-config-file", "/etc/prometheus-nginxlog-exporter/nginxlog-exporter.config.hcl"]
         ports:
           - name: exporter
@@ -48,6 +50,9 @@ spec:
         - name: nginxlog-exporter-config
           mountPath: /etc/prometheus-nginxlog-exporter
       volumes:
+      - name: nginxconfig-vol
+        configMap:
+          name: nginx-config
       - name: nginxlog-vol
         emptyDir: {}
       - name: nginxlog-exporter-config

@@ -56,7 +56,10 @@ def request_post_to_api(client, url, body, name, headers={}):
             response.failure(
                 f"failed to request status:{response.status_code} body:{response.content.decode('UTF-8')[0:10]}")
     response_as_json = response.json()
-    return response_as_json, response_as_json["status"]
+    if 'status' in response_as_json:
+        return response_as_json, response_as_json["status"]
+    else:
+        return response_as_json, 1
 
 
 def try_until_success(f):
@@ -163,8 +166,7 @@ def get_departure_date():
     # We always start next Monday because there a train from Shang Hai to Su Zhou starts.
     tomorrow = datetime.now() + timedelta(1)
     next_monday = next_weekday(tomorrow, 0)
-    departure_date = next_monday.strftime("%Y-%m-%d")
-    return departure_date
+    return next_monday.strftime("%Y-%m-%d")
 
 
 def get_trip_information(client, from_station, to_station):
@@ -290,10 +292,11 @@ def cancel(client, user_id):
 
 
 def consign(client, user_id):
-    departure_date = get_departure_date()
     order_id = get_last_order_id(client, user_id, STATUS_BOOKED)
     if order_id is None:
         raise Exception("Weird... There is no order to consign.")
+
+    departure_date = get_departure_date()
 
     def api_call_consign():
         body = {
@@ -355,7 +358,7 @@ def get_voucher(client, user_id):
 
 
 class UserNoLogin(HttpUser):
-    weight = 50
+    weight = 2
 
     def on_start(self):
         self.client.headers.update({"Content-Type": "application/json"})
@@ -372,9 +375,9 @@ class UserNoLogin(HttpUser):
 
 
 class UserBooking(HttpUser):
-    weight = 10
+    weight = 1
 
-    def on_start(self):
+    def _login(self):
         user_id, token = login(self.client)
         self.client.headers.update({"Authorization": f"Bearer {token}"})
         self.client.headers.update({"Content-Type": "application/json"})
@@ -383,6 +386,8 @@ class UserBooking(HttpUser):
 
     @task
     def perform_task(self):
+        self._login()
+
         request_id = str(uuid.uuid4())
         logging.debug(f'Running user "booking" with request id {request_id}...')
 
@@ -395,9 +400,9 @@ class UserBooking(HttpUser):
 
 
 class UserConsignTicket(HttpUser):
-    weight = 5
+    weight = 1
 
-    def on_start(self):
+    def _login(self):
         user_id, token = login(self.client)
         self.client.headers.update({"Authorization": f"Bearer {token}"})
         self.client.headers.update({"Content-Type": "application/json"})
@@ -406,6 +411,8 @@ class UserConsignTicket(HttpUser):
 
     @task
     def perform_task(self):
+        self._login()
+
         request_id = str(uuid.uuid4())
         logging.debug(f'Running user "consign ticket" with request id {request_id}...')
 
@@ -419,7 +426,7 @@ class UserConsignTicket(HttpUser):
 class UserCancelNoRefund(HttpUser):
     weight = 1
 
-    def on_start(self):
+    def _login(self):
         user_id, token = login(self.client)
         self.client.headers.update({"Authorization": f"Bearer {token}"})
         self.client.headers.update({"Content-Type": "application/json"})
@@ -428,6 +435,8 @@ class UserCancelNoRefund(HttpUser):
 
     @task
     def perform_task(self):
+        self._login()
+
         request_id = str(uuid.uuid4())
         logging.debug(f'Running user "cancel no refund" with request id {request_id}...')
 
@@ -441,7 +450,7 @@ class UserCancelNoRefund(HttpUser):
 class UserRefundVoucher(HttpUser):
     weight = 1
 
-    def on_start(self):
+    def _login(self):
         user_id, token = login(self.client)
         self.client.headers.update({"Authorization": f"Bearer {token}"})
         self.client.headers.update({"Content-Type": "application/json"})
@@ -450,6 +459,8 @@ class UserRefundVoucher(HttpUser):
 
     @task
     def perform_task(self):
+        self._login()
+
         request_id = str(uuid.uuid4())
         logging.debug(f'Running user "cancel no refund" with request id {request_id}...')
 
