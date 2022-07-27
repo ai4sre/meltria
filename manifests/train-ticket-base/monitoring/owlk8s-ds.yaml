@@ -38,9 +38,6 @@ spec:
           - name: listenPort
             value: "9101"
         resources:
-          requests:
+          limits:
             cpu: 100m
             memory: 100Mi
-          limits:
-            cpu: 200m
-            memory: 200Mi

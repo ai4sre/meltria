@@ -59,11 +59,8 @@ spec:
           mountPath: /etc/prometheus
         resources:
           requests:
-            cpu: 500m
+            cpu: 300m
             memory: 250Mi
-          limits:
-            cpu: 1000m
-            memory: 2500Mi
       terminationGracePeriodSeconds: 5
       serviceAccountName: prometheus
       volumes:

@@ -17,9 +17,33 @@ releases:
           frontend:
             nodeSelector:
               cloud.google.com/gke-nodepool: control-pool
+            resources:
+              requests:
+                cpu: "50m"
+                memory: "100Mi"
           server:
             nodeSelector:
               cloud.google.com/gke-nodepool: control-pool
+            waitForMongodb:
+              resources:
+                requests:
+                  cpu: "50m"
+                  memory: "100Mi"
+            graphqlServer:
+              resources:
+                requests:
+                  cpu: "50m"
+                  memory: "100Mi"
+            authServer:
+              resources:
+                requests:
+                  cpu: "50m"
+                  memory: "100Mi"
+            mongo:
+              resources:
+                requests:
+                  cpu: "50m"
+                  memory: "100Mi"
           upgradeAgent:
             nodeSelector:
               cloud.google.com/gke-nodepool: control-pool
