@@ -880,7 +880,7 @@ spec:
       - name: ts-auth-service
         image: codewisdom/ts-auth-service:0.2.1
         imagePullPolicy: IfNotPresent
-        args: ["java", "-Xmx400m",  "-jar", "/app/ts-auth-service-1.0.jar"]
+        args: ["java", "-Xmx400m", "-Xms400m", "-jar", "/app/ts-auth-service-1.0.jar"]
         env:
           - name: JAVA_TOOL_OPTIONS
             value: >-
@@ -1090,7 +1090,7 @@ spec:
       - name: ts-order-service
         image: codewisdom/ts-order-service:0.2.1
         imagePullPolicy: IfNotPresent
-        args: ["java", "-Xmx500m",  "-jar", "/app/ts-order-service-1.0.jar"]
+        args: ["java", "-Xmx500m", "-Xms500m", "-jar", "/app/ts-order-service-1.0.jar"]
         env:
           - name: JAVA_TOOL_OPTIONS
             value: >-
@@ -1254,7 +1254,7 @@ spec:
       - name: ts-preserve-service
         image: codewisdom/ts-preserve-service:0.2.1
         imagePullPolicy: IfNotPresent
-        args: ["java", "-Xmx400m",  "-jar", "/app/ts-preserve-service-1.0.jar"]
+        args: ["java", "-Xmx400m", "-Xms400m", "-jar", "/app/ts-preserve-service-1.0.jar"]
         env:
           - name: JAVA_TOOL_OPTIONS
             value: >-
@@ -2001,7 +2001,7 @@ spec:
       - name: ts-travel-service
         image: codewisdom/ts-travel-service:0.2.1
         imagePullPolicy: IfNotPresent
-        args: ["java", "-Xmx500m",  "-jar", "/app/ts-travel-service-1.0.jar"]
+        args: ["java", "-Xmx500m", "-Xms500m", "-jar", "/app/ts-travel-service-1.0.jar"]
         env:
           - name: JAVA_TOOL_OPTIONS
             value: >-
