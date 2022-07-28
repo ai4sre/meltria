@@ -41,7 +41,7 @@ spec:
         runAsUser: 1000
         runAsNonRoot: true
       containers:
-      - image: prom/prometheus:v2.36.0
+      - image: prom/prometheus:v2.37.0
         name: prometheus
         command:
         - "/bin/prometheus"
