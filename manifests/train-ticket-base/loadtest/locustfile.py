@@ -1,4 +1,5 @@
 import logging
+import random
 import time
 import uuid
 from datetime import datetime, timedelta
@@ -241,17 +242,18 @@ def book(client, user_id):
     try_until_success(api_call_ticket)
 
 
-def get_last_order(client, user_id, expected_status):
+def get_last_order(client, user_id, expected_status, query_other: bool = False):
     def api_call_query():
         body = {
             "loginId": user_id, "enableStateQuery": "false", "enableTravelDateQuery": "false",
             "enableBoughtDateQuery": "false", "travelDateStart": "null", "travelDateEnd": "null",
             "boughtDateStart": "null", "boughtDateEnd": "null",
         }
-        return request_post_to_api(
-            client,
-            url="/api/v1/orderservice/order/refresh", body=body, name="get_order_information",
-        )
+        if query_other:
+            url = "/api/v1/orderOtherService/orderOther/refresh"
+        else:
+            url = "/api/v1/orderservice/order/refresh"
+        return request_post_to_api(client, url, body=body, name="get_order_information")
 
     response_as_json = try_until_success(api_call_query)
     data = response_as_json["data"]
@@ -263,8 +265,8 @@ def get_last_order(client, user_id, expected_status):
     return None
 
 
-def get_last_order_id(client, user_id, expected_status):
-    order = get_last_order(client, user_id, expected_status)
+def get_last_order_id(client, user_id, expected_status, query_other: bool = False):
+    order = get_last_order(client, user_id, expected_status, query_other)
 
     if order is not None:
         order_id = order["id"]
@@ -273,8 +275,8 @@ def get_last_order_id(client, user_id, expected_status):
     return None
 
 
-def pay(client, user_id):
-    order_id = get_last_order_id(client, user_id, STATUS_BOOKED)
+def pay(client, user_id, query_other: bool = False):
+    order_id = get_last_order_id(client, user_id, STATUS_BOOKED, query_other)
     if order_id is None:
         raise Exception("Weird... There is no order to pay.")
 
@@ -288,8 +290,8 @@ def pay(client, user_id):
     try_until_success(api_call_pay)
 
 
-def cancel(client, user_id):
-    order_id = get_last_order_id(client, user_id, STATUS_BOOKED)
+def cancel(client, user_id, query_other: bool = False):
+    order_id = get_last_order_id(client, user_id, STATUS_BOOKED, query_other)
     if order_id is None:
         raise Exception("Weird... There is no order to cancel.")
 
@@ -302,8 +304,8 @@ def cancel(client, user_id):
     try_until_success(api_call_cancel)
 
 
-def consign(client, user_id):
-    order_id = get_last_order_id(client, user_id, STATUS_BOOKED)
+def consign(client, user_id, query_other: bool = False):
+    order_id = get_last_order_id(client, user_id, STATUS_BOOKED, query_other)
     if order_id is None:
         raise Exception("Weird... There is no order to consign.")
 
@@ -322,8 +324,8 @@ def consign(client, user_id):
     try_until_success(api_call_consign)
 
 
-def collect_and_use(client, user_id):
-    order_id = get_last_order_id(client, user_id, STATUS_PAID)
+def collect_and_use(client, user_id, query_other: bool = False):
+    order_id = get_last_order_id(client, user_id, STATUS_PAID, query_other)
     if order_id is None:
         raise Exception("Weird... There is no order to collect.")
 
@@ -335,7 +337,7 @@ def collect_and_use(client, user_id):
 
     try_until_success(api_call_collect_ticket)
 
-    order_id = get_last_order_id(client, user_id, STATUS_COLLECTED)
+    order_id = get_last_order_id(client, user_id, STATUS_COLLECTED, query_other)
     if order_id is None:
         raise Exception("Weird... There is no order to execute.")
 
@@ -348,8 +350,8 @@ def collect_and_use(client, user_id):
     try_until_success(api_call_enter_station)
 
 
-def get_voucher(client, user_id):
-    order_id = get_last_order_id(client, user_id, STATUS_EXECUTED)
+def get_voucher(client, user_id, query_other: bool = False):
+    order_id = get_last_order_id(client, user_id, STATUS_EXECUTED, query_other)
     if order_id is None:
         raise Exception("Weird... There is no order that was used.")
 
@@ -400,12 +402,15 @@ class UserBooking(HttpUser):
         request_id = str(uuid.uuid4())
         logging.debug(f'Running user "booking" with request id {request_id}...')
 
+        random.seed()
+        query_other = random.choices([True, False], weights=[0.4, 0.6])[0]
+
         home(self.client)
         search_departure(self.client)
         search_return(self.client)
         book(self.client, self.user_id)
-        pay(self.client, self.user_id)
-        collect_and_use(self.client, self.user_id)
+        pay(self.client, self.user_id, query_other)
+        collect_and_use(self.client, self.user_id, query_other)
 
 
 class UserConsignTicket(HttpUser):
@@ -423,11 +428,14 @@ class UserConsignTicket(HttpUser):
         request_id = str(uuid.uuid4())
         logging.debug(f'Running user "consign ticket" with request id {request_id}...')
 
+        random.seed()
+        query_other = random.choices([True, False], weights=[0.4, 0.6])[0]
+
         home(self.client)
         search_departure(self.client)
         search_return(self.client)
         book(self.client, self.user_id)
-        consign(self.client, self.user_id)
+        consign(self.client, self.user_id, query_other)
 
 
 class UserCancelNoRefund(HttpUser):
@@ -445,11 +453,14 @@ class UserCancelNoRefund(HttpUser):
         request_id = str(uuid.uuid4())
         logging.debug(f'Running user "cancel no refund" with request id {request_id}...')
 
+        random.seed()
+        query_other = random.choices([True, False], weights=[0.4, 0.6])[0]
+
         home(self.client)
         search_departure(self.client)
         search_return(self.client)
         book(self.client, self.user_id)
-        cancel(self.client, self.user_id)
+        cancel(self.client, self.user_id, query_other)
 
 
 class UserRefundVoucher(HttpUser):
@@ -467,13 +478,17 @@ class UserRefundVoucher(HttpUser):
         request_id = str(uuid.uuid4())
         logging.debug(f'Running user "cancel no refund" with request id {request_id}...')
 
+        random.seed()
+        query_other = random.choices([True, False], weights=[0.4, 0.6])[0]
+
         home(self.client)
         search_departure(self.client)
         search_return(self.client)
         book(self.client, self.user_id)
-        pay(self.client, self.user_id)
-        collect_and_use(self.client, self.user_id)
-        get_voucher(self.client, self.user_id)
+        pay(self.client, self.user_id, query_other)
+        collect_and_use(self.client, self.user_id, query_other)
+        get_voucher(self.client, self.user_id, query_other)
+
 
 # class StagesShape(LoadTestShape):
 #     """
