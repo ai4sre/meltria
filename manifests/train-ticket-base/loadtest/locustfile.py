@@ -40,6 +40,13 @@ def request_failure_handler(request_type, name, response_time, exception, **kwar
         f"Request Failed! time:{datetime.now()}, response_time:{response_time} name:{name}, exception:{exception}")
 
 
+def update_client_header_on_start(client, token=None):
+    if token is not None:
+        client.headers.update({"Authorization": f"Bearer {token}"})
+    client.headers.update({"Content-Type": "application/json"})
+    client.headers.update({"Accept": "application/json"})
+
+
 def request_get_to_api(client, url, name, timeout=HTTP_REQUEST_TIMEOUT):
     with client.get(
         url=url, catch_response=True, name=get_name_suffix(name), timeout=timeout,
@@ -366,8 +373,7 @@ class UserNoLogin(HttpUser):
     weight = 1
 
     def on_start(self):
-        self.client.headers.update({"Content-Type": "application/json"})
-        self.client.headers.update({"Accept": "application/json"})
+        update_client_header_on_start(self.client)
 
     @task
     def perfom_task(self):
@@ -384,11 +390,8 @@ class UserBooking(HttpUser):
     weight = 1
 
     def _login(self):
-        user_id, token = login(self.client)
-        self.client.headers.update({"Authorization": f"Bearer {token}"})
-        self.client.headers.update({"Content-Type": "application/json"})
-        self.client.headers.update({"Accept": "application/json"})
-        self.user_id = user_id
+        self.user_id, token = login(self.client)
+        update_client_header_on_start(self.client, token=token)
 
     @task
     def perform_task(self):
@@ -410,11 +413,8 @@ class UserConsignTicket(HttpUser):
     weight = 1
 
     def _login(self):
-        user_id, token = login(self.client)
-        self.client.headers.update({"Authorization": f"Bearer {token}"})
-        self.client.headers.update({"Content-Type": "application/json"})
-        self.client.headers.update({"Accept": "application/json"})
-        self.user_id = user_id
+        self.user_id, token = login(self.client)
+        update_client_header_on_start(self.client, token=token)
 
     @task
     def perform_task(self):
@@ -435,11 +435,8 @@ class UserCancelNoRefund(HttpUser):
     weight = 1
 
     def _login(self):
-        user_id, token = login(self.client)
-        self.client.headers.update({"Authorization": f"Bearer {token}"})
-        self.client.headers.update({"Content-Type": "application/json"})
-        self.client.headers.update({"Accept": "application/json"})
-        self.user_id = user_id
+        self.user_id, token = login(self.client)
+        update_client_header_on_start(self.client, token=token)
 
     @task
     def perform_task(self):
@@ -460,11 +457,8 @@ class UserRefundVoucher(HttpUser):
     weight = 1
 
     def _login(self):
-        user_id, token = login(self.client)
-        self.client.headers.update({"Authorization": f"Bearer {token}"})
-        self.client.headers.update({"Content-Type": "application/json"})
-        self.client.headers.update({"Accept": "application/json"})
-        self.user_id = user_id
+        self.user_id, token = login(self.client)
+        update_client_header_on_start(self.client, token=token)
 
     @task
     def perform_task(self):
