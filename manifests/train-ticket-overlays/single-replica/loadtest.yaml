@@ -13,6 +13,6 @@ spec:
       - name: load-test-master
         env:
           - name: LOCUST_USERS
-            value: '20'
+            value: '5'
           - name: LOCUST_SPAWN_RATE
             value: '1'

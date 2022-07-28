@@ -4,13 +4,15 @@ import uuid
 from datetime import datetime, timedelta
 
 import locust.stats
-from locust import HttpUser, between, constant, events, task
+from locust import (HttpUser, between, constant, constant_throughput, events,
+                    task)
 from requests.adapters import HTTPAdapter
 
 locust.stats.PERCENTILES_TO_REPORT = [0.25, 0.50, 0.75, 0.80, 0.90, 0.95, 0.98, 0.99, 0.999, 0.9999, 1.0]
-LOG_STATISTICS_IN_HALF_MINUTE_CHUNKS = (1 == 1)
+LOG_STATISTICS_IN_HALF_MINUTE_CHUNKS = True
 RETRY_ON_ERROR = False
 MAX_RETRIES = 3
+HTTP_REQUEST_TIMEOUT = 5
 
 STATUS_BOOKED = 0
 STATUS_PAID = 1
@@ -38,8 +40,10 @@ def request_failure_handler(request_type, name, response_time, exception, **kwar
         f"Request Failed! time:{datetime.now()}, response_time:{response_time} name:{name}, exception:{exception}")
 
 
-def request_get_to_api(client, url, name):
-    with client.get(url=url, catch_response=True, name=get_name_suffix(name)) as response:
+def request_get_to_api(client, url, name, timeout=HTTP_REQUEST_TIMEOUT):
+    with client.get(
+        url=url, catch_response=True, name=get_name_suffix(name), timeout=timeout,
+    ) as response:
         if response.status_code not in [200, 201, 404]:
             response.failure(
                 f"failed to request status:{response.status_code} body:{response.content.decode('UTF-8')[0:10]}")
@@ -47,10 +51,10 @@ def request_get_to_api(client, url, name):
     return response_as_json, response_as_json["status"]
 
 
-def request_post_to_api(client, url, body, name, headers={}):
+def request_post_to_api(client, url, body, name, headers={}, timeout=HTTP_REQUEST_TIMEOUT):
     with client.post(
         url=url, headers=headers, json=body, catch_response=True,
-        name=get_name_suffix(name),
+        name=get_name_suffix(name), timeout=timeout,
     ) as response:
         if response.status_code not in [200, 201, 404]:
             response.failure(
@@ -358,7 +362,8 @@ def get_voucher(client, user_id):
 
 
 class UserNoLogin(HttpUser):
-    weight = 2
+    wait_time = constant_throughput(10)
+    weight = 1
 
     def on_start(self):
         self.client.headers.update({"Content-Type": "application/json"})
@@ -375,6 +380,7 @@ class UserNoLogin(HttpUser):
 
 
 class UserBooking(HttpUser):
+    wait_time = constant_throughput(5)
     weight = 1
 
     def _login(self):
@@ -400,6 +406,7 @@ class UserBooking(HttpUser):
 
 
 class UserConsignTicket(HttpUser):
+    wait_time = constant_throughput(5)
     weight = 1
 
     def _login(self):
@@ -424,6 +431,7 @@ class UserConsignTicket(HttpUser):
 
 
 class UserCancelNoRefund(HttpUser):
+    wait_time = constant_throughput(5)
     weight = 1
 
     def _login(self):
@@ -448,6 +456,7 @@ class UserCancelNoRefund(HttpUser):
 
 
 class UserRefundVoucher(HttpUser):
+    wait_time = constant_throughput(5)
     weight = 1
 
     def _login(self):

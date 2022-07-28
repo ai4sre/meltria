@@ -36,9 +36,9 @@ spec:
           - name: LOCUST_USERS
             value: '5'
           - name: LOCUST_SPAWN_RATE
-            value: '5'
+            value: '1'
           - name: LOCUST_AUTOSTART
-            value: 'true'
+            value: 'false'
         ports:
           - name: master-web
             containerPort: 8089
