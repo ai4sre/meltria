@@ -251,16 +251,9 @@ def book(client, user_id):
 
 def get_last_order(client, user_id, expected_status, query_other: bool = False):
     def api_call_query():
-        body = {
-            "loginId": user_id, "enableStateQuery": "false", "enableTravelDateQuery": "false",
-            "enableBoughtDateQuery": "false", "travelDateStart": "null", "travelDateEnd": "null",
-            "boughtDateStart": "null", "boughtDateEnd": "null",
-        }
-        if query_other:
-            url = "/api/v1/orderOtherService/orderOther/refresh"
-        else:
-            url = "/api/v1/orderservice/order/refresh"
-        return request_post_to_api(client, url, body=body, name="get_order_information")
+        body = {"loginId": user_id}
+        path = "/orderOtherService/orderOther/refresh" if query_other else "/orderservice/order/refresh"
+        return request_post_to_api(client, "/api/v1" + path, body=body, name="get_order_information")
 
     response_as_json = try_until_success(api_call_query)
     data = response_as_json["data"]
