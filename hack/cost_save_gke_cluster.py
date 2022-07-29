@@ -3,10 +3,11 @@
 import argparse
 import json
 import logging
+import os.path
 import subprocess
-from ctypes import resize
 
 GKE_CMD = 'gcloud -q container'
+SCRIPT_NAME = os.path.basename(__file__)
 
 
 def get_node_pools(cluster_name: str, zone: str) -> list:
@@ -25,7 +26,14 @@ def resize_node_pool(cluster_name: str, zone: str, pool_name: str, size: int):
 def main():
     logging.basicConfig(format='%(asctime)s %(levelname)s:%(message)s', level=logging.INFO)
 
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        description="A tool to degrading and recovering GKE cluster's node pools for cost saving.",
+        epilog=f"""An example of usage:
+        $ {SCRIPT_NAME} --down --cluster-name train-ticket-01
+        $ {SCRIPT_NAME} --up --cluster-name train-ticket-01
+"""
+    )
     parser.add_argument('--up', action='store_true', help='Recover the cluster')
     parser.add_argument('--down', action='store_true', help='Degrade the cluster')
     parser.add_argument('--cluster-name', required=True, help='GKE cluster name')
