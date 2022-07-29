@@ -53,8 +53,12 @@ def request_get_to_api(client, url, name, timeout=HTTP_REQUEST_TIMEOUT):
         url=url, catch_response=True, name=get_name_suffix(name), timeout=timeout,
     ) as response:
         if response.status_code not in [200, 201, 404]:
-            response.failure(
-                f"failed to request status:{response.status_code} body:{response.content.decode('UTF-8')[0:10]}")
+            if response.content is None:
+                response.failure(f"failed to request status:{response.status_code}")
+            else:
+                response.failure(
+                    f"failed to request status:{response.status_code} body:{response.content.decode('UTF-8')[0:20]}",
+                )
     response_as_json = response.json()
     return response_as_json, response_as_json["status"]
 
@@ -65,8 +69,11 @@ def request_post_to_api(client, url, body, name, headers={}, timeout=HTTP_REQUES
         name=get_name_suffix(name), timeout=timeout,
     ) as response:
         if response.status_code not in [200, 201, 404]:
-            response.failure(
-                f"failed to request status:{response.status_code} body:{response.content.decode('UTF-8')[0:10]}")
+            if response.content is None:
+                response.failure(f"failed to request status:{response.status_code}")
+            else:
+                response.failure(
+                    f"failed to request status:{response.status_code} body:{response.content.decode('UTF-8')[0:20]}")
     response_as_json = response.json()
     if 'status' in response_as_json:
         return response_as_json, response_as_json["status"]
