@@ -8,6 +8,7 @@ import subprocess
 
 GKE_CMD = 'gcloud -q container'
 SCRIPT_NAME = os.path.basename(__file__)
+RECOVER_FILE_PATH_PREFIX = '/tmp/meltria_gke_cluster'
 
 
 def get_node_pools(cluster_name: str, zone: str) -> list:
@@ -38,19 +39,21 @@ def main():
     parser.add_argument('--down', action='store_true', help='Degrade the cluster')
     parser.add_argument('--cluster-name', required=True, help='GKE cluster name')
     parser.add_argument('--zone', help='gcp zone')
-    parser.add_argument('--recover-file',
-                        default='/tmp/meltria_gke_node_pools_recover.json',
-                        help='File to store the recovery cluster')
+    parser.add_argument('--recover-file', help='File to store the recovery cluster')
     args = parser.parse_args()
 
     if args.up and args.down:
         logging.error('Please specify either --up or --down')
         exit(1)
 
+    recover_file = args.recover_file
+    if recover_file is None:
+        recover_file = f'{RECOVER_FILE_PATH_PREFIX}.{args.cluster_name}.recover.json'
+
     if args.up:
         pool_to_node_count: dict[str, int] = {}
-        logging.info(f'Loading {args.recover_file} ...')
-        with open(args.recover_file, mode='r') as f:
+        logging.info(f'Loading {recover_file} ...')
+        with open(recover_file, mode='r') as f:
             saved_pools = json.load(f)
             for pool in saved_pools:
                 pool_to_node_count[pool['name']] = pool['initialNodeCount']
@@ -60,8 +63,8 @@ def main():
             resize_node_pool(args.cluster_name, args.zone, name, pool_to_node_count[name])
     elif args.down:
         pools = get_node_pools(args.cluster_name, args.zone)
-        logging.info(f'Saving pool information into {args.recover_file} for recovering ...')
-        with open(args.recover_file, mode='w') as f:
+        logging.info(f'Saving pool information into {recover_file} for recovering ...')
+        with open(recover_file, mode='w') as f:
             json.dump(pools, f, indent=2)
         for pool in pools:
             logging.info(f'Degrading node pool {pool["name"]} in {args.cluster_name}')
