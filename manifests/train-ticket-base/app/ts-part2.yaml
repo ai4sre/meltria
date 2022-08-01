@@ -30,6 +30,7 @@ spec:
         env:
           - name: JAVA_TOOL_OPTIONS
             value: >-
+                  -XX:+UseContainerSupport
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
                   -Dcom.sun.management.jmxremote.authenticate=false
@@ -84,6 +85,7 @@ spec:
         env:
           - name: JAVA_TOOL_OPTIONS
             value: >-
+                  -XX:+UseContainerSupport
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
                   -Dcom.sun.management.jmxremote.authenticate=false
@@ -137,6 +139,7 @@ spec:
         env:
           - name: JAVA_TOOL_OPTIONS
             value: >-
+                  -XX:+UseContainerSupport
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
                   -Dcom.sun.management.jmxremote.authenticate=false
@@ -190,6 +193,7 @@ spec:
         env:
           - name: JAVA_TOOL_OPTIONS
             value: >-
+                  -XX:+UseContainerSupport
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
                   -Dcom.sun.management.jmxremote.authenticate=false
@@ -243,6 +247,7 @@ spec:
         env:
           - name: JAVA_TOOL_OPTIONS
             value: >-
+                  -XX:+UseContainerSupport
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
                   -Dcom.sun.management.jmxremote.authenticate=false
@@ -296,6 +301,7 @@ spec:
         env:
           - name: JAVA_TOOL_OPTIONS
             value: >-
+                  -XX:+UseContainerSupport
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
                   -Dcom.sun.management.jmxremote.authenticate=false
@@ -349,6 +355,7 @@ spec:
         env:
           - name: JAVA_TOOL_OPTIONS
             value: >-
+                  -XX:+UseContainerSupport
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
                   -Dcom.sun.management.jmxremote.authenticate=false
@@ -402,6 +409,7 @@ spec:
         env:
           - name: JAVA_TOOL_OPTIONS
             value: >-
+                  -XX:+UseContainerSupport
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
                   -Dcom.sun.management.jmxremote.authenticate=false
@@ -455,6 +463,7 @@ spec:
         env:
           - name: JAVA_TOOL_OPTIONS
             value: >-
+                  -XX:+UseContainerSupport
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
                   -Dcom.sun.management.jmxremote.authenticate=false
@@ -508,6 +517,7 @@ spec:
         env:
           - name: JAVA_TOOL_OPTIONS
             value: >-
+                  -XX:+UseContainerSupport
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
                   -Dcom.sun.management.jmxremote.authenticate=false
@@ -561,6 +571,7 @@ spec:
         env:
           - name: JAVA_TOOL_OPTIONS
             value: >-
+                  -XX:+UseContainerSupport
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
                   -Dcom.sun.management.jmxremote.authenticate=false
@@ -614,6 +625,7 @@ spec:
         env:
           - name: JAVA_TOOL_OPTIONS
             value: >-
+                  -XX:+UseContainerSupport
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
                   -Dcom.sun.management.jmxremote.authenticate=false
@@ -667,6 +679,7 @@ spec:
         env:
           - name: JAVA_TOOL_OPTIONS
             value: >-
+                  -XX:+UseContainerSupport
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
                   -Dcom.sun.management.jmxremote.authenticate=false
@@ -720,6 +733,7 @@ spec:
         env:
           - name: JAVA_TOOL_OPTIONS
             value: >-
+                  -XX:+UseContainerSupport
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
                   -Dcom.sun.management.jmxremote.authenticate=false
@@ -773,6 +787,7 @@ spec:
         env:
           - name: JAVA_TOOL_OPTIONS
             value: >-
+                  -XX:+UseContainerSupport
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
                   -Dcom.sun.management.jmxremote.authenticate=false
@@ -830,6 +845,7 @@ spec:
         env:
           - name: JAVA_TOOL_OPTIONS
             value: >-
+                  -XX:+UseContainerSupport
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
                   -Dcom.sun.management.jmxremote.authenticate=false
@@ -884,6 +900,7 @@ spec:
         env:
           - name: JAVA_TOOL_OPTIONS
             value: >-
+                  -XX:+UseContainerSupport
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
                   -Dcom.sun.management.jmxremote.authenticate=false
@@ -983,6 +1000,7 @@ spec:
         env:
           - name: JAVA_TOOL_OPTIONS
             value: >-
+                  -XX:+UseContainerSupport
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
                   -Dcom.sun.management.jmxremote.authenticate=false
@@ -1040,6 +1058,7 @@ spec:
         env:
           - name: JAVA_TOOL_OPTIONS
             value: >-
+                  -XX:+UseContainerSupport
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
                   -Dcom.sun.management.jmxremote.authenticate=false
@@ -1094,6 +1113,7 @@ spec:
         env:
           - name: JAVA_TOOL_OPTIONS
             value: >-
+                  -XX:+UseContainerSupport
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
                   -Dcom.sun.management.jmxremote.authenticate=false
@@ -1147,6 +1167,7 @@ spec:
         env:
           - name: JAVA_TOOL_OPTIONS
             value: >-
+                  -XX:+UseContainerSupport
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
                   -Dcom.sun.management.jmxremote.authenticate=false
@@ -1200,6 +1221,7 @@ spec:
         env:
           - name: JAVA_TOOL_OPTIONS
             value: >-
+                  -XX:+UseContainerSupport
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
                   -Dcom.sun.management.jmxremote.authenticate=false
@@ -1258,6 +1280,7 @@ spec:
         env:
           - name: JAVA_TOOL_OPTIONS
             value: >-
+                  -XX:+UseContainerSupport
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
                   -Dcom.sun.management.jmxremote.authenticate=false
@@ -1315,6 +1338,7 @@ spec:
         env:
           - name: JAVA_TOOL_OPTIONS
             value: >-
+                  -XX:+UseContainerSupport
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
                   -Dcom.sun.management.jmxremote.authenticate=false
@@ -1368,6 +1392,7 @@ spec:
         env:
           - name: JAVA_TOOL_OPTIONS
             value: >-
+                  -XX:+UseContainerSupport
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
                   -Dcom.sun.management.jmxremote.authenticate=false
@@ -1421,6 +1446,7 @@ spec:
         env:
           - name: JAVA_TOOL_OPTIONS
             value: >-
+                  -XX:+UseContainerSupport
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
                   -Dcom.sun.management.jmxremote.authenticate=false
@@ -1474,6 +1500,7 @@ spec:
         env:
           - name: JAVA_TOOL_OPTIONS
             value: >-
+                  -XX:+UseContainerSupport
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
                   -Dcom.sun.management.jmxremote.authenticate=false
@@ -1527,6 +1554,7 @@ spec:
         env:
           - name: JAVA_TOOL_OPTIONS
             value: >-
+                  -XX:+UseContainerSupport
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
                   -Dcom.sun.management.jmxremote.authenticate=false
@@ -1580,6 +1608,7 @@ spec:
         env:
           - name: JAVA_TOOL_OPTIONS
             value: >-
+                  -XX:+UseContainerSupport
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
                   -Dcom.sun.management.jmxremote.authenticate=false
@@ -1633,6 +1662,7 @@ spec:
         env:
           - name: JAVA_TOOL_OPTIONS
             value: >-
+                  -XX:+UseContainerSupport
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
                   -Dcom.sun.management.jmxremote.authenticate=false
@@ -1686,6 +1716,7 @@ spec:
         env:
           - name: JAVA_TOOL_OPTIONS
             value: >-
+                  -XX:+UseContainerSupport
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
                   -Dcom.sun.management.jmxremote.authenticate=false
@@ -1739,6 +1770,7 @@ spec:
         env:
           - name: JAVA_TOOL_OPTIONS
             value: >-
+                  -XX:+UseContainerSupport
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
                   -Dcom.sun.management.jmxremote.authenticate=false
@@ -1792,6 +1824,7 @@ spec:
         env:
           - name: JAVA_TOOL_OPTIONS
             value: >-
+                  -XX:+UseContainerSupport
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
                   -Dcom.sun.management.jmxremote.authenticate=false
@@ -1845,6 +1878,7 @@ spec:
         env:
           - name: JAVA_TOOL_OPTIONS
             value: >-
+                  -XX:+UseContainerSupport
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
                   -Dcom.sun.management.jmxremote.authenticate=false
@@ -1898,6 +1932,7 @@ spec:
         env:
           - name: JAVA_TOOL_OPTIONS
             value: >-
+                  -XX:+UseContainerSupport
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
                   -Dcom.sun.management.jmxremote.authenticate=false
@@ -1951,6 +1986,7 @@ spec:
         env:
           - name: JAVA_TOOL_OPTIONS
             value: >-
+                  -XX:+UseContainerSupport
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
                   -Dcom.sun.management.jmxremote.authenticate=false
@@ -2005,6 +2041,7 @@ spec:
         env:
           - name: JAVA_TOOL_OPTIONS
             value: >-
+                  -XX:+UseContainerSupport
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
                   -Dcom.sun.management.jmxremote.authenticate=false
@@ -2059,6 +2096,7 @@ spec:
             value: "5672"
           - name: JAVA_TOOL_OPTIONS
             value: >-
+                  -XX:+UseContainerSupport
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
                   -Dcom.sun.management.jmxremote.authenticate=false
@@ -2112,6 +2150,7 @@ spec:
         env:
           - name: JAVA_TOOL_OPTIONS
             value: >-
+                  -XX:+UseContainerSupport
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
                   -Dcom.sun.management.jmxremote.authenticate=false
