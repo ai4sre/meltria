@@ -896,11 +896,12 @@ spec:
       - name: ts-auth-service
         image: ghcr.io/ai4sre/train-ticket/ts-auth-service:0.2.1
         imagePullPolicy: IfNotPresent
-        args: ["java", "-Xmx400m", "-Xms400m", "-jar", "/app/ts-auth-service-1.0.jar"]
         env:
           - name: JAVA_TOOL_OPTIONS
             value: >-
                   -XX:+UseContainerSupport
+                  -XX:InitialRAMPercentage=50.0
+                  -XX:MaxRAMPercentage=50.0
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
                   -Dcom.sun.management.jmxremote.authenticate=false
@@ -910,7 +911,7 @@ spec:
         resources:
           requests:
             cpu: 200m
-            memory: 500Mi
+            memory: 800Mi
           limits:
             cpu: 700m
             memory: 800Mi
@@ -1109,11 +1110,12 @@ spec:
       - name: ts-order-service
         image: ghcr.io/ai4sre/train-ticket/ts-order-service:0.2.1
         imagePullPolicy: IfNotPresent
-        args: ["java", "-Xmx500m", "-Xms500m", "-jar", "/app/ts-order-service-1.0.jar"]
         env:
           - name: JAVA_TOOL_OPTIONS
             value: >-
                   -XX:+UseContainerSupport
+                  -XX:InitialRAMPercentage=50.0
+                  -XX:MaxRAMPercentage=50.0
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
                   -Dcom.sun.management.jmxremote.authenticate=false
@@ -1123,7 +1125,7 @@ spec:
         resources:
           requests:
             cpu: 100m
-            memory: 160Mi
+            memory: 1000Mi
           limits:
             cpu: 1500m
             memory: 1000Mi
@@ -1276,11 +1278,12 @@ spec:
       - name: ts-preserve-service
         image: ghcr.io/ai4sre/train-ticket/ts-preserve-service:0.2.1
         imagePullPolicy: IfNotPresent
-        args: ["java", "-Xmx400m", "-Xms400m", "-jar", "/app/ts-preserve-service-1.0.jar"]
         env:
           - name: JAVA_TOOL_OPTIONS
             value: >-
                   -XX:+UseContainerSupport
+                  -XX:InitialRAMPercentage=50.0
+                  -XX:MaxRAMPercentage=50.0
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
                   -Dcom.sun.management.jmxremote.authenticate=false
@@ -1294,7 +1297,7 @@ spec:
         resources:
           requests:
             cpu: 50m
-            memory: 400Mi
+            memory: 800Mi
           limits:
             cpu: 500m
             memory: 800Mi
@@ -2037,11 +2040,12 @@ spec:
       - name: ts-travel-service
         image: ghcr.io/ai4sre/train-ticket/ts-travel-service:0.2.1
         imagePullPolicy: IfNotPresent
-        args: ["java", "-Xmx500m", "-Xms500m", "-jar", "/app/ts-travel-service-1.0.jar"]
         env:
           - name: JAVA_TOOL_OPTIONS
             value: >-
                   -XX:+UseContainerSupport
+                  -XX:InitialRAMPercentage=50.0
+                  -XX:MaxRAMPercentage=50.0
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
                   -Dcom.sun.management.jmxremote.authenticate=false
@@ -2051,7 +2055,7 @@ spec:
         resources:
           requests:
             cpu: 200m
-            memory: 600Mi
+            memory: 1000Mi
           limits:
             cpu: 1000m
             memory: 1000Mi
