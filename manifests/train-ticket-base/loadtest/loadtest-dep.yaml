@@ -26,7 +26,7 @@ spec:
       containers:
       - name: load-test-master
         image: locustio/locust:2.9.0
-        args: ["-f", "/config/locustfile.py", "--master", "UserBooking"]
+        args: ["-f", "/config/locustfile.py", "--master"]
         volumeMounts:
           - name: locustfile-volume
             mountPath: /config
