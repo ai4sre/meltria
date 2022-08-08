@@ -57,19 +57,10 @@ def postfix(expected=True):
     return '_unexpected'
 
 
-def next_weekday(d, weekday):
-    days_ahead = weekday - d.weekday()
-    if days_ahead <= 0:  # Target day already happened this week
-        days_ahead += 7
-    return d + timedelta(days_ahead)
-
-
-def get_departure_date(before_date: str = ''):
-    if before_date == '':
-        tomorrow = datetime.now() + timedelta(1)
-        return tomorrow.strftime("%Y-%m-%d")
-    next_day = datetime.strptime(before_date, "%Y-%m-%d") + timedelta(days=1)
-    return next_day.strftime("%Y-%m-%d")
+def random_date_after_today():
+    today = datetime.now()
+    random_date = today + timedelta(days=randint(1, 180))
+    return random_date.strftime("%Y-%m-%d")
 
 
 class Requests:
@@ -81,7 +72,9 @@ class Requests:
         self.password = user
         self.trip_detail = random.choice(TRIP_DATA)
         self.food_detail = {}
-        self.departure_date = get_departure_date()
+        # Order records retrieved in the backend (ts-order-service) gradually increases
+        # if deprature_date is a static value.
+        self.departure_date = random_date_after_today()
 
         if verbose_logging:
             handler = logging.StreamHandler()
