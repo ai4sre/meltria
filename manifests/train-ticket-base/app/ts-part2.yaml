@@ -854,11 +854,11 @@ spec:
         - containerPort: 18673
         resources:
           requests:
-            cpu: 50m
+            cpu: 400m
             memory: 300Mi
           limits:
-            cpu: 200m
-            memory: 500Mi
+            cpu: 800m
+            memory: 600Mi
         readinessProbe:
           tcpSocket:
             port: 18673
@@ -910,10 +910,10 @@ spec:
         - containerPort: 12340
         resources:
           requests:
-            cpu: 200m
+            cpu: 800m
             memory: 800Mi
           limits:
-            cpu: 700m
+            cpu: 1200m
             memory: 800Mi
         readinessProbe:
           tcpSocket:
@@ -1124,11 +1124,11 @@ spec:
         - containerPort: 12031
         resources:
           requests:
-            cpu: 100m
-            memory: 1000Mi
+            cpu: 300m
+            memory: 800Mi
           limits:
-            cpu: 1500m
-            memory: 1000Mi
+            cpu: 1000m
+            memory: 800Mi
         readinessProbe:
           tcpSocket:
             port: 12031
@@ -1296,10 +1296,10 @@ spec:
         - containerPort: 14568
         resources:
           requests:
-            cpu: 50m
-            memory: 800Mi
-          limits:
             cpu: 500m
+            memory: 600Mi
+          limits:
+            cpu: 1000m
             memory: 800Mi
         readinessProbe:
           tcpSocket:
@@ -2054,8 +2054,8 @@ spec:
         - containerPort: 12346
         resources:
           requests:
-            cpu: 200m
-            memory: 1000Mi
+            cpu: 150m
+            memory: 800Mi
           limits:
             cpu: 1000m
             memory: 1000Mi
