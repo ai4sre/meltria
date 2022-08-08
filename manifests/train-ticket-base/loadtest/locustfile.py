@@ -91,6 +91,18 @@ class Requests:
         if self.debugging_logger is not None:
             self.debugging_logger.debug(json.dumps(to_log))
 
+    def log_request(self, req_label: str, expected: bool, response, json: bool = False):
+        to_log = {
+            'name': req_label, 'expected': expected, 'status_code': response.status_code,
+            'response_time': response.elapsed.total_seconds(),
+        }
+        if json:
+            to_log['response'] = self.try_to_read_response_as_json(response)
+        self.log_verbose(to_log)
+
+    def log_request_as_json(self, req_label: str, expected: bool, response):
+        self.log_request(req_label, expected, response, json=True)
+
     def json_header(self) -> dict[str, str]:
         return {"Accept": "application/json", "Content-Type": "application/json"}
 
@@ -102,11 +114,8 @@ class Requests:
 
     def home(self, expected):
         req_label = sys._getframe().f_code.co_name + postfix(expected)
-        start_time = time.time()
         with self.client.get('/index.html', name=req_label) as response:
-            to_log = {'name': req_label, 'expected': expected, 'status_code': response.status_code,
-                      'response_time': time.time() - start_time}
-            self.log_verbose(to_log)
+            self.log_request(req_label, expected, response)
 
     def try_to_read_response_as_json(self, response):
         try:
@@ -129,7 +138,6 @@ class Requests:
             "departureTime": departure_date
         }
         req_label = sys._getframe().f_code.co_name + postfix(expected)
-        start_time = time.time()
         response = self.client.post(
             url="/api/v1/travelservice/trips/left",
             headers=self.json_header(),
@@ -141,10 +149,7 @@ class Requests:
                 headers=self.json_header(),
                 json=body_start,
                 name=req_label)
-        to_log = {'name': req_label, 'expected': expected, 'status_code': response.status_code,
-                  'response_time': time.time() - start_time,
-                  'response': self.try_to_read_response_as_json(response)}
-        self.log_verbose(to_log)
+        self.log_request_as_json(req_label, expected, response)
 
     # def search_departure(self, expected):
     #     logging.info("search_departure")
@@ -159,23 +164,23 @@ class Requests:
 
     def _login_as_admin(self) -> str:
         req_label = sys._getframe().f_code.co_name
-        response = self.client.post(
+        with self.client.post(
             url="/api/v1/users/login",
             headers={"Accept": "application/json", "Content-Type": "application/json"},
             json={"username": "admin", "password": "222222"},
             name=req_label,
-        )
-        response_as_json = response.json()["data"]
-        if response_as_json is not None:
-            token = response_as_json["token"]
-            return token
+        ) as response:
+            self.log_request_as_json(req_label, True, response)
+            response_as_json = response.json()["data"]
+            if response_as_json is not None:
+                token = response_as_json["token"]
+                return token
         return ""
 
     def _create_user(self, expected):
         admin_token: str = self._login_as_admin()
 
         req_label = sys._getframe().f_code.co_name + postfix(expected)
-        start_time = time.time()
         document_num = random.randint(1, 5)  # added by me
         with self.client.post(
             url="/api/v1/adminuserservice/users",
@@ -189,24 +194,17 @@ class Requests:
             },
             name=req_label,
         ) as response2:
-            to_log = {'name': req_label, 'expected': expected, 'status_code': response2.status_code,
-                      'response_time': time.time() - start_time,
-                      'response': self.try_to_read_response_as_json(response2)}
-            self.log_verbose(to_log)
+            self.log_request_as_json(req_label, expected, response2)
 
     def _navigate_to_client_login(self, expected=True):
         req_label = sys._getframe().f_code.co_name + postfix(expected)
-        start_time = time.time()
         with self.client.get('/client_login.html', name=req_label) as response:
-            to_log = {'name': req_label, 'expected': True, 'status_code': response.status_code,
-                      'response_time': time.time() - start_time}
-            self.log_verbose(to_log)
+            self.log_request(req_label, expected, response)
 
     def login(self, expected):
         self._create_user(expected=expected)
         self._navigate_to_client_login()
         req_label = sys._getframe().f_code.co_name + postfix(expected)
-        start_time = time.time()
         if (expected):
             response = self.client.post(url="/api/v1/users/login",
                                         headers=self.json_header(),
@@ -214,10 +212,7 @@ class Requests:
                                             "username": self.user_name,
                                             "password": self.password
                                         }, name=req_label)
-            to_log = {'name': req_label, 'expected': expected, 'status_code': response.status_code,
-                      'response_time': time.time() - start_time,
-                      'response': self.try_to_read_response_as_json(response)}
-            self.log_verbose(to_log)
+            self.log_request_as_json(req_label, expected, response)
         else:
             response = self.client.post(url="/api/v1/users/login",
                                         headers=self.json_header(),
@@ -226,10 +221,7 @@ class Requests:
                                             # wrong password
                                             "password": random_string_generator()
                                         }, name=req_label)
-            to_log = {'name': req_label, 'expected': expected, 'status_code': response.status_code,
-                      'response_time': time.time() - start_time,
-                      'response': self.try_to_read_response_as_json(response)}
-            self.log_verbose(to_log)
+            self.log_request_as_json(req_label, expected, response)
 
         response_as_json = response.json()["data"]
         if response_as_json is not None:
@@ -242,7 +234,6 @@ class Requests:
     def start_booking(self, expected):
         departure_date = self.departure_date
         req_label = sys._getframe().f_code.co_name + postfix(expected)
-        start_time = time.time()
         with self.client.get(
                 url="/client_ticket_book.html?tripId=" + self.trip_detail["trip_id"] +
                     "&from=" + self.trip_detail["from"] +
@@ -251,21 +242,15 @@ class Requests:
                     "&date=" + departure_date,
                 headers=self.json_header_with_auth(),
                 name=req_label) as response:
-            to_log = {'name': req_label, 'expected': expected, 'status_code': response.status_code,
-                      'response_time': time.time() - start_time}
-            self.log_verbose(to_log)
+            self.log_request(req_label, expected, response)
 
     def get_assurance_types(self, expected):
         req_label = sys._getframe().f_code.co_name + postfix(expected)
-        start_time = time.time()
         with self.client.get(
                 url="/api/v1/assuranceservice/assurances/types",
                 headers=self.json_header_with_auth(),
                 name=req_label) as response:
-            to_log = {'name': req_label, 'expected': expected, 'status_code': response.status_code,
-                      'response_time': time.time() - start_time,
-                      'response': self.try_to_read_response_as_json(response)}
-            self.log_verbose(to_log)
+            self.log_request_as_json(req_label, expected, response)
 
     def get_foods(self, expected):
         departure_date = self.departure_date
@@ -276,6 +261,7 @@ class Requests:
                     self.trip_detail["to"] + "/" + self.trip_detail["trip_id"],
                 headers=self.json_header_with_auth(),
                 name=req_label) as response:
+            self.log_request_as_json(req_label, expected, response)
             # resp_data = response.json()
             # if resp_data["data"]:
             #     if random.uniform(0, 1) <= 0.5:
@@ -288,22 +274,14 @@ class Requests:
             #                                 "foodList"][0]["foodName"],
             #                             "foodPrice": resp_data["data"]["foodStoreListMap"][self.trip_detail["from"]][0][
             #                                 "foodList"][0]["price"]}
-            to_log = {'name': req_label, 'expected': expected, 'status_code': response.status_code,
-                      'response_time': time.time() - start_time,
-                      'response': self.try_to_read_response_as_json(response)}
-            self.log_verbose(to_log)
 
     def select_contact(self, expected):
         req_label = sys._getframe().f_code.co_name + postfix(expected)
-        start_time = time.time()
         response_contacts = self.client.get(
             url="/api/v1/contactservice/contacts/account/" + self.user_id,
             headers=self.json_header_with_auth(),
             name=req_label)
-        to_log = {'name': req_label, 'expected': expected, 'status_code': response_contacts.status_code,
-                  'response_time': time.time() - start_time,
-                  'response': self.try_to_read_response_as_json(response_contacts)}
-        self.log_verbose(to_log)
+        self.log_request_as_json(req_label, expected, response_contacts)
 
         response_as_json_contacts = response_contacts.json()["data"]
 
@@ -316,6 +294,7 @@ class Requests:
                     "name": self.user_id, "accountId": self.user_id, "documentType": "1",
                     "documentNumber": self.user_id, "phoneNumber": "123456"},
                 name=req_label)
+            self.log_request_as_json(req_label, expected, response_contacts)
 
             response_as_json_contacts = response_contacts.json()["data"]
             self.contactid = response_as_json_contacts["id"]
@@ -361,21 +340,16 @@ class Requests:
                 "stationName": "",
                 "storeName": ""
             }
-        start_time = time.time()
         with self.client.post(
                 url="/api/v1/preserveservice/preserve",
                 headers=self.json_header_with_auth(),
                 json=body_for_reservation,
                 catch_response=True,
                 name=req_label) as response:
-            to_log = {'name': req_label, 'expected': expected, 'status_code': response.status_code,
-                      'response_time': time.time() - start_time,
-                      'response': self.try_to_read_response_as_json(response)}
-            self.log_verbose(to_log)
+            self.log_request_as_json(req_label, expected, response)
 
     def select_order(self, expected):
         req_label = sys._getframe().f_code.co_name + postfix(expected)
-        start_time = time.time()
         response_order_refresh = self.client.post(
             url="/api/v1/orderservice/order/refresh",
             name=req_label,
@@ -385,10 +359,7 @@ class Requests:
                 "enableBoughtDateQuery": "false", "travelDateStart": "null", "travelDateEnd": "null",
                 "boughtDateStart": "null", "boughtDateEnd": "null"})
 
-        to_log = {'name': req_label, 'expected': expected, 'status_code': response_order_refresh.status_code,
-                  'response_time': time.time() - start_time,
-                  'response': self.try_to_read_response_as_json(response_order_refresh)}
-        self.log_verbose(to_log)
+        self.log_request_as_json(req_label, expected, response_order_refresh)
 
         response_as_json = response_order_refresh.json()["data"]
         if response_as_json:
@@ -422,91 +393,63 @@ class Requests:
                     headers=self.json_header_with_auth(),
                     json={"orderId": self.order_id, "tripId": "D1345"},
                     name=req_label) as response:
-                to_log = {'name': req_label, 'expected': expected, 'status_code': response.status_code,
-                          'response_time': time.time() - start_time,
-                          'response': self.try_to_read_response_as_json(response)}
-                self.log_verbose(to_log)
+                self.log_request_as_json(req_label, expected, response)
         else:
             with self.client.post(
                     url="/api/v1/inside_pay_service/inside_payment",
                     headers=self.json_header_with_auth(),
                     json={"orderId": random_string_generator(), "tripId": "D1345"},
                     name=req_label) as response:
-                to_log = {'name': req_label, 'expected': expected, 'status_code': response.status_code,
-                          'response_time': time.time() - start_time,
-                          'response': self.try_to_read_response_as_json(response)}
-                self.log_verbose(to_log)
+                self.log_request_as_json(req_label, expected, response)
 
     # cancelNoRefund
-
     def cancel_with_no_refund(self, expected):
-        head = {"Accept": "application/json",
-                "Content-Type": "application/json", "Authorization": self.bearer}
         req_label = sys._getframe().f_code.co_name + postfix(expected)
         start_time = time.time()
         if (expected):
             with self.client.get(
                     url="/api/v1/cancelservice/cancel/" + self.order_id + "/" + self.user_id,
-                    headers=head,
+                    headers=self.json_header_with_auth(),
                     name=req_label) as response:
-                to_log = {'name': req_label, 'expected': expected, 'status_code': response.status_code,
-                          'response_time': time.time() - start_time,
-                          'response': self.try_to_read_response_as_json(response)}
-                self.log_verbose(to_log)
+                self.log_request_as_json(req_label, expected, response)
 
         else:
             with self.client.get(
                     url="/api/v1/cancelservice/cancel/" + self.order_id + "/" + random_string_generator(),
-                    headers=head,
+                    headers=self.json_header_with_auth(),
                     name=req_label) as response:
-                to_log = {'name': req_label, 'expected': expected, 'status_code': response.status_code,
-                          'response_time': time.time() - start_time,
-                          'response': self.try_to_read_response_as_json(response)}
-                self.log_verbose(to_log)
+                self.log_request_as_json(req_label, expected, response)
 
     # user refund with voucher
 
     def get_voucher(self, expected):
         req_label = sys._getframe().f_code.co_name + postfix(expected)
-        start_time = time.time()
         if (expected):
             with self.client.post(
                     url="/getVoucher",
                     headers=self.json_header_with_auth(),
                     json={"orderId": self.order_id, "type": 1},
                     name=req_label) as response:
-                to_log = {'name': req_label, 'expected': expected, 'status_code': response.status_code,
-                          'response_time': time.time() - start_time,
-                          'response': self.try_to_read_response_as_json(response)}
-                self.log_verbose(to_log)
-
+                self.log_request_as_json(req_label, expected, response)
         else:
             with self.client.post(
                     url="/getVoucher",
                     headers=self.json_header_with_auth(),
                     json={"orderId": random_string_generator(), "type": 1},
                     name=req_label) as response:
-                to_log = {'name': req_label, 'expected': expected, 'status_code': response.status_code,
-                          'response_time': time.time() - start_time}
-                self.log_verbose(to_log)
+                self.log_request(req_label, expected, response)
 
     # consign ticket
-
     def get_consigns(self, expected):
         req_label = sys._getframe().f_code.co_name + postfix(expected)
-        start_time = time.time()
         with self.client.get(
                 url="/api/v1/consignservice/consigns/order/" + self.order_id,
                 headers=self.json_header_with_auth(),
                 name=req_label) as response:
-            to_log = {'name': req_label, 'expected': expected, 'status_code': response.status_code,
-                      'response_time': time.time() - start_time,
-                      'response': self.try_to_read_response_as_json(response)}
-            self.log_verbose(to_log)
+            self.log_request_as_json(req_label, expected, response)
 
     def confirm_consign(self, expected):
         req_label = sys._getframe().f_code.co_name + postfix(expected)
-        start_time = time.time()
         if (expected):
             response_as_json_consign = self.client.put(
                 url="/api/v1/consignservice/consigns",
@@ -523,10 +466,7 @@ class Requests:
                     "id": "",
                     "isWithin": "false"},
                 headers=self.json_header_with_auth())
-            to_log = {'name': req_label, 'expected': expected, 'status_code': response_as_json_consign.status_code,
-                      'response_time': time.time() - start_time,
-                      'response': self.try_to_read_response_as_json(response_as_json_consign)}
-            self.log_verbose(to_log)
+            self.log_request_as_json(req_label, expected, response_as_json_consign)
         else:
             response_as_json_consign = self.client.put(
                 url="/api/v1/consignservice/consigns",
@@ -542,38 +482,25 @@ class Requests:
                     "weight": "1",
                     "id": "",
                     "isWithin": "false"}, headers=self.json_header_with_auth())
-            to_log = {'name': req_label, 'expected': expected, 'status_code': response_as_json_consign.status_code,
-                      'response_time': time.time() - start_time,
-                      'response': self.try_to_read_response_as_json(response_as_json_consign)}
-            self.log_verbose(to_log)
+            self.log_request_as_json(req_label, expected, response_as_json_consign)
 
     def collect_ticket(self, expected):
         req_label = sys._getframe().f_code.co_name + postfix(expected)
-        start_time = time.time()
         if expected:
             response_as_json_collect_ticket = self.client.get(
                 url="/api/v1/executeservice/execute/collected/" + self.paid_order_id,
                 name=req_label,
                 headers=self.json_header_with_auth())
-            to_log = {'name': req_label, 'expected': expected,
-                      'status_code': response_as_json_collect_ticket.status_code,
-                      'response_time': time.time() - start_time,
-                      'response': self.try_to_read_response_as_json(response_as_json_collect_ticket)}
-            self.log_verbose(to_log)
+            self.log_request_as_json(req_label, expected, response_as_json_collect_ticket)
 
     def enter_station(self, expected):
         req_label = sys._getframe().f_code.co_name + postfix(expected)
-        start_time = time.time()
         if expected:
             response_as_json_enter_station = self.client.get(
                 url="/api/v1/executeservice/execute/execute/" + self.paid_order_id,
                 name=req_label,
                 headers=self.json_header_with_auth())
-            to_log = {'name': req_label, 'expected': expected,
-                      'status_code': response_as_json_enter_station.status_code,
-                      'response_time': time.time() - start_time,
-                      'response': self.try_to_read_response_as_json(response_as_json_enter_station)}
-            self.log_verbose(to_log)
+            self.log_request_as_json(req_label, expected, response_as_json_enter_station)
 
     def perform_task(self, name):
         name_without_suffix = name.replace("_expected", "").replace("_unexpected", "")
