@@ -773,6 +773,7 @@ class UserCollectTicket(HttpUser):
             "select_order_expected",
             "pay_expected",
             "collect_ticket_expected",
+            "get_voucher_expected",
         ]
 
         for task in task_sequence:
