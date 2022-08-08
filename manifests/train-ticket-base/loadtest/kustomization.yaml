@@ -8,3 +8,4 @@ configMapGenerator:
 - name: locustfile
   files:
   - locustfile.py
+  - locustfile_dataset.py

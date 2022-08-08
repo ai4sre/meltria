@@ -1,158 +1,60 @@
+import json
 import logging
+import os
 import random
+import string
+import sys
 import time
-import uuid
 from datetime import datetime, timedelta
+from random import randint, uniform
 
+import locust
 import locust.stats
 from locust import (HttpUser, between, constant, constant_throughput, events,
                     task)
+from locust.env import Environment
 from requests.adapters import HTTPAdapter
 
-locust.stats.PERCENTILES_TO_REPORT = [0.25, 0.50, 0.75, 0.80, 0.90, 0.95, 0.98, 0.99, 0.999, 0.9999, 1.0]
-LOG_STATISTICS_IN_HALF_MINUTE_CHUNKS = True
-RETRY_ON_ERROR = False
-MAX_RETRIES = 3
+from locustfile_dataset import TRIP_DATA, USER_CREDETIALS
+
 HTTP_REQUEST_TIMEOUT = 5
-
-STATUS_BOOKED = 0
-STATUS_PAID = 1
-STATUS_COLLECTED = 2
-STATUS_CANCELLED = 4
-STATUS_EXECUTED = 6
-
-spawning_complete = False
+state_data = []  # for debugging purposes
 
 
-class TrainTicketRequestException(Exception):
-    def __init__(self, message):
-        super().__init__(message)
+@events.init_command_line_parser.add_listener
+def _(parser):
+    parser.add_argument(
+        "--verbose-logging", action='store_true', env_var="LOCUST_VERBOSE_LOGGING",
+        help="Enable verbose logging output")
 
 
-@events.spawning_complete.add_listener
-def on_spawning_complete(user_count, **kwargs):
-    global spawning_complete
-    spawning_complete = True
-
-
-@events.request_failure.add_listener
-def request_failure_handler(request_type, name, response_time, exception, **kwargs):
-    logging.error(
-        f"Request Failed! time:{datetime.now()}, response_time:{response_time} name:{name}, exception:{exception}")
-
-
-def update_client_header_on_start(client, token=None):
-    if token is not None:
-        client.headers.update({"Authorization": f"Bearer {token}"})
-    client.headers.update({"Content-Type": "application/json"})
-    client.headers.update({"Accept": "application/json"})
-
-
-def request_get_to_api(client, url, name, timeout=HTTP_REQUEST_TIMEOUT):
-    with client.get(
-        url=url, catch_response=True, name=get_name_suffix(name), timeout=timeout,
-    ) as response:
-        if response.status_code not in [200, 201, 404]:
-            if response.content is None:
-                response.failure(f"failed to request status:{response.status_code}")
-            else:
-                response.failure(
-                    f"failed to request status:{response.status_code} body:{response.content.decode('UTF-8')[0:20]}",
-                )
-    response_as_json = response.json()
-    return response_as_json, response_as_json["status"]
-
-
-def request_post_to_api(client, url, body, name, headers={}, timeout=HTTP_REQUEST_TIMEOUT):
-    with client.post(
-        url=url, headers=headers, json=body, catch_response=True,
-        name=get_name_suffix(name), timeout=timeout,
-    ) as response:
-        if response.status_code not in [200, 201, 404]:
-            if response.content is None:
-                response.failure(f"failed to request status:{response.status_code}")
-            else:
-                response.failure(
-                    f"failed to request status:{response.status_code} body:{response.content.decode('UTF-8')[0:20]}")
-    response_as_json = response.json()
-    if 'status' in response_as_json:
-        return response_as_json, response_as_json["status"]
+def random_string_generator():
+    len = randint(8, 16)
+    prob = randint(0, 100)
+    if prob < 25:
+        random_string = ''.join([random.choice(string.ascii_letters) for n in range(len)])
+    elif prob < 50:
+        random_string = ''.join([random.choice(string.ascii_letters + string.digits) for n in range(len)])
+    elif prob < 75:
+        random_string = ''.join(
+            [random.choice(string.ascii_letters + string.digits + string.punctuation) for n in range(len)])
     else:
-        return response_as_json, 1
+        random_string = ''
+    return random_string
 
 
-def try_until_success(f):
-    for attempt in range(MAX_RETRIES):
-        logging.debug(f"Calling function {f.__name__}, attempt {attempt}...")
-
-        # try:
-        result, status = f()
-        result_as_string = str(result)
-        logging.debug(f"Result of calling function {f.__name__} was: {result_as_string}.")
-        if status == 1:
-            return result
-        else:
-            logging.debug(f"Failed calling function {f.__name__}, response was {result_as_string}, trying again:")
-            time.sleep(1)
-        # except Exception as e:
-        #     exception_as_text = str(e)
-        #     logging.debug(f"Failed calling function {f.__name__}, exception was: {exception_as_text}, trying again.")
-        #     time.sleep(1)
-
-        if not RETRY_ON_ERROR:
-            break
-
-    raise TrainTicketRequestException(f"Weird... Cannot call endpoint {f.__name__}")
+def random_date_generator():
+    temp = randint(0, 4)
+    random_y = 2000 + temp * 10 + randint(0, 9)
+    random_m = randint(1, 12)
+    random_d = randint(1, 31)  # assumendo che la data possa essere non sensata (e.g. 30 Febbraio)
+    return str(random_y) + '-' + str(random_m) + '-' + str(random_d)
 
 
-def login(client):
-    user_name = str(uuid.uuid4())
-    password = "12345678"
-
-    def api_call_admin_login():
-        headers = {"Accept": "application/json", "Content-Type": "application/json"}
-        body = {"username": "admin", "password": "222222"}
-        return request_post_to_api(
-            client, url="/api/v1/users/login", headers=headers, body=body, name="admin_login")
-
-    response_as_json = try_until_success(api_call_admin_login)
-    data = response_as_json["data"]
-    token = data["token"]
-
-    def api_call_admin_create_user():
-        headers = {"Authorization": f"Bearer {token}", "Accept": "application/json", "Content-Type": "application/json"}
-        body = {
-            "documentNum": None, "documentType": 0, "email": "string", "gender": 0,
-            "password": password, "userName": user_name,
-        }
-        return request_post_to_api(
-            client, url="/api/v1/adminuserservice/users", headers=headers, body=body, name="admin_create_user")
-
-    response_as_json = try_until_success(api_call_admin_create_user)
-
-    def api_call_login():
-        headers = {"Accept": "application/json", "Content-Type": "application/json"}
-        body = {"username": user_name, "password": password}
-        return request_post_to_api(
-            client, url="/api/v1/users/login", headers=headers, body=body, name="admin_create_user")
-
-    response_as_json = try_until_success(api_call_login)
-    data = response_as_json["data"]
-    user_id = data["userId"]
-    token = data["token"]
-
-    def api_call_create_contact_for_user():
-        headers = {"Authorization": f"Bearer {token}", "Accept": "application/json", "Content-Type": "application/json"}
-        body = {
-            "name": user_name, "accountId": user_id, "documentType": "1",
-            "documentNumber": "123456", "phoneNumber": "123456",
-        }
-        return request_post_to_api(
-            client, url="/api/v1/contactservice/contacts", headers=headers, body=body, name="admin_create_contact")
-
-    try_until_success(api_call_create_contact_for_user)
-
-    return user_id, token
+def postfix(expected=True):
+    if expected:
+        return '_expected'
+    return '_unexpected'
 
 
 def next_weekday(d, weekday):
@@ -162,359 +64,744 @@ def next_weekday(d, weekday):
     return d + timedelta(days_ahead)
 
 
-def get_name_suffix(name):
-    global spawning_complete
-    if not spawning_complete:
-        name = name + "_spawning"
-
-    if LOG_STATISTICS_IN_HALF_MINUTE_CHUNKS:
-        now = datetime.now()
-        now = datetime(now.year, now.month, now.day, now.hour, now.minute, 0 if now.second < 30 else 30, 0)
-        now_as_timestamp = int(now.timestamp())
-        return f"{name}@{now_as_timestamp}"
-    else:
-        return name
+def get_departure_date(before_date: str = ''):
+    if before_date == '':
+        tomorrow = datetime.now() + timedelta(1)
+        return tomorrow.strftime("%Y-%m-%d")
+    next_day = datetime.strptime(before_date, "%Y-%m-%d") + timedelta(days=1)
+    return next_day.strftime("%Y-%m-%d")
 
 
-def home(client):
-    # the response not to be JSON data
-    return client.get(url="/index.html", name=get_name_suffix("home"))
+class Requests:
 
+    def __init__(self, client, verbose_logging: bool = False):
+        self.client = client
+        user = random.choice(USER_CREDETIALS)
+        self.user_name = user
+        self.password = user
+        self.trip_detail = random.choice(TRIP_DATA)
+        self.food_detail = {}
+        self.departure_date = get_departure_date()
 
-def get_departure_date():
-    # We always start next Monday because there a train from Shang Hai to Su Zhou starts.
-    tomorrow = datetime.now() + timedelta(1)
-    next_monday = next_weekday(tomorrow, 0)
-    return next_monday.strftime("%Y-%m-%d")
+        if verbose_logging:
+            handler = logging.StreamHandler()
+            handler.setFormatter(logging.Formatter('%(asctime)s %(levelname)s:%(message)s'))
+            handler.setLevel(logging.DEBUG)
+            logger = logging.getLogger("Debugging logger")
+            logger.setLevel(logging.DEBUG)
+            logger.addHandler(handler)
+            self.debugging_logger = logger
+        else:
+            self.debugging_logger = None
 
+    def log_verbose(self, to_log):
+        if self.debugging_logger is not None:
+            self.debugging_logger.debug(json.dumps(to_log))
 
-def get_trip_information(client, from_station, to_station):
-    departure_date = get_departure_date()
+    def home(self, expected):
+        req_label = sys._getframe().f_code.co_name + postfix(expected)
+        start_time = time.time()
+        with self.client.get('/index.html', name=req_label) as response:
+            to_log = {'name': req_label, 'expected': expected, 'status_code': response.status_code,
+                      'response_time': time.time() - start_time}
+            self.log_verbose(to_log)
 
-    def api_call_get_trip_information():
-        body = {"startingPlace": from_station, "endPlace": to_station, "departureTime": departure_date}
-        return request_post_to_api(
-            client, url="/api/v1/travelservice/trips/left", headers={}, body=body, name="get_trip_information")
+    def try_to_read_response_as_json(self, response):
+        try:
+            return response.json()
+        except:
+            try:
+                return response.content.decode('utf-8')
+            except:
+                return response.content
 
-    try_until_success(api_call_get_trip_information)
-
-
-def search_departure(client):
-    get_trip_information(client, "Shang Hai", "Su Zhou")
-
-
-def search_return(client):
-    get_trip_information(client, "Su Zhou", "Shang Hai")
-
-
-def book(client, user_id):
-    # we always start next Monday
-    tomorrow = datetime.now() + timedelta(1)
-    next_monday = next_weekday(tomorrow, 0)
-    departure_date = next_monday.strftime("%Y-%m-%d")
-
-    def api_call_insurance():
-        return request_get_to_api(
-            client, url="/api/v1/assuranceservice/assurances/types", name="get_assurance_types",
-        )
-
-    def api_call_food():
-        return request_get_to_api(
-            client,
-            url=f"/api/v1/foodservice/foods/{departure_date}/Shang%20Hai/Su%20Zhou/D1345",
-            name="get_food_types",
-        )
-
-    def api_call_contacts():
-        return request_get_to_api(
-            client,
-            url=f"/api/v1/contactservice/contacts/account/{user_id}",
-            name="query_contacts",
-        )
-
-    try_until_success(api_call_insurance)
-    try_until_success(api_call_food)
-    response_as_json = try_until_success(api_call_contacts)
-    data = response_as_json["data"]
-    contact_id = data[0]["id"]
-
-    def api_call_ticket():
-        body = {
-            "accountId": user_id, "contactsId": contact_id, "tripId": "D1345", "seatType": "2",
-            "date": departure_date, "from": "Shang Hai", "to": "Su Zhou", "assurance": "0",
-            "foodType": 1, "foodName": "Bone Soup", "foodPrice": 2.5, "stationName": "", "storeName": "",
+    def search_ticket(self, expected):
+        logging.debug("search ticket")
+        stations = ["Shang Hai", "Tai Yuan", "Nan Jing", "Wu Xi", "Su Zhou", "Shang Hai Hong Qiao", "Bei Jing",
+                    "Shi Jia Zhuang", "Xu Zhou", "Ji Nan", "Hang Zhou", "Jia Xing Nan", "Zhen Jiang"]
+        from_station, to_station = random.sample(stations, 2)
+        departure_date = self.departure_date
+        head = {"Accept": "application/json",
+                "Content-Type": "application/json"}
+        body_start = {
+            "startingPlace": from_station,
+            "endPlace": to_station,
+            "departureTime": departure_date
         }
-        return request_post_to_api(client, url="/api/v1/preserveservice/preserve", body=body, name="preserve_ticket")
+        req_label = sys._getframe().f_code.co_name + postfix(expected)
+        start_time = time.time()
+        response = self.client.post(
+            url="/api/v1/travelservice/trips/left",
+            headers=head,
+            json=body_start,
+            name=req_label)
+        if not response.json()["data"]:
+            response = self.client.post(
+                url="/api/v1/travel2service/trips/left",
+                headers=head,
+                json=body_start,
+                name=req_label)
+        to_log = {'name': req_label, 'expected': expected, 'status_code': response.status_code,
+                  'response_time': time.time() - start_time,
+                  'response': self.try_to_read_response_as_json(response)}
+        self.log_verbose(to_log)
 
-    try_until_success(api_call_ticket)
+    # def search_departure(self, expected):
+    #     logging.info("search_departure")
+    #     stations = ["Shang Hai", "Tai Yuan", "Nan Jing", "Wu Xi", "Su Zhou", "Shang Hai Hong Qiao", "Bei Jing",
+    #                 "Shi Jia Zhuang", "Xu Zhou", "Ji Nan", "Hang Zhou", "Jia Xing Nan", "Zhen Jiang"]
+    #     from_station, to_station = random.sample(stations, 2)
+    #     if expected:
+    #         self.search_ticket(date.today().strftime(random_date_generator()), from_station, to_station, expected)
+    #     else:
+    #         self.search_ticket(date.today().strftime(random_date_generator()), random_string_generator(), "Su Zhou",
+    #                            expected)
 
-
-def get_last_order(client, user_id, expected_status, query_other: bool = False):
-    def api_call_query():
-        body = {"loginId": user_id}
-        path = "/orderOtherService/orderOther/refresh" if query_other else "/orderservice/order/refresh"
-        return request_post_to_api(client, "/api/v1" + path, body=body, name="get_order_information")
-
-    response_as_json = try_until_success(api_call_query)
-    data = response_as_json["data"]
-
-    for entry in data:
-        if entry["status"] == expected_status:
-            return entry
-
-    return None
-
-
-def get_last_order_id(client, user_id, expected_status, query_other: bool = False):
-    order = get_last_order(client, user_id, expected_status, query_other)
-
-    if order is not None:
-        order_id = order["id"]
-        return order_id
-
-    return None
-
-
-def pay(client, user_id, query_other: bool = False):
-    order_id = get_last_order_id(client, user_id, STATUS_BOOKED, query_other)
-    if order_id is None:
-        raise Exception("Weird... There is no order to pay.")
-
-    def api_call_pay():
-        body = {"orderId": order_id, "tripId": "D1345"}
-        return request_post_to_api(
-            client,
-            url="/api/v1/inside_pay_service/inside_payment", body=body, name="pay_order",
+    def _login_as_admin(self) -> str:
+        req_label = sys._getframe().f_code.co_name
+        response = self.client.post(
+            url="/api/v1/users/login",
+            headers={"Accept": "application/json", "Content-Type": "application/json"},
+            json={"username": "admin", "password": "222222"},
+            name=req_label,
         )
+        response_as_json = response.json()["data"]
+        if response_as_json is not None:
+            token = response_as_json["token"]
+            return token
+        return ""
 
-    try_until_success(api_call_pay)
+    def _create_user(self, expected):
+        admin_token: str = self._login_as_admin()
+
+        req_label = sys._getframe().f_code.co_name + postfix(expected)
+        start_time = time.time()
+        document_num = random.randint(1, 5)  # added by me
+        with self.client.post(
+            url="/api/v1/adminuserservice/users",
+            headers={
+                "Authorization": f"Bearer {admin_token}", "Accept": "application/json",
+                "Content-Type": "application/json"
+            },
+            json={
+                "documentNum": document_num, "documentType": 0, "email": "string", "gender": 0,
+                "password": self.password, "userName": self.user_name,
+            },
+            name=req_label,
+        ) as response2:
+            to_log = {'name': req_label, 'expected': expected, 'status_code': response2.status_code,
+                      'response_time': time.time() - start_time,
+                      'response': self.try_to_read_response_as_json(response2)}
+            self.log_verbose(to_log)
+
+    def _navigate_to_client_login(self, expected=True):
+        req_label = sys._getframe().f_code.co_name + postfix(expected)
+        start_time = time.time()
+        with self.client.get('/client_login.html', name=req_label) as response:
+            to_log = {'name': req_label, 'expected': True, 'status_code': response.status_code,
+                      'response_time': time.time() - start_time}
+            self.log_verbose(to_log)
+
+    def login(self, expected):
+        self._create_user(expected=expected)
+        self._navigate_to_client_login()
+        req_label = sys._getframe().f_code.co_name + postfix(expected)
+        start_time = time.time()
+        head = {"Accept": "application/json",
+                "Content-Type": "application/json"}
+        if (expected):
+            response = self.client.post(url="/api/v1/users/login",
+                                        headers=head,
+                                        json={
+                                            "username": self.user_name,
+                                            "password": self.password
+                                        }, name=req_label)
+            to_log = {'name': req_label, 'expected': expected, 'status_code': response.status_code,
+                      'response_time': time.time() - start_time,
+                      'response': self.try_to_read_response_as_json(response)}
+            self.log_verbose(to_log)
+        else:
+            response = self.client.post(url="/api/v1/users/login",
+                                        headers=head,
+                                        json={
+                                            "username": self.user_name,
+                                            # wrong password
+                                            "password": random_string_generator()
+                                        }, name=req_label)
+            to_log = {'name': req_label, 'expected': expected, 'status_code': response.status_code,
+                      'response_time': time.time() - start_time,
+                      'response': self.try_to_read_response_as_json(response)}
+            self.log_verbose(to_log)
+
+        response_as_json = response.json()["data"]
+        if response_as_json is not None:
+            token = response_as_json["token"]
+            self.bearer = "Bearer " + token
+            self.user_id = response_as_json["userId"]
+
+    # purchase ticket
+
+    def start_booking(self, expected):
+        departure_date = self.departure_date
+        head = {"Accept": "application/json",
+                "Content-Type": "application/json", "Authorization": self.bearer}
+        req_label = sys._getframe().f_code.co_name + postfix(expected)
+        start_time = time.time()
+        with self.client.get(
+                url="/client_ticket_book.html?tripId=" + self.trip_detail["trip_id"] + "&from=" + self.trip_detail[
+                    "from"] +
+                    "&to=" + self.trip_detail["to"] + "&seatType=" + self.trip_detail["seat_type"] + "&seat_price=" +
+                    self.trip_detail["seat_price"] +
+                    "&date=" + departure_date,
+                headers=head,
+                name=req_label) as response:
+            to_log = {'name': req_label, 'expected': expected, 'status_code': response.status_code,
+                      'response_time': time.time() - start_time}
+            self.log_verbose(to_log)
+
+    def get_assurance_types(self, expected):
+        head = {"Accept": "application/json",
+                "Content-Type": "application/json", "Authorization": self.bearer}
+        req_label = sys._getframe().f_code.co_name + postfix(expected)
+        start_time = time.time()
+        with self.client.get(
+                url="/api/v1/assuranceservice/assurances/types",
+                headers=head,
+                name=req_label) as response:
+            to_log = {'name': req_label, 'expected': expected, 'status_code': response.status_code,
+                      'response_time': time.time() - start_time,
+                      'response': self.try_to_read_response_as_json(response)}
+            self.log_verbose(to_log)
+
+    def get_foods(self, expected):
+        departure_date = self.departure_date
+        head = {"Accept": "application/json",
+                "Content-Type": "application/json", "Authorization": self.bearer}
+        req_label = sys._getframe().f_code.co_name + postfix(expected)
+        start_time = time.time()
+        with self.client.get(
+                url="/api/v1/foodservice/foods/" + departure_date + "/" + self.trip_detail["from"] + "/" +
+                    self.trip_detail["to"] + "/" + self.trip_detail["trip_id"],
+                headers=head,
+                name=req_label) as response:
+            # resp_data = response.json()
+            # if resp_data["data"]:
+            #     if random.uniform(0, 1) <= 0.5:
+            #         self.food_detail = {"foodType": 2,
+            #                             "foodName": resp_data["data"]["trainFoodList"][0]["foodList"][0]["foodName"],
+            #                             "foodPrice": resp_data["data"]["trainFoodList"][0]["foodList"][0]["price"]}
+            #     else:
+            #         self.food_detail = {"foodType": 1,
+            #                             "foodName": resp_data["data"]["foodStoreListMap"][self.trip_detail["from"]][0][
+            #                                 "foodList"][0]["foodName"],
+            #                             "foodPrice": resp_data["data"]["foodStoreListMap"][self.trip_detail["from"]][0][
+            #                                 "foodList"][0]["price"]}
+            to_log = {'name': req_label, 'expected': expected, 'status_code': response.status_code,
+                      'response_time': time.time() - start_time,
+                      'response': self.try_to_read_response_as_json(response)}
+            self.log_verbose(to_log)
+
+    def select_contact(self, expected):
+        head = {"Accept": "application/json",
+                "Content-Type": "application/json", "Authorization": self.bearer}
+        req_label = sys._getframe().f_code.co_name + postfix(expected)
+        start_time = time.time()
+        response_contacts = self.client.get(
+            url="/api/v1/contactservice/contacts/account/" + self.user_id,
+            headers=head,
+            name=req_label)
+        to_log = {'name': req_label, 'expected': expected, 'status_code': response_contacts.status_code,
+                  'response_time': time.time() - start_time,
+                  'response': self.try_to_read_response_as_json(response_contacts)}
+        self.log_verbose(to_log)
+
+        response_as_json_contacts = response_contacts.json()["data"]
+
+        if len(response_as_json_contacts) == 0:
+            req_label = 'set_new_contact' + postfix(expected)
+            response_contacts = self.client.post(
+                url="/api/v1/contactservice/contacts",
+                headers=head,
+                json={
+                    "name": self.user_id, "accountId": self.user_id, "documentType": "1",
+                    "documentNumber": self.user_id, "phoneNumber": "123456"},
+                name=req_label)
+
+            response_as_json_contacts = response_contacts.json()["data"]
+            self.contactid = response_as_json_contacts["id"]
+        else:
+            self.contactid = response_as_json_contacts[0]["id"]
+
+    def finish_booking(self, expected):
+        departure_date = self.departure_date
+        head = {"Accept": "application/json",
+                "Content-Type": "application/json", "Authorization": self.bearer}
+        req_label = sys._getframe().f_code.co_name + postfix(expected)
+        if (expected):
+            body_for_reservation = {
+                "accountId": self.user_id,
+                "contactsId": self.contactid,
+                "tripId": self.trip_detail["trip_id"],
+                "seatType": self.trip_detail["seat_type"],
+                "date": departure_date,
+                "from": self.trip_detail["from"],
+                "to": self.trip_detail["to"],
+                "assurance": random.choice(["0", "1"]),
+                "foodType": 1,
+                "foodName": "Bone Soup",
+                "foodPrice": 2.5,
+                "stationName": "",
+                "storeName": ""
+            }
+            if self.food_detail:
+                body_for_reservation["foodType"] = self.food_detail["foodType"]
+                body_for_reservation["foodName"] = self.food_detail["foodName"]
+                body_for_reservation["foodPrice"] = self.food_detail["foodPrice"]
+        else:
+            body_for_reservation = {
+                "accountId": self.user_id,
+                "contactsId": self.contactid,
+                "tripId": random_string_generator(),
+                "seatType": "2",
+                "date": departure_date,
+                "from": "Shang Hai",
+                "to": "Su Zhou",
+                "assurance": "0",
+                "foodType": 1,
+                "foodName": "Bone Soup",
+                "foodPrice": 2.5,
+                "stationName": "",
+                "storeName": ""
+            }
+        start_time = time.time()
+        with self.client.post(
+                url="/api/v1/preserveservice/preserve",
+                headers=head,
+                json=body_for_reservation,
+                catch_response=True,
+                name=req_label) as response:
+            to_log = {'name': req_label, 'expected': expected, 'status_code': response.status_code,
+                      'response_time': time.time() - start_time,
+                      'response': self.try_to_read_response_as_json(response)}
+            self.log_verbose(to_log)
+
+    def select_order(self, expected):
+        head = {"Accept": "application/json",
+                "Content-Type": "application/json", "Authorization": self.bearer}
+        req_label = sys._getframe().f_code.co_name + postfix(expected)
+        start_time = time.time()
+        response_order_refresh = self.client.post(
+            url="/api/v1/orderservice/order/refresh",
+            name=req_label,
+            headers=head,
+            json={
+                "loginId": self.user_id, "enableStateQuery": "false", "enableTravelDateQuery": "false",
+                "enableBoughtDateQuery": "false", "travelDateStart": "null", "travelDateEnd": "null",
+                "boughtDateStart": "null", "boughtDateEnd": "null"})
+
+        to_log = {'name': req_label, 'expected': expected, 'status_code': response_order_refresh.status_code,
+                  'response_time': time.time() - start_time,
+                  'response': self.try_to_read_response_as_json(response_order_refresh)}
+        self.log_verbose(to_log)
+
+        response_as_json = response_order_refresh.json()["data"]
+        if response_as_json:
+            self.order_id = response_as_json[0]["id"]  # first order with paid or not paid
+            self.paid_order_id = response_as_json[0]["id"]  # default first order with paid or unpaid.
+        else:
+            self.order_id = "sdasdasd"  # no orders, set a random number
+            self.paid_order_id = "asdasdasn"
+        # selecting order with payment status - not paid.
+        for orders in response_as_json:
+            if orders["status"] == 0:
+                self.order_id = orders["id"]
+                break
+        for orders in response_as_json:
+            if orders["status"] == 1:
+                self.paid_order_id = orders["id"]
+                break
+
+    def pay(self, expected):
+        head = {"Accept": "application/json",
+                "Content-Type": "application/json", "Authorization": self.bearer}
+        req_label = sys._getframe().f_code.co_name + postfix(expected)
+        start_time = time.time()
+        if not self.order_id:
+            to_log = {'name': req_label, 'expected': expected, 'status_code': "N/A",
+                      'response_time': time.time() - start_time,
+                      'response': "Place an order first!"}
+            self.log_verbose(to_log)
+            return
+        if (expected):
+            with self.client.post(
+                    url="/api/v1/inside_pay_service/inside_payment",
+                    headers=head,
+                    json={"orderId": self.order_id, "tripId": "D1345"},
+                    name=req_label) as response:
+                to_log = {'name': req_label, 'expected': expected, 'status_code': response.status_code,
+                          'response_time': time.time() - start_time,
+                          'response': self.try_to_read_response_as_json(response)}
+                self.log_verbose(to_log)
+        else:
+            with self.client.post(
+                    url="/api/v1/inside_pay_service/inside_payment",
+                    headers=head,
+                    json={"orderId": random_string_generator(), "tripId": "D1345"},
+                    name=req_label) as response:
+                to_log = {'name': req_label, 'expected': expected, 'status_code': response.status_code,
+                          'response_time': time.time() - start_time,
+                          'response': self.try_to_read_response_as_json(response)}
+                self.log_verbose(to_log)
+
+    # cancelNoRefund
+
+    def cancel_with_no_refund(self, expected):
+        head = {"Accept": "application/json",
+                "Content-Type": "application/json", "Authorization": self.bearer}
+        req_label = sys._getframe().f_code.co_name + postfix(expected)
+        start_time = time.time()
+        if (expected):
+            with self.client.get(
+                    url="/api/v1/cancelservice/cancel/" + self.order_id + "/" + self.user_id,
+                    headers=head,
+                    name=req_label) as response:
+                to_log = {'name': req_label, 'expected': expected, 'status_code': response.status_code,
+                          'response_time': time.time() - start_time,
+                          'response': self.try_to_read_response_as_json(response)}
+                self.log_verbose(to_log)
+
+        else:
+            with self.client.get(
+                    url="/api/v1/cancelservice/cancel/" + self.order_id + "/" + random_string_generator(),
+                    headers=head,
+                    name=req_label) as response:
+                to_log = {'name': req_label, 'expected': expected, 'status_code': response.status_code,
+                          'response_time': time.time() - start_time,
+                          'response': self.try_to_read_response_as_json(response)}
+                self.log_verbose(to_log)
+
+    # user refund with voucher
+
+    def get_voucher(self, expected):
+        head = {"Accept": "application/json",
+                "Content-Type": "application/json", "Authorization": self.bearer}
+        req_label = sys._getframe().f_code.co_name + postfix(expected)
+        start_time = time.time()
+        if (expected):
+            with self.client.post(
+                    url="/getVoucher",
+                    headers=head,
+                    json={"orderId": self.order_id, "type": 1},
+                    name=req_label) as response:
+                to_log = {'name': req_label, 'expected': expected, 'status_code': response.status_code,
+                          'response_time': time.time() - start_time,
+                          'response': self.try_to_read_response_as_json(response)}
+                self.log_verbose(to_log)
+
+        else:
+            with self.client.post(
+                    url="/getVoucher",
+                    headers=head,
+                    json={"orderId": random_string_generator(), "type": 1},
+                    name=req_label) as response:
+                to_log = {'name': req_label, 'expected': expected, 'status_code': response.status_code,
+                          'response_time': time.time() - start_time}
+                self.log_verbose(to_log)
+
+    # consign ticket
+
+    def get_consigns(self, expected):
+        req_label = sys._getframe().f_code.co_name + postfix(expected)
+        start_time = time.time()
+        head = {"Accept": "application/json",
+                "Content-Type": "application/json", "Authorization": self.bearer}
+        with self.client.get(
+                url="/api/v1/consignservice/consigns/order/" + self.order_id,
+                headers=head,
+                name=req_label) as response:
+            to_log = {'name': req_label, 'expected': expected, 'status_code': response.status_code,
+                      'response_time': time.time() - start_time,
+                      'response': self.try_to_read_response_as_json(response)}
+            self.log_verbose(to_log)
+
+    def confirm_consign(self, expected):
+        head = {"Accept": "application/json",
+                "Content-Type": "application/json", "Authorization": self.bearer}
+        req_label = sys._getframe().f_code.co_name + postfix(expected)
+        start_time = time.time()
+        if (expected):
+            response_as_json_consign = self.client.put(
+                url="/api/v1/consignservice/consigns",
+                name=req_label,
+                json={
+                    "accountId": self.user_id,
+                    "handleDate": self.departure_date,
+                    "from": self.trip_detail["from"],
+                    "to": self.trip_detail["to"],
+                    "orderId": self.order_id,
+                    "consignee": self.order_id,
+                    "phone": ''.join([random.choice(string.digits) for n in range(8)]),
+                    "weight": "1",
+                    "id": "",
+                    "isWithin": "false"},
+                headers=head)
+            to_log = {'name': req_label, 'expected': expected, 'status_code': response_as_json_consign.status_code,
+                      'response_time': time.time() - start_time,
+                      'response': self.try_to_read_response_as_json(response_as_json_consign)}
+            self.log_verbose(to_log)
+        else:
+            response_as_json_consign = self.client.put(
+                url="/api/v1/consignservice/consigns",
+                name=req_label,
+                json={
+                    "accountId": self.user_id,
+                    "handleDate": self.departure_date,
+                    "from": "Shang Hai",
+                    "to": "Su Zhou",
+                    "orderId": self.order_id,
+                    "consignee": random_string_generator(),
+                    "phone": random_string_generator(),
+                    "weight": "1",
+                    "id": "",
+                    "isWithin": "false"}, headers=head)
+            to_log = {'name': req_label, 'expected': expected, 'status_code': response_as_json_consign.status_code,
+                      'response_time': time.time() - start_time,
+                      'response': self.try_to_read_response_as_json(response_as_json_consign)}
+            self.log_verbose(to_log)
+
+    def collect_ticket(self, expected):
+        head = {"Accept": "application/json",
+                "Content-Type": "application/json", "Authorization": self.bearer}
+        req_label = sys._getframe().f_code.co_name + postfix(expected)
+        start_time = time.time()
+        if expected:
+            response_as_json_collect_ticket = self.client.get(
+                url="/api/v1/executeservice/execute/collected/" + self.paid_order_id,
+                name=req_label,
+                headers=head)
+            to_log = {'name': req_label, 'expected': expected,
+                      'status_code': response_as_json_collect_ticket.status_code,
+                      'response_time': time.time() - start_time,
+                      'response': self.try_to_read_response_as_json(response_as_json_collect_ticket)}
+            self.log_verbose(to_log)
+
+    def enter_station(self, expected):
+        head = {"Accept": "application/json",
+                "Content-Type": "application/json", "Authorization": self.bearer}
+        req_label = sys._getframe().f_code.co_name + postfix(expected)
+        start_time = time.time()
+        if expected:
+            response_as_json_enter_station = self.client.get(
+                url="/api/v1/executeservice/execute/execute/" + self.paid_order_id,
+                name=req_label,
+                headers=head)
+            to_log = {'name': req_label, 'expected': expected,
+                      'status_code': response_as_json_enter_station.status_code,
+                      'response_time': time.time() - start_time,
+                      'response': self.try_to_read_response_as_json(response_as_json_enter_station)}
+            self.log_verbose(to_log)
+
+    def perform_task(self, name):
+        name_without_suffix = name.replace("_expected", "").replace("_unexpected", "")
+        task = getattr(self, name_without_suffix)
+        task(name.endswith('_expected'))
 
 
-def cancel(client, user_id, query_other: bool = False):
-    order_id = get_last_order_id(client, user_id, STATUS_BOOKED, query_other)
-    if order_id is None:
-        raise Exception("Weird... There is no order to cancel.")
+class UserOnlyLogin(HttpUser):
+    weight = 1
+    # wait_function = random.expovariate(1) * 1000
+    wait_time = constant(0)
 
-    def api_call_cancel():
-        return request_get_to_api(
-            client,
-            url=f"/api/v1/cancelservice/cancel/{order_id}/{user_id}", name="cancel_order",
-        )
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.client.mount("https://", HTTPAdapter(pool_maxsize=50))
+        self.client.mount("http://", HTTPAdapter(pool_maxsize=50))
 
-    try_until_success(api_call_cancel)
-
-
-def consign(client, user_id, query_other: bool = False):
-    order_id = get_last_order_id(client, user_id, STATUS_BOOKED, query_other)
-    if order_id is None:
-        raise Exception("Weird... There is no order to consign.")
-
-    departure_date = get_departure_date()
-
-    def api_call_consign():
-        body = {
-            "accountId": user_id, "handleDate": departure_date, "from": "Shang Hai", "to": "Su Zhou",
-            "orderId": order_id, "consignee": order_id, "phone": "123", "weight": "1", "id": "", "isWithin": "false",
-        }
-        return request_post_to_api(
-            client,
-            url="/api/v1/consignservice/consigns", body=body, name="create_consign",
-        )
-
-    try_until_success(api_call_consign)
-
-
-def collect_and_use(client, user_id, query_other: bool = False):
-    order_id = get_last_order_id(client, user_id, STATUS_PAID, query_other)
-    if order_id is None:
-        raise Exception("Weird... There is no order to collect.")
-
-    def api_call_collect_ticket():
-        return request_get_to_api(
-            client,
-            url=f"/api/v1/executeservice/execute/collected/{order_id}", name="collect_ticket",
-        )
-
-    try_until_success(api_call_collect_ticket)
-
-    order_id = get_last_order_id(client, user_id, STATUS_COLLECTED, query_other)
-    if order_id is None:
-        raise Exception("Weird... There is no order to execute.")
-
-    def api_call_enter_station():
-        return request_get_to_api(
-            client,
-            url=f"/api/v1/executeservice/execute/execute/{order_id}", name="enter_station",
-        )
-
-    try_until_success(api_call_enter_station)
-
-
-def get_voucher(client, user_id, query_other: bool = False):
-    order_id = get_last_order_id(client, user_id, STATUS_EXECUTED, query_other)
-    if order_id is None:
-        raise Exception("Weird... There is no order that was used.")
-
-    def api_call_get_voucher():
-        body = {"orderId": order_id, "type": 1}
-        return request_post_to_api(
-            client, url="/getVoucher", body=body, name="get_voucher",
-        )
-
-    try_until_success(api_call_get_voucher)
-
-# class MyHttpUser(HttpUser):
-#     def __init__(self, *args, **kwargs):
-#         super().__init__(*args, **kwargs)
-#         self.client.mount("https://", HTTPAdapter(pool_maxsize=50))
-#         self.client.mount("http://", HTTPAdapter(pool_maxsize=50))
+    @task()
+    def perform_task(self):
+        logging.debug("User home -> login")
+        request = Requests(self.client, verbose_logging=self.environment.parsed_options.verbose_logging)
+        number = uniform(0.0, 1.0)
+        if number < 0.98:
+            tasks_sequence = ["login_expected"]
+        else:
+            tasks_sequence = ["login_unexpected"]
+        for tasks in tasks_sequence:
+            request.perform_task(tasks)
 
 
 class UserNoLogin(HttpUser):
-    wait_time = constant_throughput(10)
     weight = 1
+    wait_time = constant(0)
 
-    def on_start(self):
-        update_client_header_on_start(self.client)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.client.mount('https://', HTTPAdapter(pool_maxsize=50))
+        self.client.mount('http://', HTTPAdapter(pool_maxsize=50))
 
     @task
     def perfom_task(self):
-        request_id = str(uuid.uuid4())
-        logging.debug(f'Running user "no login" with request id {request_id}...')
+        logging.debug("Running user 'only search'...")
 
-        home(self.client)
-        search_departure(self.client)
-        search_return(self.client)
+        task_sequence = ["home_expected", "search_ticket_expected"]
+
+        requests = Requests(self.client, verbose_logging=self.environment.parsed_options.verbose_logging)
+        for task in task_sequence:
+            requests.perform_task(task)
 
 
 class UserBooking(HttpUser):
-    wait_time = constant_throughput(5)
     weight = 1
+    # wait_function = random.expovariate(1)
+    wait_time = constant(0)
 
-    def _login(self):
-        self.user_id, token = login(self.client)
-        update_client_header_on_start(self.client, token=token)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.client.mount('https://', HTTPAdapter(pool_maxsize=50))
+        self.client.mount('http://', HTTPAdapter(pool_maxsize=50))
 
     @task
     def perform_task(self):
-        self._login()
+        logging.debug("Running user 'booking'...")
 
-        request_id = str(uuid.uuid4())
-        logging.debug(f'Running user "booking" with request id {request_id}...')
+        task_sequence = ["home_expected",
+                         "login_expected",
+                         "search_ticket_expected",
+                         "start_booking_expected",
+                         "get_assurance_types_expected",
+                         "get_foods_expected",
+                         "select_contact_expected",
+                         "finish_booking_expected"]
+        # task_sequence = ["login_expected", "select_contact_expected", "finish_booking_expected"]
 
-        random.seed()
-        query_other = random.choices([True, False], weights=[0.4, 0.6])[0]
-
-        home(self.client)
-        search_departure(self.client)
-        search_return(self.client)
-        book(self.client, self.user_id)
-        pay(self.client, self.user_id, query_other)
-        collect_and_use(self.client, self.user_id, query_other)
+        requests = Requests(self.client, verbose_logging=self.environment.parsed_options.verbose_logging)
+        for task in task_sequence:
+            requests.perform_task(task)
 
 
 class UserConsignTicket(HttpUser):
-    wait_time = constant_throughput(5)
     weight = 1
+    wait_time = constant(0)
 
-    def _login(self):
-        self.user_id, token = login(self.client)
-        update_client_header_on_start(self.client, token=token)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.client.mount('https://', HTTPAdapter(pool_maxsize=50))
+        self.client.mount('http://', HTTPAdapter(pool_maxsize=50))
 
     @task
     def perform_task(self):
-        self._login()
+        logging.debug("Running user 'consign ticket'...")
+        task_sequence = [
+            "home_expected",
+            "login_expected",
+            "select_contact_expected",
+            "finish_booking_expected",
+            "select_order_expected",
+            "get_consigns_expected",
+            "confirm_consign_expected",
+        ]
 
-        request_id = str(uuid.uuid4())
-        logging.debug(f'Running user "consign ticket" with request id {request_id}...')
+        requests = Requests(self.client, verbose_logging=self.environment.parsed_options.verbose_logging)
+        for task in task_sequence:
+            requests.perform_task(task)
 
-        random.seed()
-        query_other = random.choices([True, False], weights=[0.4, 0.6])[0]
 
-        home(self.client)
-        search_departure(self.client)
-        search_return(self.client)
-        book(self.client, self.user_id)
-        consign(self.client, self.user_id, query_other)
+class UserPay(HttpUser):
+    weight = 1
+    wait_time = constant(0)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.client.mount('https://', HTTPAdapter(pool_maxsize=50))
+        self.client.mount('http://', HTTPAdapter(pool_maxsize=50))
+
+    @task
+    def perform_task(self):
+        logging.debug("Running user 'booking'...")
+
+        task_sequence = ["home_expected",
+                         "login_expected",
+                         "select_contact_expected",
+                         "finish_booking_expected",
+                         "select_order_expected",
+                         "pay_expected"]
+
+        requests = Requests(self.client, verbose_logging=self.environment.parsed_options.verbose_logging)
+        for task in task_sequence:
+            requests.perform_task(task)
 
 
 class UserCancelNoRefund(HttpUser):
-    wait_time = constant_throughput(5)
-    weight = 1
+    weight = 0
+    wait_time = constant(0)
 
-    def _login(self):
-        self.user_id, token = login(self.client)
-        update_client_header_on_start(self.client, token=token)
-
-    @task
-    def perform_task(self):
-        self._login()
-
-        request_id = str(uuid.uuid4())
-        logging.debug(f'Running user "cancel no refund" with request id {request_id}...')
-
-        random.seed()
-        query_other = random.choices([True, False], weights=[0.4, 0.6])[0]
-
-        home(self.client)
-        search_departure(self.client)
-        search_return(self.client)
-        book(self.client, self.user_id)
-        cancel(self.client, self.user_id, query_other)
-
-
-class UserRefundVoucher(HttpUser):
-    wait_time = constant_throughput(5)
-    weight = 1
-
-    def _login(self):
-        self.user_id, token = login(self.client)
-        update_client_header_on_start(self.client, token=token)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.client.mount('https://', HTTPAdapter(pool_maxsize=50))
+        self.client.mount('http://', HTTPAdapter(pool_maxsize=50))
 
     @task
     def perform_task(self):
-        self._login()
+        logging.debug("Running user 'cancel no refund'...")
 
-        request_id = str(uuid.uuid4())
-        logging.debug(f'Running user "cancel no refund" with request id {request_id}...')
+        task_sequence = [
+            "home_expected",
+            "login_expected",
+            "select_order_expected",
+            "cancel_with_no_refund_expected",
+        ]
 
-        random.seed()
-        query_other = random.choices([True, False], weights=[0.4, 0.6])[0]
-
-        home(self.client)
-        search_departure(self.client)
-        search_return(self.client)
-        book(self.client, self.user_id)
-        pay(self.client, self.user_id, query_other)
-        collect_and_use(self.client, self.user_id, query_other)
-        get_voucher(self.client, self.user_id, query_other)
+        requests = Requests(self.client, verbose_logging=self.environment.parsed_options.verbose_logging)
+        for task in task_sequence:
+            requests.perform_task(task)
 
 
-# class StagesShape(LoadTestShape):
-#     """
-#     A simply load test shape class that has different user and spawn_rate at
-#     different stages.
-#     Keyword arguments:
-#         stages -- A list of dicts, each representing a stage with the following keys:
-#             duration -- When this many seconds pass the test is advanced to the next stage
-#             users -- Total user count
-#             spawn_rate -- Number of users to start/stop per second
-#             stop -- A boolean that can stop that test at a specific stage
-#         stop_at_end -- Can be set to stop once all stages have run.
-#     """
+class UserCollectTicket(HttpUser):
+    weight = 1
+    wait_time = constant(0)
 
-#     stages = [
-#         {"duration": 5, "users": 10, "spawn_rate": 10},
-#         {"duration": 15, "users": 50, "spawn_rate": 10},
-#         {"duration": 25, "users": 100, "spawn_rate": 10}
-#     ]
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.client.mount('https://', HTTPAdapter(pool_maxsize=50))
+        self.client.mount('http://', HTTPAdapter(pool_maxsize=50))
 
-#     def tick(self):
-#         run_time = self.get_run_time()
+    @task
+    def perform_task(self):
+        logging.debug("Running user 'collect ticket'...")
 
-#         for stage in self.stages:
-#             if run_time < stage["duration"]:
-#                 tick_data = (stage["users"], stage["spawn_rate"])
-#                 return tick_data
+        task_sequence = [
+            "home_expected",
+            "login_expected",
+            "select_order_expected",
+            "pay_expected",
+            "collect_ticket_expected",
+        ]
 
-#         return None
+        requests = Requests(self.client, verbose_logging=self.environment.parsed_options.verbose_logging)
+        for task in task_sequence:
+            requests.perform_task(task)
+
+
+"""
+Events for printing all requests into a file.
+"""
+
+
+class Print:  # pylint: disable=R0902
+    """
+    Record every response (useful when debugging a single locust)
+    """
+
+    def __init__(self, env: locust.env.Environment, include_length=False, include_time=False):
+        self.env = env
+        self.env.events.request_success.add_listener(self.request_success)
+
+    def request_success(self, request_type, name, response_time, response_length, **_kwargs):
+        users = self.env.runner.user_count
+        data = [datetime.now(), request_type, name, response_time, users]
+        state_data.append(data)
+
+
+@events.init.add_listener
+def locust_init_listener(environment, **kwargs):
+    Print(env=environment)
