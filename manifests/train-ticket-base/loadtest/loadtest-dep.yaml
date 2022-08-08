@@ -31,14 +31,18 @@ spec:
           - name: locustfile-volume
             mountPath: /config
         env:
+          - name: PATHONPATH  # to load locustfile_dataset.py
+            value: /config
+          - name: LOCUST_VERBOSE_LOGGING
+            value: 'false'
           - name: LOCUST_HOST
             value: 'http://ts-ui-dashboard.train-ticket.svc.cluster.local:8080'
           - name: LOCUST_USERS
-            value: '5'
+            value: '6'
           - name: LOCUST_SPAWN_RATE
             value: '1'
           - name: LOCUST_AUTOSTART
-            value: 'false'
+            value: 'true'
         ports:
           - name: master-web
             containerPort: 8089
