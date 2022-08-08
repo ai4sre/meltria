@@ -26,6 +26,9 @@ def _(parser):
     parser.add_argument(
         "--verbose-logging", action='store_true', env_var="LOCUST_VERBOSE_LOGGING",
         help="Enable verbose logging output")
+    parser.add_argument(
+        "--num-tasks-per-signup", type=int, env_var="LOCUST_NUM_TASKS_PER_SIGNUP", default=10,
+        help="The number of tasks per signup")
 
 
 def random_string_generator():
@@ -65,11 +68,13 @@ def random_date_after_today():
 
 class Requests:
 
-    def __init__(self, client, verbose_logging: bool = False):
+    def __init__(self, client, user: str = '', signup: bool = True, verbose_logging: bool = False):
         self.client = client
-        user = random.choice(USER_CREDETIALS)
+        if user == '':
+            user = random.choice(USER_CREDETIALS)
         self.user_name = user
         self.password = user
+        self.user_signup = signup
         self.trip_detail = random.choice(TRIP_DATA)
         self.food_detail = {}
         # Order records retrieved in the backend (ts-order-service) gradually increases
@@ -202,7 +207,8 @@ class Requests:
             self.log_request(req_label, expected, response)
 
     def login(self, expected):
-        self._create_user(expected=expected)
+        if self.user_signup:
+            self._create_user(expected=expected)
         self._navigate_to_client_login()
         req_label = sys._getframe().f_code.co_name + postfix(expected)
         if (expected):
@@ -517,11 +523,22 @@ class UserOnlyLogin(HttpUser):
         super().__init__(*args, **kwargs)
         self.client.mount("https://", HTTPAdapter(pool_maxsize=50))
         self.client.mount("http://", HTTPAdapter(pool_maxsize=50))
+        self.current_user: str = ''
+        self.task_count: int = 0
 
     @task()
     def perform_task(self):
         logging.debug("User home -> login")
-        request = Requests(self.client, verbose_logging=self.environment.parsed_options.verbose_logging)
+
+        if self.task_count % self.environment.parsed_options.num_tasks_per_signup == 0:
+            self.current_user = random.choice(USER_CREDETIALS)
+        self.task_count += 1
+
+        request = Requests(
+            self.client,
+            user=self.current_user,
+            verbose_logging=self.environment.parsed_options.verbose_logging,
+        )
         number = uniform(0.0, 1.0)
         if number < 0.98:
             tasks_sequence = ["login_expected"]
@@ -539,16 +556,26 @@ class UserNoLogin(HttpUser):
         super().__init__(*args, **kwargs)
         self.client.mount('https://', HTTPAdapter(pool_maxsize=50))
         self.client.mount('http://', HTTPAdapter(pool_maxsize=50))
+        self.current_user: str = ''
+        self.task_count: int = 0
 
     @task
     def perfom_task(self):
         logging.debug("Running user 'only search'...")
 
-        task_sequence = ["home_expected", "search_ticket_expected"]
+        if self.task_count % self.environment.parsed_options.num_tasks_per_signup == 0:
+            self.current_user = random.choice(USER_CREDETIALS)
+        self.task_count += 1
 
-        requests = Requests(self.client, verbose_logging=self.environment.parsed_options.verbose_logging)
+        request = Requests(
+            self.client,
+            user=self.current_user,
+            verbose_logging=self.environment.parsed_options.verbose_logging,
+        )
+
+        task_sequence = ["home_expected", "search_ticket_expected"]
         for task in task_sequence:
-            requests.perform_task(task)
+            request.perform_task(task)
 
 
 class UserBooking(HttpUser):
@@ -560,10 +587,25 @@ class UserBooking(HttpUser):
         super().__init__(*args, **kwargs)
         self.client.mount('https://', HTTPAdapter(pool_maxsize=50))
         self.client.mount('http://', HTTPAdapter(pool_maxsize=50))
+        self.current_user: str = ''
+        self.task_count: int = 0
 
     @task
     def perform_task(self):
         logging.debug("Running user 'booking'...")
+
+        user_signup: bool = False
+        if self.task_count % self.environment.parsed_options.num_tasks_per_signup == 0:
+            self.current_user = random.choice(USER_CREDETIALS)
+            user_signup = True
+        self.task_count += 1
+
+        request = Requests(
+            self.client,
+            user=self.current_user,
+            signup=user_signup,
+            verbose_logging=self.environment.parsed_options.verbose_logging,
+        )
 
         task_sequence = ["home_expected",
                          "login_expected",
@@ -573,10 +615,8 @@ class UserBooking(HttpUser):
                          "get_foods_expected",
                          "select_contact_expected",
                          "finish_booking_expected"]
-
-        requests = Requests(self.client, verbose_logging=self.environment.parsed_options.verbose_logging)
         for task in task_sequence:
-            requests.perform_task(task)
+            request.perform_task(task)
 
 
 class UserConsignTicket(HttpUser):
@@ -587,10 +627,26 @@ class UserConsignTicket(HttpUser):
         super().__init__(*args, **kwargs)
         self.client.mount('https://', HTTPAdapter(pool_maxsize=50))
         self.client.mount('http://', HTTPAdapter(pool_maxsize=50))
+        self.current_user: str = ''
+        self.task_count: int = 0
 
     @task
     def perform_task(self):
         logging.debug("Running user 'consign ticket'...")
+
+        user_signup: bool = False
+        if self.task_count % self.environment.parsed_options.num_tasks_per_signup == 0:
+            self.current_user = random.choice(USER_CREDETIALS)
+            user_signup = True
+        self.task_count += 1
+
+        request = Requests(
+            self.client,
+            user=self.current_user,
+            signup=user_signup,
+            verbose_logging=self.environment.parsed_options.verbose_logging,
+        )
+
         task_sequence = [
             "home_expected",
             "login_expected",
@@ -601,9 +657,8 @@ class UserConsignTicket(HttpUser):
             "confirm_consign_expected",
         ]
 
-        requests = Requests(self.client, verbose_logging=self.environment.parsed_options.verbose_logging)
         for task in task_sequence:
-            requests.perform_task(task)
+            request.perform_task(task)
 
 
 class UserPay(HttpUser):
@@ -614,10 +669,25 @@ class UserPay(HttpUser):
         super().__init__(*args, **kwargs)
         self.client.mount('https://', HTTPAdapter(pool_maxsize=50))
         self.client.mount('http://', HTTPAdapter(pool_maxsize=50))
+        self.current_user: str = ''
+        self.task_count: int = 0
 
     @task
     def perform_task(self):
         logging.debug("Running user 'booking'...")
+
+        user_signup: bool = False
+        if self.task_count % self.environment.parsed_options.num_tasks_per_signup == 0:
+            self.current_user = random.choice(USER_CREDETIALS)
+            user_signup = True
+        self.task_count += 1
+
+        request = Requests(
+            self.client,
+            user=self.current_user,
+            signup=user_signup,
+            verbose_logging=self.environment.parsed_options.verbose_logging,
+        )
 
         task_sequence = ["home_expected",
                          "login_expected",
@@ -626,9 +696,8 @@ class UserPay(HttpUser):
                          "select_order_expected",
                          "pay_expected"]
 
-        requests = Requests(self.client, verbose_logging=self.environment.parsed_options.verbose_logging)
         for task in task_sequence:
-            requests.perform_task(task)
+            request.perform_task(task)
 
 
 class UserCancelNoRefund(HttpUser):
@@ -639,10 +708,25 @@ class UserCancelNoRefund(HttpUser):
         super().__init__(*args, **kwargs)
         self.client.mount('https://', HTTPAdapter(pool_maxsize=50))
         self.client.mount('http://', HTTPAdapter(pool_maxsize=50))
+        self.current_user: str = ''
+        self.task_count: int = 0
 
     @task
     def perform_task(self):
         logging.debug("Running user 'cancel no refund'...")
+
+        user_signup: bool = False
+        if self.task_count % self.environment.parsed_options.num_tasks_per_signup == 0:
+            self.current_user = random.choice(USER_CREDETIALS)
+            user_signup = True
+        self.task_count += 1
+
+        request = Requests(
+            self.client,
+            user=self.current_user,
+            signup=user_signup,
+            verbose_logging=self.environment.parsed_options.verbose_logging,
+        )
 
         task_sequence = [
             "home_expected",
@@ -651,9 +735,8 @@ class UserCancelNoRefund(HttpUser):
             "cancel_with_no_refund_expected",
         ]
 
-        requests = Requests(self.client, verbose_logging=self.environment.parsed_options.verbose_logging)
         for task in task_sequence:
-            requests.perform_task(task)
+            request.perform_task(task)
 
 
 class UserCollectTicket(HttpUser):
@@ -664,10 +747,25 @@ class UserCollectTicket(HttpUser):
         super().__init__(*args, **kwargs)
         self.client.mount('https://', HTTPAdapter(pool_maxsize=50))
         self.client.mount('http://', HTTPAdapter(pool_maxsize=50))
+        self.current_user: str = ''
+        self.task_count: int = 0
 
     @task
     def perform_task(self):
         logging.debug("Running user 'collect ticket'...")
+
+        user_signup: bool = False
+        if self.task_count % self.environment.parsed_options.num_tasks_per_signup == 0:
+            self.current_user = random.choice(USER_CREDETIALS)
+            user_signup = True
+        self.task_count += 1
+
+        request = Requests(
+            self.client,
+            user=self.current_user,
+            signup=user_signup,
+            verbose_logging=self.environment.parsed_options.verbose_logging,
+        )
 
         task_sequence = [
             "home_expected",
@@ -677,9 +775,8 @@ class UserCollectTicket(HttpUser):
             "collect_ticket_expected",
         ]
 
-        requests = Requests(self.client, verbose_logging=self.environment.parsed_options.verbose_logging)
         for task in task_sequence:
-            requests.perform_task(task)
+            request.perform_task(task)
 
 
 """
