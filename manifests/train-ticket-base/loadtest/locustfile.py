@@ -206,26 +206,42 @@ class Requests:
         with self.client.get('/client_login.html', name=req_label) as response:
             self.log_request(req_label, expected, response)
 
+    def verify_code(self, expected):
+        req_label = sys._getframe().f_code.co_name + postfix(expected)
+        with self.client.get(url='/api/v1/verifycode/generate', name=req_label) as response:
+            self.log_request_as_json(req_label, expected, response)
+
     def login(self, expected):
         if self.user_signup:
             self._create_user(expected=expected)
         self._navigate_to_client_login()
+        self.verify_code(expected)
+
         req_label = sys._getframe().f_code.co_name + postfix(expected)
+        headers = {
+            'Origin': self.client.base_url,
+            'Referer': f"{self.client.base_url}/client_login.html",
+        }
+        headers.update(self.json_header())
         if (expected):
             response = self.client.post(url="/api/v1/users/login",
-                                        headers=self.json_header(),
+                                        verify=False,
+                                        headers=headers,
                                         json={
                                             "username": self.user_name,
-                                            "password": self.password
+                                            "password": self.password,
+                                            "verificationCode": "1234",
                                         }, name=req_label)
             self.log_request_as_json(req_label, expected, response)
         else:
             response = self.client.post(url="/api/v1/users/login",
-                                        headers=self.json_header(),
+                                        verify=False,
+                                        headers=headers,
                                         json={
                                             "username": self.user_name,
                                             # wrong password
-                                            "password": random_string_generator()
+                                            "password": random_string_generator(),
+                                            "verificationCode": "1234",
                                         }, name=req_label)
             self.log_request_as_json(req_label, expected, response)
 
