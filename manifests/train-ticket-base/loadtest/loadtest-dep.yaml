@@ -38,7 +38,7 @@ spec:
           - name: LOCUST_HOST
             value: 'http://ts-ui-dashboard.train-ticket.svc.cluster.local:8080'
           - name: LOCUST_USERS
-            value: '6'
+            value: '7'
           - name: LOCUST_SPAWN_RATE
             value: '1'
           - name: LOCUST_AUTOSTART

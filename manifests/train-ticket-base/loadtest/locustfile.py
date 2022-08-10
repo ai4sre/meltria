@@ -427,7 +427,6 @@ class Requests:
     # cancelNoRefund
     def cancel_with_no_refund(self, expected):
         req_label = sys._getframe().f_code.co_name + postfix(expected)
-        start_time = time.time()
         if (expected):
             with self.client.get(
                     url="/api/v1/cancelservice/cancel/" + self.order_id + "/" + self.user_id,
@@ -717,7 +716,7 @@ class UserPay(HttpUser):
 
 
 class UserCancelNoRefund(HttpUser):
-    weight = 0
+    weight = 1
     wait_time = constant(0)
 
     def __init__(self, *args, **kwargs):
