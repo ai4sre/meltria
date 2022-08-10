@@ -750,6 +750,8 @@ class UserCancelNoRefund(HttpUser):
         task_sequence = [
             "home_expected",
             "login_expected",
+            "select_contact_expected",
+            "finish_booking_expected",
             "select_order_expected",
             "cancel_with_no_refund_expected",
         ]
@@ -789,6 +791,8 @@ class UserCollectTicket(HttpUser):
         task_sequence = [
             "home_expected",
             "login_expected",
+            "select_contact_expected",
+            "finish_booking_expected",
             "select_order_expected",
             "pay_expected",
             "collect_ticket_expected",
