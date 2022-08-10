@@ -20,6 +20,12 @@ from locustfile_dataset import TRIP_DATA, USER_CREDETIALS
 HTTP_REQUEST_TIMEOUT = 5
 state_data = []  # for debugging purposes
 
+ORDER_STATUS_BOOKED = 0
+ORDER_STATUS_PAID = 1
+ORDER_STATUS_COLLECTED = 2
+ORDER_STATUS_CANCELLED = 4
+ORDER_STATUS_EXECUTED = 6
+
 
 @events.init_command_line_parser.add_listener
 def _(parser):
@@ -277,7 +283,6 @@ class Requests:
     def get_foods(self, expected):
         departure_date = self.departure_date
         req_label = sys._getframe().f_code.co_name + postfix(expected)
-        start_time = time.time()
         with self.client.get(
                 url="/api/v1/foodservice/foods/" + departure_date + "/" + self.trip_detail["from"] + "/" +
                     self.trip_detail["to"] + "/" + self.trip_detail["trip_id"],
@@ -388,27 +393,26 @@ class Requests:
             self.order_id = response_as_json[0]["id"]  # first order with paid or not paid
             self.paid_order_id = response_as_json[0]["id"]  # default first order with paid or unpaid.
         else:
-            self.order_id = "sdasdasd"  # no orders, set a random number
-            self.paid_order_id = "asdasdasn"
+            raise ValueError("No order found")
         # selecting order with payment status - not paid.
         for orders in response_as_json:
-            if orders["status"] == 0:
+            if orders["status"] == ORDER_STATUS_BOOKED:
                 self.order_id = orders["id"]
                 break
         for orders in response_as_json:
-            if orders["status"] == 1:
+            if orders["status"] == ORDER_STATUS_PAID:
                 self.paid_order_id = orders["id"]
                 break
 
     def pay(self, expected):
         req_label = sys._getframe().f_code.co_name + postfix(expected)
-        start_time = time.time()
         if not self.order_id:
-            to_log = {'name': req_label, 'expected': expected, 'status_code': "N/A",
-                      'response_time': time.time() - start_time,
-                      'response': "Place an order first!"}
+            to_log = {
+                'name': req_label, 'expected': expected, 'status_code': "N/A",
+                'response_time': 0.0, 'response': "Place an order first!",
+            }
             self.log_verbose(to_log)
-            return
+            return None
         if (expected):
             with self.client.post(
                     url="/api/v1/inside_pay_service/inside_payment",
