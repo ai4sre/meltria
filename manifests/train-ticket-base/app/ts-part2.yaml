@@ -80,7 +80,7 @@ spec:
     spec:
       containers:
       - name: ts-admin-order-service
-        image: ghcr.io/ai4sre/train-ticket/ts-admin-order-service:0.2.1
+        image: ghcr.io/ai4sre/train-ticket/ts-admin-order-service:0.2.1-openjdk8
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -188,7 +188,7 @@ spec:
     spec:
       containers:
       - name: ts-admin-travel-service
-        image: ghcr.io/ai4sre/train-ticket/ts-admin-travel-service:0.2.1
+        image: ghcr.io/ai4sre/train-ticket/ts-admin-travel-service:0.2.1-openjdk8
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -242,7 +242,7 @@ spec:
     spec:
       containers:
       - name: ts-admin-user-service
-        image: ghcr.io/ai4sre/train-ticket/ts-admin-user-service:0.2.1
+        image: ghcr.io/ai4sre/train-ticket/ts-admin-user-service:0.2.1-openjdk8
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -296,7 +296,7 @@ spec:
     spec:
       containers:
       - name: ts-assurance-service
-        image: ghcr.io/ai4sre/train-ticket/ts-assurance-service:0.2.1
+        image: ghcr.io/ai4sre/train-ticket/ts-assurance-service:0.2.1-openjdk8
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -350,7 +350,7 @@ spec:
     spec:
       containers:
       - name: ts-basic-service
-        image: ghcr.io/ai4sre/train-ticket/ts-basic-service:0.2.1
+        image: ghcr.io/ai4sre/train-ticket/ts-basic-service:0.2.1-openjdk8
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -404,7 +404,7 @@ spec:
     spec:
       containers:
       - name: ts-cancel-service
-        image: ghcr.io/ai4sre/train-ticket/ts-cancel-service:0.2.1
+        image: ghcr.io/ai4sre/train-ticket/ts-cancel-service:0.2.1-openjdk8
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -458,7 +458,7 @@ spec:
     spec:
       containers:
       - name: ts-config-service
-        image: ghcr.io/ai4sre/train-ticket/ts-config-service:0.2.1
+        image: ghcr.io/ai4sre/train-ticket/ts-config-service:0.2.1-openjdk8
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -512,7 +512,7 @@ spec:
     spec:
       containers:
       - name: ts-consign-price-service
-        image: ghcr.io/ai4sre/train-ticket/ts-consign-price-service:0.2.1
+        image: ghcr.io/ai4sre/train-ticket/ts-consign-price-service:0.2.1-openjdk8
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -566,7 +566,7 @@ spec:
     spec:
       containers:
       - name: ts-consign-service
-        image: ghcr.io/ai4sre/train-ticket/ts-consign-service:0.2.1
+        image: ghcr.io/ai4sre/train-ticket/ts-consign-service:0.2.1-openjdk8
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -620,7 +620,7 @@ spec:
     spec:
       containers:
       - name: ts-contacts-service
-        image: ghcr.io/ai4sre/train-ticket/ts-contacts-service:0.2.1
+        image: ghcr.io/ai4sre/train-ticket/ts-contacts-service:0.2.1-openjdk8
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -674,7 +674,7 @@ spec:
     spec:
       containers:
       - name: ts-execute-service
-        image: ghcr.io/ai4sre/train-ticket/ts-execute-service:0.2.1
+        image: ghcr.io/ai4sre/train-ticket/ts-execute-service:0.2.1-openjdk8
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -728,7 +728,7 @@ spec:
     spec:
       containers:
       - name: ts-food-map-service
-        image: ghcr.io/ai4sre/train-ticket/ts-food-map-service:0.2.1
+        image: ghcr.io/ai4sre/train-ticket/ts-food-map-service:0.2.1-openjdk8
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -782,7 +782,7 @@ spec:
     spec:
       containers:
       - name: ts-food-service
-        image: ghcr.io/ai4sre/train-ticket/ts-food-service:0.2.1
+        image: ghcr.io/ai4sre/train-ticket/ts-food-service:0.2.1-openjdk8
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -840,7 +840,7 @@ spec:
     spec:
       containers:
       - name: ts-inside-payment-service
-        image: ghcr.io/ai4sre/train-ticket/ts-inside-payment-service:0.2.1
+        image: ghcr.io/ai4sre/train-ticket/ts-inside-payment-service:0.2.1-openjdk8
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -894,14 +894,14 @@ spec:
     spec:
       containers:
       - name: ts-auth-service
-        image: ghcr.io/ai4sre/train-ticket/ts-auth-service:0.2.1
+        image: ghcr.io/ai4sre/train-ticket/ts-auth-service:0.2.1-openjdk8
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
             value: >-
                   -XX:+UseContainerSupport
-                  -XX:InitialRAMPercentage=50.0
-                  -XX:MaxRAMPercentage=50.0
+                  -XX:MinRAMFraction=2
+                  -XX:MaxRAMFraction=2
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
                   -Dcom.sun.management.jmxremote.authenticate=false
@@ -996,7 +996,7 @@ spec:
     spec:
       containers:
       - name: ts-notification-service
-        image: ghcr.io/ai4sre/train-ticket/ts-notification-service:0.2.1
+        image: ghcr.io/ai4sre/train-ticket/ts-notification-service:0.2.1-openjdk8
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -1054,7 +1054,7 @@ spec:
     spec:
       containers:
       - name: ts-order-other-service
-        image: ghcr.io/ai4sre/train-ticket/ts-order-other-service:0.2.1
+        image: ghcr.io/ai4sre/train-ticket/ts-order-other-service:0.2.1-openjdk8
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -1108,14 +1108,14 @@ spec:
     spec:
       containers:
       - name: ts-order-service
-        image: ghcr.io/ai4sre/train-ticket/ts-order-service:0.2.1
+        image: ghcr.io/ai4sre/train-ticket/ts-order-service:0.2.1-openjdk8
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
             value: >-
                   -XX:+UseContainerSupport
-                  -XX:InitialRAMPercentage=50.0
-                  -XX:MaxRAMPercentage=50.0
+                  -XX:MinRAMFraction=2
+                  -XX:MaxRAMFraction=2
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
                   -Dcom.sun.management.jmxremote.authenticate=false
@@ -1164,7 +1164,7 @@ spec:
     spec:
       containers:
       - name: ts-payment-service
-        image: ghcr.io/ai4sre/train-ticket/ts-payment-service:0.2.1
+        image: ghcr.io/ai4sre/train-ticket/ts-payment-service:0.2.1-openjdk8
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -1218,7 +1218,7 @@ spec:
     spec:
       containers:
       - name: ts-preserve-other-service
-        image: ghcr.io/ai4sre/train-ticket/ts-preserve-other-service:0.2.1
+        image: ghcr.io/ai4sre/train-ticket/ts-preserve-other-service:0.2.1-openjdk8
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -1276,14 +1276,14 @@ spec:
     spec:
       containers:
       - name: ts-preserve-service
-        image: ghcr.io/ai4sre/train-ticket/ts-preserve-service:0.2.1
+        image: ghcr.io/ai4sre/train-ticket/ts-preserve-service:0.2.1-openjdk8
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
             value: >-
                   -XX:+UseContainerSupport
-                  -XX:InitialRAMPercentage=50.0
-                  -XX:MaxRAMPercentage=50.0
+                  -XX:MinRAMFraction=2
+                  -XX:MaxRAMFraction=2
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
                   -Dcom.sun.management.jmxremote.authenticate=false
@@ -1336,7 +1336,7 @@ spec:
     spec:
       containers:
       - name: ts-price-service
-        image: ghcr.io/ai4sre/train-ticket/ts-price-service:0.2.1
+        image: ghcr.io/ai4sre/train-ticket/ts-price-service:0.2.1-openjdk8
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -1390,7 +1390,7 @@ spec:
     spec:
       containers:
       - name: ts-rebook-service
-        image: ghcr.io/ai4sre/train-ticket/ts-rebook-service:0.2.1
+        image: ghcr.io/ai4sre/train-ticket/ts-rebook-service:0.2.1-openjdk8
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -1444,7 +1444,7 @@ spec:
     spec:
       containers:
       - name: ts-route-plan-service
-        image: ghcr.io/ai4sre/train-ticket/ts-route-plan-service:0.2.1
+        image: ghcr.io/ai4sre/train-ticket/ts-route-plan-service:0.2.1-openjdk8
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -1498,7 +1498,7 @@ spec:
     spec:
       containers:
       - name: ts-route-service
-        image: ghcr.io/ai4sre/train-ticket/ts-route-service:0.2.1
+        image: ghcr.io/ai4sre/train-ticket/ts-route-service:0.2.1-openjdk8
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -1552,7 +1552,7 @@ spec:
     spec:
       containers:
       - name: ts-seat-service
-        image: ghcr.io/ai4sre/train-ticket/ts-seat-service:0.2.1
+        image: ghcr.io/ai4sre/train-ticket/ts-seat-service:0.2.1-openjdk8
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -1606,7 +1606,7 @@ spec:
     spec:
       containers:
       - name: ts-security-service
-        image: ghcr.io/ai4sre/train-ticket/ts-security-service:0.2.1
+        image: ghcr.io/ai4sre/train-ticket/ts-security-service:0.2.1-openjdk8
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -1660,7 +1660,7 @@ spec:
     spec:
       containers:
       - name: ts-user-service
-        image: ghcr.io/ai4sre/train-ticket/ts-user-service:0.2.1
+        image: ghcr.io/ai4sre/train-ticket/ts-user-service:0.2.1-openjdk8
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -1714,7 +1714,7 @@ spec:
     spec:
       containers:
       - name: ts-station-service
-        image: ghcr.io/ai4sre/train-ticket/ts-station-service:0.2.1
+        image: ghcr.io/ai4sre/train-ticket/ts-station-service:0.2.1-openjdk8
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -1768,7 +1768,7 @@ spec:
     spec:
       containers:
       - name: ts-ticket-office-service
-        image: ghcr.io/ai4sre/train-ticket/ts-ticket-office-service:0.2.1
+        image: ghcr.io/ai4sre/train-ticket/ts-ticket-office-service:0.2.1-openjdk8
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -1822,7 +1822,7 @@ spec:
     spec:
       containers:
       - name: ts-ticketinfo-service
-        image: ghcr.io/ai4sre/train-ticket/ts-ticketinfo-service:0.2.1
+        image: ghcr.io/ai4sre/train-ticket/ts-ticketinfo-service:0.2.1-openjdk8
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -1876,7 +1876,7 @@ spec:
     spec:
       containers:
       - name: ts-train-service
-        image: ghcr.io/ai4sre/train-ticket/ts-train-service:0.2.1
+        image: ghcr.io/ai4sre/train-ticket/ts-train-service:0.2.1-openjdk8
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -1930,7 +1930,7 @@ spec:
     spec:
       containers:
       - name: ts-travel2-service
-        image: ghcr.io/ai4sre/train-ticket/ts-travel2-service:0.2.1
+        image: ghcr.io/ai4sre/train-ticket/ts-travel2-service:0.2.1-openjdk8
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -1984,7 +1984,7 @@ spec:
     spec:
       containers:
       - name: ts-travel-plan-service
-        image: ghcr.io/ai4sre/train-ticket/ts-travel-plan-service:0.2.1
+        image: ghcr.io/ai4sre/train-ticket/ts-travel-plan-service:0.2.1-openjdk8
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -2038,14 +2038,14 @@ spec:
     spec:
       containers:
       - name: ts-travel-service
-        image: ghcr.io/ai4sre/train-ticket/ts-travel-service:0.2.1
+        image: ghcr.io/ai4sre/train-ticket/ts-travel-service:0.2.1-openjdk8
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
             value: >-
                   -XX:+UseContainerSupport
-                  -XX:InitialRAMPercentage=50.0
-                  -XX:MaxRAMPercentage=50.0
+                  -XX:MinRAMFraction=2
+                  -XX:MaxRAMFraction=2
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
                   -Dcom.sun.management.jmxremote.authenticate=false
@@ -2091,7 +2091,7 @@ spec:
     spec:
       containers:
       - name: ts-delivery-service
-        image: ghcr.io/ai4sre/train-ticket/ts-delivery-service:0.2.1
+        image: ghcr.io/ai4sre/train-ticket/ts-delivery-service:0.2.1-openjdk8
         imagePullPolicy: IfNotPresent
         env:
           - name: rabbitmq_host
@@ -2149,7 +2149,7 @@ spec:
     spec:
       containers:
       - name: ts-verification-code-service
-        image: ghcr.io/ai4sre/train-ticket/ts-verification-code-service:0.2.1
+        image: ghcr.io/ai4sre/train-ticket/ts-verification-code-service:0.2.1-openjdk8
         imagePullPolicy: IfNotPresent
         env:
           - name: JAVA_TOOL_OPTIONS
@@ -2246,7 +2246,7 @@ spec:
     spec:
       containers:
       - name: ts-avatar-service
-        image: ghcr.io/ai4sre/train-ticket/ts-avatar-service:0.2.1
+        image: ghcr.io/ai4sre/train-ticket/ts-avatar-service:0.2.1-openjdk8
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 17001
