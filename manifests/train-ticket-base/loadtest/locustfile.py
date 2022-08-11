@@ -72,6 +72,10 @@ def random_date_after_today():
     return random_date.strftime("%Y-%m-%d")
 
 
+def find_random_trip_by_from_and_to(from_station: str, to_station: str) -> dict[str, str]:
+    return random.choice([t for t in TRIP_DATA if t['from'] == from_station and t['to'] == to_station])
+
+
 class Requests:
 
     def __init__(self, client, user: str = '', signup: bool = True, verbose_logging: bool = False):
@@ -402,6 +406,7 @@ class Requests:
         for orders in response_as_json:
             if orders["status"] == ORDER_STATUS_PAID:
                 self.paid_order_id = orders["id"]
+                self.trip_id = orders["trainNumber"]
                 break
 
     def pay(self, expected):
@@ -526,6 +531,26 @@ class Requests:
                 name=req_label,
                 headers=self.json_header_with_auth())
             self.log_request_as_json(req_label, expected, response_as_json_enter_station)
+
+    def rebook(self, expected):
+        req_label = sys._getframe().f_code.co_name + postfix(expected)
+        if expected:
+            # TODO: New trip data should not be same with the old trip data.
+            new_trip_detail = find_random_trip_by_from_and_to(self.trip_detail["from"], self.trip_detail["to"])
+            new_date = random_date_after_today()
+            with self.client.post(
+                url="/api/v1/rebookservice/rebook",
+                json={
+                    "oldTripId": self.trip_detail['trip_id'],
+                    "orderId": self.order_id,
+                    "tripId": new_trip_detail['trip_id'],
+                    "date": new_date,
+                    "seatType": new_trip_detail['seat_type'],
+                },
+                name=req_label,
+                headers=self.json_header_with_auth(),
+            ) as response:
+                self.log_request_as_json(req_label, expected, response)
 
     def perform_task(self, name):
         name_without_suffix = name.replace("_expected", "").replace("_unexpected", "")
@@ -797,6 +822,46 @@ class UserCollectTicket(HttpUser):
             "pay_expected",
             "collect_ticket_expected",
             "get_voucher_expected",
+        ]
+
+        for task in task_sequence:
+            request.perform_task(task)
+
+
+class UserRebook(HttpUser):
+    weight = 1
+    wait_time = constant(0)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.client.mount('https://', HTTPAdapter(pool_maxsize=50))
+        self.client.mount('http://', HTTPAdapter(pool_maxsize=50))
+        self.current_user: str = ''
+        self.task_count: int = 0
+
+    @task
+    def perform_task(self):
+        user_signup: bool = False
+        if self.task_count % self.environment.parsed_options.num_tasks_per_signup == 0:
+            self.current_user = random.choice(USER_CREDETIALS)
+            user_signup = True
+        self.task_count += 1
+
+        request = Requests(
+            self.client,
+            user=self.current_user,
+            signup=user_signup,
+            verbose_logging=self.environment.parsed_options.verbose_logging,
+        )
+
+        task_sequence = [
+            "home_expected",
+            "login_expected",
+            "select_contact_expected",
+            "finish_booking_expected",
+            "select_order_expected",
+            "pay_expected",
+            "rebook_expected",  # rebook requires the order with STATUS_PAYED(=1)
         ]
 
         for task in task_sequence:

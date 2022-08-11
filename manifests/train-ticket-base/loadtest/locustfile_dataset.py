@@ -127,7 +127,7 @@ USER_CREDETIALS = [
     'OWgMTDXv', 'XEcCZaQM', 'jlnNqqrgE', 'tzsFgrVcA', 'HlRjmdxRq', 'mCfjqZQAy', 'bGtTSIEp',
 ]
 
-TRIP_DATA = [
+TRIP_DATA: list[dict[str, str]] = [
     {"from": "Shang Hai", "to": "Su Zhou", "trip_id": "D1345", "seat_type": "2", "seat_price": "50.0"},
     {"from": "Shang Hai", "to": "Su Zhou", "trip_id": "D1345", "seat_type": "3", "seat_price": "22.5"},
     {"from": "Su Zhou", "to": "Shang Hai", "trip_id": "G1237", "seat_type": "2", "seat_price": "50.0"},
