@@ -31,6 +31,8 @@ spec:
           - name: JAVA_TOOL_OPTIONS
             value: >-
                   -XX:+UseContainerSupport
+                  -XX:MinRAMFraction=2
+                  -XX:MaxRAMFraction=2
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
                   -Dcom.sun.management.jmxremote.authenticate=false
@@ -86,6 +88,8 @@ spec:
           - name: JAVA_TOOL_OPTIONS
             value: >-
                   -XX:+UseContainerSupport
+                  -XX:MinRAMFraction=2
+                  -XX:MaxRAMFraction=2
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
                   -Dcom.sun.management.jmxremote.authenticate=false
@@ -140,6 +144,8 @@ spec:
           - name: JAVA_TOOL_OPTIONS
             value: >-
                   -XX:+UseContainerSupport
+                  -XX:MinRAMFraction=2
+                  -XX:MaxRAMFraction=2
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
                   -Dcom.sun.management.jmxremote.authenticate=false
@@ -194,6 +200,8 @@ spec:
           - name: JAVA_TOOL_OPTIONS
             value: >-
                   -XX:+UseContainerSupport
+                  -XX:MinRAMFraction=2
+                  -XX:MaxRAMFraction=2
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
                   -Dcom.sun.management.jmxremote.authenticate=false
@@ -248,6 +256,8 @@ spec:
           - name: JAVA_TOOL_OPTIONS
             value: >-
                   -XX:+UseContainerSupport
+                  -XX:MinRAMFraction=2
+                  -XX:MaxRAMFraction=2
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
                   -Dcom.sun.management.jmxremote.authenticate=false
@@ -302,6 +312,8 @@ spec:
           - name: JAVA_TOOL_OPTIONS
             value: >-
                   -XX:+UseContainerSupport
+                  -XX:MinRAMFraction=2
+                  -XX:MaxRAMFraction=2
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
                   -Dcom.sun.management.jmxremote.authenticate=false
@@ -356,6 +368,8 @@ spec:
           - name: JAVA_TOOL_OPTIONS
             value: >-
                   -XX:+UseContainerSupport
+                  -XX:MinRAMFraction=2
+                  -XX:MaxRAMFraction=2
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
                   -Dcom.sun.management.jmxremote.authenticate=false
@@ -410,6 +424,8 @@ spec:
           - name: JAVA_TOOL_OPTIONS
             value: >-
                   -XX:+UseContainerSupport
+                  -XX:MinRAMFraction=2
+                  -XX:MaxRAMFraction=2
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
                   -Dcom.sun.management.jmxremote.authenticate=false
@@ -464,6 +480,8 @@ spec:
           - name: JAVA_TOOL_OPTIONS
             value: >-
                   -XX:+UseContainerSupport
+                  -XX:MinRAMFraction=2
+                  -XX:MaxRAMFraction=2
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
                   -Dcom.sun.management.jmxremote.authenticate=false
@@ -518,6 +536,8 @@ spec:
           - name: JAVA_TOOL_OPTIONS
             value: >-
                   -XX:+UseContainerSupport
+                  -XX:MinRAMFraction=2
+                  -XX:MaxRAMFraction=2
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
                   -Dcom.sun.management.jmxremote.authenticate=false
@@ -572,6 +592,8 @@ spec:
           - name: JAVA_TOOL_OPTIONS
             value: >-
                   -XX:+UseContainerSupport
+                  -XX:MinRAMFraction=2
+                  -XX:MaxRAMFraction=2
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
                   -Dcom.sun.management.jmxremote.authenticate=false
@@ -626,6 +648,8 @@ spec:
           - name: JAVA_TOOL_OPTIONS
             value: >-
                   -XX:+UseContainerSupport
+                  -XX:MinRAMFraction=2
+                  -XX:MaxRAMFraction=2
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
                   -Dcom.sun.management.jmxremote.authenticate=false
@@ -680,6 +704,8 @@ spec:
           - name: JAVA_TOOL_OPTIONS
             value: >-
                   -XX:+UseContainerSupport
+                  -XX:MinRAMFraction=2
+                  -XX:MaxRAMFraction=2
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
                   -Dcom.sun.management.jmxremote.authenticate=false
@@ -734,6 +760,8 @@ spec:
           - name: JAVA_TOOL_OPTIONS
             value: >-
                   -XX:+UseContainerSupport
+                  -XX:MinRAMFraction=2
+                  -XX:MaxRAMFraction=2
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
                   -Dcom.sun.management.jmxremote.authenticate=false
@@ -788,6 +816,8 @@ spec:
           - name: JAVA_TOOL_OPTIONS
             value: >-
                   -XX:+UseContainerSupport
+                  -XX:MinRAMFraction=2
+                  -XX:MaxRAMFraction=2
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
                   -Dcom.sun.management.jmxremote.authenticate=false
@@ -846,6 +876,8 @@ spec:
           - name: JAVA_TOOL_OPTIONS
             value: >-
                   -XX:+UseContainerSupport
+                  -XX:MinRAMFraction=2
+                  -XX:MaxRAMFraction=2
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
                   -Dcom.sun.management.jmxremote.authenticate=false
@@ -854,11 +886,11 @@ spec:
         - containerPort: 18673
         resources:
           requests:
-            cpu: 400m
-            memory: 300Mi
+            cpu: 600m
+            memory: 500Mi
           limits:
-            cpu: 800m
-            memory: 600Mi
+            cpu: 1000m
+            memory: 1000Mi
         readinessProbe:
           tcpSocket:
             port: 18673
@@ -1002,6 +1034,8 @@ spec:
           - name: JAVA_TOOL_OPTIONS
             value: >-
                   -XX:+UseContainerSupport
+                  -XX:MinRAMFraction=2
+                  -XX:MaxRAMFraction=2
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
                   -Dcom.sun.management.jmxremote.authenticate=false
@@ -1060,6 +1094,8 @@ spec:
           - name: JAVA_TOOL_OPTIONS
             value: >-
                   -XX:+UseContainerSupport
+                  -XX:MinRAMFraction=2
+                  -XX:MaxRAMFraction=2
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
                   -Dcom.sun.management.jmxremote.authenticate=false
@@ -1170,6 +1206,8 @@ spec:
           - name: JAVA_TOOL_OPTIONS
             value: >-
                   -XX:+UseContainerSupport
+                  -XX:MinRAMFraction=2
+                  -XX:MaxRAMFraction=2
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
                   -Dcom.sun.management.jmxremote.authenticate=false
@@ -1224,6 +1262,8 @@ spec:
           - name: JAVA_TOOL_OPTIONS
             value: >-
                   -XX:+UseContainerSupport
+                  -XX:MinRAMFraction=2
+                  -XX:MaxRAMFraction=2
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
                   -Dcom.sun.management.jmxremote.authenticate=false
@@ -1342,6 +1382,8 @@ spec:
           - name: JAVA_TOOL_OPTIONS
             value: >-
                   -XX:+UseContainerSupport
+                  -XX:MinRAMFraction=2
+                  -XX:MaxRAMFraction=2
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
                   -Dcom.sun.management.jmxremote.authenticate=false
@@ -1396,6 +1438,8 @@ spec:
           - name: JAVA_TOOL_OPTIONS
             value: >-
                   -XX:+UseContainerSupport
+                  -XX:MinRAMFraction=2
+                  -XX:MaxRAMFraction=2
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
                   -Dcom.sun.management.jmxremote.authenticate=false
@@ -1450,6 +1494,8 @@ spec:
           - name: JAVA_TOOL_OPTIONS
             value: >-
                   -XX:+UseContainerSupport
+                  -XX:MinRAMFraction=2
+                  -XX:MaxRAMFraction=2
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
                   -Dcom.sun.management.jmxremote.authenticate=false
@@ -1504,6 +1550,8 @@ spec:
           - name: JAVA_TOOL_OPTIONS
             value: >-
                   -XX:+UseContainerSupport
+                  -XX:MinRAMFraction=2
+                  -XX:MaxRAMFraction=2
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
                   -Dcom.sun.management.jmxremote.authenticate=false
@@ -1558,6 +1606,8 @@ spec:
           - name: JAVA_TOOL_OPTIONS
             value: >-
                   -XX:+UseContainerSupport
+                  -XX:MinRAMFraction=2
+                  -XX:MaxRAMFraction=2
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
                   -Dcom.sun.management.jmxremote.authenticate=false
@@ -1612,6 +1662,8 @@ spec:
           - name: JAVA_TOOL_OPTIONS
             value: >-
                   -XX:+UseContainerSupport
+                  -XX:MinRAMFraction=2
+                  -XX:MaxRAMFraction=2
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
                   -Dcom.sun.management.jmxremote.authenticate=false
@@ -1666,6 +1718,8 @@ spec:
           - name: JAVA_TOOL_OPTIONS
             value: >-
                   -XX:+UseContainerSupport
+                  -XX:MinRAMFraction=2
+                  -XX:MaxRAMFraction=2
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
                   -Dcom.sun.management.jmxremote.authenticate=false
@@ -1720,6 +1774,8 @@ spec:
           - name: JAVA_TOOL_OPTIONS
             value: >-
                   -XX:+UseContainerSupport
+                  -XX:MinRAMFraction=2
+                  -XX:MaxRAMFraction=2
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
                   -Dcom.sun.management.jmxremote.authenticate=false
@@ -1774,6 +1830,8 @@ spec:
           - name: JAVA_TOOL_OPTIONS
             value: >-
                   -XX:+UseContainerSupport
+                  -XX:MinRAMFraction=2
+                  -XX:MaxRAMFraction=2
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
                   -Dcom.sun.management.jmxremote.authenticate=false
@@ -1828,6 +1886,8 @@ spec:
           - name: JAVA_TOOL_OPTIONS
             value: >-
                   -XX:+UseContainerSupport
+                  -XX:MinRAMFraction=2
+                  -XX:MaxRAMFraction=2
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
                   -Dcom.sun.management.jmxremote.authenticate=false
@@ -1882,6 +1942,8 @@ spec:
           - name: JAVA_TOOL_OPTIONS
             value: >-
                   -XX:+UseContainerSupport
+                  -XX:MinRAMFraction=2
+                  -XX:MaxRAMFraction=2
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
                   -Dcom.sun.management.jmxremote.authenticate=false
@@ -1936,6 +1998,8 @@ spec:
           - name: JAVA_TOOL_OPTIONS
             value: >-
                   -XX:+UseContainerSupport
+                  -XX:MinRAMFraction=2
+                  -XX:MaxRAMFraction=2
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
                   -Dcom.sun.management.jmxremote.authenticate=false
@@ -1990,6 +2054,8 @@ spec:
           - name: JAVA_TOOL_OPTIONS
             value: >-
                   -XX:+UseContainerSupport
+                  -XX:MinRAMFraction=2
+                  -XX:MaxRAMFraction=2
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
                   -Dcom.sun.management.jmxremote.authenticate=false
@@ -2101,6 +2167,8 @@ spec:
           - name: JAVA_TOOL_OPTIONS
             value: >-
                   -XX:+UseContainerSupport
+                  -XX:MinRAMFraction=2
+                  -XX:MaxRAMFraction=2
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
                   -Dcom.sun.management.jmxremote.authenticate=false
@@ -2155,6 +2223,8 @@ spec:
           - name: JAVA_TOOL_OPTIONS
             value: >-
                   -XX:+UseContainerSupport
+                  -XX:MinRAMFraction=2
+                  -XX:MaxRAMFraction=2
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
                   -Dcom.sun.management.jmxremote.authenticate=false
