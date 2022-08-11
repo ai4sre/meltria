@@ -72,8 +72,10 @@ def random_date_after_today():
     return random_date.strftime("%Y-%m-%d")
 
 
-def find_random_trip_by_from_and_to(from_station: str, to_station: str) -> dict[str, str]:
-    return random.choice([t for t in TRIP_DATA if t['from'] == from_station and t['to'] == to_station])
+def next_day_from_date(date):
+    date = datetime.strptime(date, "%Y-%m-%d")
+    next_day = date + timedelta(days=1)
+    return next_day.strftime("%Y-%m-%d")
 
 
 class Requests:
@@ -535,17 +537,15 @@ class Requests:
     def rebook(self, expected):
         req_label = sys._getframe().f_code.co_name + postfix(expected)
         if expected:
-            # TODO: New trip data should not be same with the old trip data.
-            new_trip_detail = find_random_trip_by_from_and_to(self.trip_detail["from"], self.trip_detail["to"])
-            new_date = random_date_after_today()
+            new_date = next_day_from_date(self.departure_date)
             with self.client.post(
                 url="/api/v1/rebookservice/rebook",
                 json={
                     "oldTripId": self.trip_detail['trip_id'],
                     "orderId": self.order_id,
-                    "tripId": new_trip_detail['trip_id'],
+                    "tripId": self.trip_detail['trip_id'],
                     "date": new_date,
-                    "seatType": new_trip_detail['seat_type'],
+                    "seatType": self.trip_detail['seat_type'],
                 },
                 name=req_label,
                 headers=self.json_header_with_auth(),
