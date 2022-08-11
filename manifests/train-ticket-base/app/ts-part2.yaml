@@ -2112,6 +2112,7 @@ spec:
                   -XX:+UseContainerSupport
                   -XX:MinRAMFraction=2
                   -XX:MaxRAMFraction=2
+                  -XX:-OmitStackTraceInFastThrow
                   -Dcom.sun.management.jmxremote
                   -Dcom.sun.management.jmxremote.port=5555
                   -Dcom.sun.management.jmxremote.authenticate=false
