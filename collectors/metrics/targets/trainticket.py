@@ -161,7 +161,10 @@ def collect_metrics(
     if start > end:
         raise ValueError("start must be lower than end.")
 
-    fetcher = PromFetcher(url=prometheus_url, ts_range=(start, end), step=step, concurrency=cpu_count()*10)
+    fetcher = PromFetcher(
+        url=prometheus_url, ts_range=(start, end), step=step, concurrency=cpu_count()*10,
+        additional_summarize_labels=['app_kubernetes_io_name', 'app_kubernetes_io_component', 'app_kubernetes_io_part_of'],
+    )
 
     # get container metrics (cAdvisor)
     container_targets = fetcher.request_targets('job=~"kubernetes-cadvisor"')

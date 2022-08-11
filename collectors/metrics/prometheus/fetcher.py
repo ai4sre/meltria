@@ -11,6 +11,9 @@ import urllib3.exceptions
 
 PROM_API_METADATA: str = "/api/v1/targets/metadata"
 PROM_API_FETCH_CONCURRENCY: int = 20
+DEFAULT_SUMMARIZE_LABELS: list[str] = [
+    'instance', 'job', 'node', 'container', 'pod',
+]
 
 logger = getLogger(__name__)
 
@@ -18,6 +21,7 @@ logger = getLogger(__name__)
 class PromFetcher:
     def __init__(
         self, url: str, ts_range: tuple[int, int], step: int,
+        additional_summarize_labels: list[str] = [],
         concurrency: int = PROM_API_FETCH_CONCURRENCY
     ) -> None:
         self.url = url
@@ -25,6 +29,7 @@ class PromFetcher:
         self.step = step
         self.concurrency = concurrency
         self.http = urllib3.PoolManager(num_pools=concurrency)
+        self.summarize_labels = DEFAULT_SUMMARIZE_LABELS + additional_summarize_labels
 
     def request_targets(self, selector: str) -> list[dict[str, Any]]:
         encoded_params = urllib.parse.urlencode({"match_target": '{' + selector + '}'})
@@ -72,8 +77,7 @@ class PromFetcher:
                 query = '{0}{{{1}}}'.format(target['metric'], selector)
                 if target['type'] == 'counter':
                     query = 'rate({}[1m])'.format(query)
-                query = 'sum by (instance,job,node,container,pod,kubernetes_name,app)({})'.format(
-                    query)
+                query = f"sum by ({','.join(self.summarize_labels)})({query})"
                 params = {
                     "query": query,
                     "start": self.ts_start,
