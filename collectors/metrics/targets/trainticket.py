@@ -21,6 +21,7 @@ def metrics_as_result(
 
     data: dict[str, Any] = {
         'meta': {
+            'target_app': TARGET_APP_NAME,
             'prometheus_url': time_meta['prometheus_url'],
             'grafana_url': grafana_url,
             'grafana_dashboard_url': dashboard_url,
