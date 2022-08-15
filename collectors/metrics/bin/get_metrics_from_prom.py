@@ -54,23 +54,21 @@ def support_set_default(obj: set):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--target",
-                        choices=[sockshop.TARGET_APP_NAME, trainticket.TARGET_APP_NAME], default=sockshop.TARGET_APP_NAME,
-                        help="target application to collect metrics")
+                        choices=[sockshop.TARGET_APP_NAME, trainticket.TARGET_APP_NAME],
+                        help="target application to collect metrics",
+                        default=sockshop.TARGET_APP_NAME)
     parser.add_argument("--prometheus-url",
                         help="endpoint URL for prometheus server",
                         default="http://localhost:9090")
     parser.add_argument("--grafana-url",
                         help="endpoint URL for grafana server",
                         default="http://localhost:3000")
-    parser.add_argument(
-        "--start", help="start time (UNIX or RFC 3339)", type=str)
+    parser.add_argument("--start", help="start time (UNIX or RFC 3339)", type=str)
     parser.add_argument("--end", help="end time (UNIX or RFC 3339)", type=str)
     parser.add_argument("--step", help="step seconds", type=int, default=STEP)
     parser.add_argument("--duration", help="", type=str, default=DEFAULT_DURATION)
-    parser.add_argument("--chaos-injected-component",
-                        help="chaos-injected component")
-    parser.add_argument("--injected-chaos-type",
-                        help="chaos type such as 'pod-cpu-hog'")
+    parser.add_argument("--chaos-injected-component", help="chaos-injected component")
+    parser.add_argument("--injected-chaos-type", help="chaos type such as 'pod-cpu-hog'")
     parser.add_argument("--out", help="output path", type=str)
     args = parser.parse_args()
 
