@@ -112,7 +112,8 @@ def metrics_as_result(
 
     for metric_name, metrics in service_metrics.items():
         for metric in metrics:
-            service = metric['metric'].get('name', metric['metric']['svc'])
+            # restore '_' to '-' in 'svc' labels due to owkl8s https://github.com/est357/owlk8s/blob/02d97f4ea962c7c752d3cc13173ca3a4d7dba5b3/examples/prometheus/main.go#L53
+            service = metric['metric'].get('name', metric['metric']['svc'].replace('_', '-'))
             data['services'].setdefault(service, [])
             values = tsutil.interpotate_time_series(metric['values'], time_meta)
             m = {
