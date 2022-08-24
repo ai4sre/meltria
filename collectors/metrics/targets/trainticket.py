@@ -180,6 +180,7 @@ def collect_metrics(
     # get pod metrics
     pod_selector = 'app_kubernetes_io_name=~"ts-.+",kubernetes_namespace="train-ticket"'
     pod_targets = fetcher.request_targets(pod_selector)
+    assert len(pod_targets) != 0
     pod_metrics = fetcher.get_metrics(pod_targets, pod_selector)
     assert len(pod_metrics) != 0
 
