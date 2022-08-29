@@ -7,46 +7,16 @@ repositories:
 releases:
   - name: chaos
     namespace: litmus
-    chart: litmuschaos/litmus
+    chart: litmuschaos/litmus-core
     version: ~2.10.0
     values:
-      - mongo:
-          nodeSelector:
-            cloud.google.com/gke-nodepool: control-pool
-      - portal:
-          frontend:
-            nodeSelector:
-              cloud.google.com/gke-nodepool: control-pool
-            resources:
-              requests:
-                cpu: "50m"
-                memory: "100Mi"
-          server:
-            nodeSelector:
-              cloud.google.com/gke-nodepool: control-pool
-            waitForMongodb:
-              resources:
-                requests:
-                  cpu: "50m"
-                  memory: "100Mi"
-            graphqlServer:
-              resources:
-                requests:
-                  cpu: "50m"
-                  memory: "100Mi"
-            authServer:
-              resources:
-                requests:
-                  cpu: "50m"
-                  memory: "100Mi"
-            mongo:
-              resources:
-                requests:
-                  cpu: "50m"
-                  memory: "100Mi"
-          upgradeAgent:
-            nodeSelector:
-              cloud.google.com/gke-nodepool: control-pool
+      -
+        nodeSelector:
+          cloud.google.com/gke-nodepool: control-pool
+        resources:
+          requests:
+            cpu: "50m"
+            memory: "50Mi"
   - name: kubernetes-chaos
     namespace: litmus
     chart: litmuschaos/kubernetes-chaos
