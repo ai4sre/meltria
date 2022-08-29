@@ -28,7 +28,7 @@ class PromFetcher:
         self.ts_start, self.ts_end = ts_range
         self.step = step
         self.concurrency = concurrency
-        self.http = urllib3.PoolManager(maxsize=concurrency)
+        self.http = urllib3.PoolManager(num_pools=1)
         self.summarize_labels = DEFAULT_SUMMARIZE_LABELS + additional_summarize_labels
 
     def request_targets(self, selector: str) -> list[dict[str, Any]]:
