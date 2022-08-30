@@ -394,7 +394,7 @@ class Requests:
 
         self.log_request_as_json(req_label, expected, response_order_refresh)
 
-        response_as_json = response_order_refresh.json()["data"]
+        response_as_json: dict | None = response_order_refresh.json().get("data")
         if response_as_json:
             self.order_id = response_as_json[0]["id"]  # first order with paid or not paid
             self.paid_order_id = response_as_json[0]["id"]  # default first order with paid or unpaid.
@@ -588,8 +588,7 @@ class UserOnlyLogin(HttpUser):
             tasks_sequence = ["login_expected"]
         else:
             tasks_sequence = ["login_unexpected"]
-        for tasks in tasks_sequence:
-            request.perform_task(tasks)
+        run_task_sequence(request, tasks_sequence)
 
 
 class UserNoLogin(HttpUser):
@@ -617,9 +616,10 @@ class UserNoLogin(HttpUser):
             verbose_logging=self.environment.parsed_options.verbose_logging,
         )
 
-        task_sequence = ["home_expected", "search_ticket_expected"]
-        for task in task_sequence:
-            request.perform_task(task)
+        run_task_sequence(request, [
+            "home_expected",
+            "search_ticket_expected",
+        ])
 
 
 class UserBooking(HttpUser):
@@ -651,16 +651,16 @@ class UserBooking(HttpUser):
             verbose_logging=self.environment.parsed_options.verbose_logging,
         )
 
-        task_sequence = ["home_expected",
-                         "login_expected",
-                         "search_ticket_expected",
-                         "start_booking_expected",
-                         "get_assurance_types_expected",
-                         "get_foods_expected",
-                         "select_contact_expected",
-                         "finish_booking_expected"]
-        for task in task_sequence:
-            request.perform_task(task)
+        run_task_sequence(request, [
+            "home_expected",
+            "login_expected",
+            "search_ticket_expected",
+            "start_booking_expected",
+            "get_assurance_types_expected",
+            "get_foods_expected",
+            "select_contact_expected",
+            "finish_booking_expected",
+        ])
 
 
 class UserConsignTicket(HttpUser):
@@ -691,7 +691,7 @@ class UserConsignTicket(HttpUser):
             verbose_logging=self.environment.parsed_options.verbose_logging,
         )
 
-        task_sequence = [
+        run_task_sequence(request, [
             "home_expected",
             "login_expected",
             "select_contact_expected",
@@ -699,10 +699,7 @@ class UserConsignTicket(HttpUser):
             "select_order_expected",
             "get_consigns_expected",
             "confirm_consign_expected",
-        ]
-
-        for task in task_sequence:
-            request.perform_task(task)
+        ])
 
 
 class UserPay(HttpUser):
@@ -733,15 +730,14 @@ class UserPay(HttpUser):
             verbose_logging=self.environment.parsed_options.verbose_logging,
         )
 
-        task_sequence = ["home_expected",
-                         "login_expected",
-                         "select_contact_expected",
-                         "finish_booking_expected",
-                         "select_order_expected",
-                         "pay_expected"]
-
-        for task in task_sequence:
-            request.perform_task(task)
+        run_task_sequence(request, [
+            "home_expected",
+            "login_expected",
+            "select_contact_expected",
+            "finish_booking_expected",
+            "select_order_expected",
+            "pay_expected",
+        ])
 
 
 class UserCancelNoRefund(HttpUser):
@@ -772,17 +768,14 @@ class UserCancelNoRefund(HttpUser):
             verbose_logging=self.environment.parsed_options.verbose_logging,
         )
 
-        task_sequence = [
+        run_task_sequence(request, [
             "home_expected",
             "login_expected",
             "select_contact_expected",
             "finish_booking_expected",
             "select_order_expected",
             "cancel_with_no_refund_expected",
-        ]
-
-        for task in task_sequence:
-            request.perform_task(task)
+        ])
 
 
 class UserCollectTicket(HttpUser):
@@ -813,7 +806,7 @@ class UserCollectTicket(HttpUser):
             verbose_logging=self.environment.parsed_options.verbose_logging,
         )
 
-        task_sequence = [
+        run_task_sequence(request, [
             "home_expected",
             "login_expected",
             "select_contact_expected",
@@ -822,10 +815,7 @@ class UserCollectTicket(HttpUser):
             "pay_expected",
             "collect_ticket_expected",
             "get_voucher_expected",
-        ]
-
-        for task in task_sequence:
-            request.perform_task(task)
+        ])
 
 
 class UserRebook(HttpUser):
@@ -854,7 +844,7 @@ class UserRebook(HttpUser):
             verbose_logging=self.environment.parsed_options.verbose_logging,
         )
 
-        task_sequence = [
+        run_task_sequence(request, [
             "home_expected",
             "login_expected",
             "select_contact_expected",
@@ -862,10 +852,16 @@ class UserRebook(HttpUser):
             "select_order_expected",
             "pay_expected",
             "rebook_expected",  # rebook requires the order with STATUS_PAYED(=1)
-        ]
+        ])
 
-        for task in task_sequence:
-            request.perform_task(task)
+
+def run_task_sequence(request, sequence: list[str]):
+    for seq in sequence:
+        try:
+            request.perform_task(seq)
+        except Exception as e:
+            logging.error('Exception: ', e)
+            break
 
 
 """
