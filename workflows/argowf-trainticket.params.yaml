@@ -1,11 +1,12 @@
-repeatNum: 3
+repeatNum: 1
 appNamespace: 'train-ticket'
 appLabels:
-  - ts-user-service
   - ts-order-service
   - ts-train-service
   - ts-travel-service
   - ts-preserve-service
   - ts-food-service
-  - ts-admin-user-service
+  - ts-station-service
+  - ts-inside-payment-service
+  - ts-cancel-service
 chaosTypes: "'pod-cpu-hog','pod-memory-hog'"
