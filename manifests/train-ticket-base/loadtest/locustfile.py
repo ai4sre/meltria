@@ -78,6 +78,18 @@ def next_day_from_date(date):
     return next_day.strftime("%Y-%m-%d")
 
 
+class TrainTicketError(Exception):
+    "Base class for Train Ticket"
+
+
+class TrainTicketNotFoundDataError(TrainTicketError):
+    "Error if response has no data"
+
+
+class TrainTicketNoOrderError(TrainTicketError):
+    "Error with no order in train ticket"
+
+
 class Requests:
 
     def __init__(self, client, user: str = '', signup: bool = True, verbose_logging: bool = False):
@@ -160,7 +172,7 @@ class Requests:
             headers=self.json_header(),
             json=body_start,
             name=req_label)
-        if not response.json()["data"]:
+        if not response.json().get('data'):
             response = self.client.post(
                 url="/api/v1/travel2service/trips/left",
                 headers=self.json_header(),
@@ -188,7 +200,7 @@ class Requests:
             name=req_label,
         ) as response:
             self.log_request_as_json(req_label, True, response)
-            response_as_json = response.json()["data"]
+            response_as_json = response.json().get('data')
             if response_as_json is not None:
                 token = response_as_json["token"]
                 return token
@@ -257,7 +269,7 @@ class Requests:
                                         }, name=req_label)
             self.log_request_as_json(req_label, expected, response)
 
-        response_as_json = response.json()["data"]
+        response_as_json = response.json().get('data')
         if response_as_json is not None:
             token = response_as_json["token"]
             self.bearer = "Bearer " + token
@@ -316,7 +328,9 @@ class Requests:
             name=req_label)
         self.log_request_as_json(req_label, expected, response_contacts)
 
-        response_as_json_contacts = response_contacts.json()["data"]
+        response_as_json_contacts = response_contacts.json().get('data')
+        if response_as_json_contacts is None:
+            raise TrainTicketNotFoundDataError()
 
         if len(response_as_json_contacts) == 0:
             req_label = 'set_new_contact' + postfix(expected)
@@ -329,7 +343,9 @@ class Requests:
                 name=req_label)
             self.log_request_as_json(req_label, expected, response_contacts)
 
-            response_as_json_contacts = response_contacts.json()["data"]
+            response_as_json_contacts = response_contacts.json().get('data')
+            if response_as_json_contacts is None:
+                raise TrainTicketNotFoundDataError()
             self.contactid = response_as_json_contacts["id"]
         else:
             self.contactid = response_as_json_contacts[0]["id"]
@@ -395,11 +411,13 @@ class Requests:
         self.log_request_as_json(req_label, expected, response_order_refresh)
 
         response_as_json: dict | None = response_order_refresh.json().get("data")
+        if response_as_json is None:
+            raise TrainTicketNotFoundDataError()
         if response_as_json:
             self.order_id = response_as_json[0]["id"]  # first order with paid or not paid
             self.paid_order_id = response_as_json[0]["id"]  # default first order with paid or unpaid.
         else:
-            raise ValueError("No order found")
+            raise TrainTicketNoOrderError()
         # selecting order with payment status - not paid.
         for orders in response_as_json:
             if orders["status"] == ORDER_STATUS_BOOKED:
@@ -425,7 +443,8 @@ class Requests:
                     url="/api/v1/inside_pay_service/inside_payment",
                     headers=self.json_header_with_auth(),
                     json={"orderId": self.order_id, "tripId": "D1345"},
-                    name=req_label) as response:
+                    name=req_label,
+            ) as response:
                 self.log_request_as_json(req_label, expected, response)
         else:
             with self.client.post(
@@ -859,8 +878,8 @@ def run_task_sequence(request, sequence: list[str]):
     for seq in sequence:
         try:
             request.perform_task(seq)
-        except Exception as e:
-            logging.error('Exception: ', e)
+        except TrainTicketError:
+            logging.exception(f"{seq} raises an error of train ticket")
             break
 
 
