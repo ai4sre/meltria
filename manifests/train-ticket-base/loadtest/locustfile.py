@@ -78,14 +78,20 @@ def next_day_from_date(date):
 
 class TrainTicketError(Exception):
     "Base class for Train Ticket"
+    def __init__(self, msg: str = ''):
+        self.msg = msg
 
 
 class TrainTicketNotFoundDataError(TrainTicketError):
     "Error if response has no data"
+    def __str__(self):
+        return f"Response has no 'data' key: {self.msg}"
 
 
 class TrainTicketNoOrderError(TrainTicketError):
     "Error with no order in train ticket"
+    def __str__(self):
+        return f"Train Ticket has no order: {self.msg}"
 
 
 class Requests:
@@ -268,10 +274,11 @@ class Requests:
             self.log_request_as_json(req_label, expected, response)
 
         response_as_json = response.json().get('data')
-        if response_as_json is not None:
-            token = response_as_json["token"]
-            self.bearer = "Bearer " + token
-            self.user_id = response_as_json["userId"]
+        if response_as_json is None:
+            raise TrainTicketNotFoundDataError(req_label)
+        token = response_as_json["token"]
+        self.bearer = "Bearer " + token
+        self.user_id = response_as_json["userId"]
 
     # purchase ticket
 
@@ -328,7 +335,7 @@ class Requests:
 
         response_as_json_contacts = response_contacts.json().get('data')
         if response_as_json_contacts is None:
-            raise TrainTicketNotFoundDataError()
+            raise TrainTicketNotFoundDataError(req_label)
 
         if len(response_as_json_contacts) == 0:
             req_label = 'set_new_contact' + postfix(expected)
@@ -343,7 +350,7 @@ class Requests:
 
             response_as_json_contacts = response_contacts.json().get('data')
             if response_as_json_contacts is None:
-                raise TrainTicketNotFoundDataError()
+                raise TrainTicketNotFoundDataError(req_label)
             self.contactid = response_as_json_contacts["id"]
         else:
             self.contactid = response_as_json_contacts[0]["id"]
@@ -351,7 +358,7 @@ class Requests:
     def finish_booking(self, expected):
         departure_date = self.departure_date
         req_label = sys._getframe().f_code.co_name + postfix(expected)
-        if (expected):
+        if expected:
             body_for_reservation = {
                 "accountId": self.user_id,
                 "contactsId": self.contactid,
@@ -410,7 +417,7 @@ class Requests:
 
         response_as_json: dict | None = response_order_refresh.json().get("data")
         if response_as_json is None:
-            raise TrainTicketNotFoundDataError()
+            raise TrainTicketNotFoundDataError(req_label)
         if response_as_json:
             self.order_id = response_as_json[0]["id"]  # first order with paid or not paid
             self.paid_order_id = response_as_json[0]["id"]  # default first order with paid or unpaid.
