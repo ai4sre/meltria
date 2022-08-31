@@ -4,7 +4,7 @@ WORKDIR /usr/src/app
 
 RUN pip install poetry
 COPY pyproject.toml poetry.lock ./
-RUN poetry export -f requirements.txt > requirements.txt
+RUN poetry export -f requirements.txt -o requirements.txt
 
 FROM python:3.10-slim
 
