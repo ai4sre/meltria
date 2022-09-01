@@ -23,6 +23,8 @@ resource "google_compute_subnetwork" "meltria" {
   region        = var.region
   network       = google_compute_network.meltria.id
 
+  private_ip_google_access = true
+
   secondary_ip_range = [
     {
       range_name    = "pods-range"
