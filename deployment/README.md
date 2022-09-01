@@ -24,6 +24,8 @@ region       = "${REGION}"
 bucket_name  = "${BUCKET_NAME}"
 cluster_name = "${CLUSTER_NAME}"
 cluster_zone = "${ZONE}"
+
+cluster_workload_node_count = 7
 EOF
 ```
 

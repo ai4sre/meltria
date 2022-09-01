@@ -18,6 +18,12 @@ variable "cluster_zone" {
   description = "The zone where the GKE cluster will be created."
 }
 
+variable "cluster_workload_node_count" {
+  type        = number
+  description = "The number of nodes in the workload pool of the GKE cluster."
+  default     = 7
+}
+
 variable "bucket_name" {
   type        = string
   description = "Specify the name of the pre-created bucket. This bucket will be used to store Terraform state and generated datasets."

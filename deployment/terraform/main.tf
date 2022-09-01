@@ -113,7 +113,7 @@ resource "google_container_node_pool" "workload_pool" {
   name       = "workload-pool"
   location   = var.cluster_zone
   cluster    = google_container_cluster.cluster.name
-  node_count = 1
+  node_count = var.cluster_workload_node_count
 
   node_config {
     machine_type = "e2-standard-2"
