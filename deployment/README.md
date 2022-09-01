@@ -11,8 +11,8 @@
 
 ```bash
 PROJECT_ID=[GCP_PROJECT_ID]
-REGION=[GCP_REGION]
-ZONE=[GCP_ZONE]
+REGION=[GCP_REGION] # e.g. asia-northeast1
+ZONE=[GCP_ZONE]     # e.g. asia-northeast1-a
 BUCKET_NAME=[GCS_BUCKET_NAME]
 CLUSTER_NAME=meltria
 
