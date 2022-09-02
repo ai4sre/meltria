@@ -34,8 +34,8 @@ patches:
     target:
       kind: Deployment
       name: ts-.+-mongo
-  # - path: patch-jmx-exporter.yaml
-  #   target:
-  #     kind: Deployment
-  #     name: ts-.+
-  #     labelSelector: runtime=jvm
+  - path: patch-jmx-exporter.yaml
+    target:
+      kind: Deployment
+      name: ts-.+
+      labelSelector: runtime=jvm
