@@ -1,13 +1,13 @@
 from multiprocessing import cpu_count
-from typing import Any
+from typing import Any, Final
 
 from prometheus.fetcher import PromFetcher
 from tsutil import tsutil
 
-TARGET_APP_NAME = 'train-ticket'
-APP_LABEL = 'train-ticket'
-APP_NODEPOOL = 'default-pool'
-GRAFANA_DASHBOARD = ''
+TARGET_APP_NAME: Final[str] = 'train-ticket'
+APP_LABEL: Final[str] = 'train-ticket'
+APP_NODEPOOL: Final[str] = 'default-pool'
+GRAFANA_DASHBOARD: Final[str] = ''
 
 
 def metrics_as_result(

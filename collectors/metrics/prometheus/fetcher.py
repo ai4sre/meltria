@@ -4,14 +4,14 @@ import urllib.error
 import urllib.parse
 import urllib.request
 from logging import getLogger
-from typing import Any
+from typing import Any, Final
 
 import urllib3
 import urllib3.exceptions
 
-PROM_API_METADATA: str = "/api/v1/targets/metadata"
-PROM_API_FETCH_CONCURRENCY: int = 20
-DEFAULT_SUMMARIZE_LABELS: list[str] = [
+PROM_API_METADATA: Final[str] = "/api/v1/targets/metadata"
+PROM_API_FETCH_CONCURRENCY: Final[int] = 20
+DEFAULT_SUMMARIZE_LABELS: Final[list[str]] = [
     'instance', 'job', 'node', 'container', 'pod',
 ]
 

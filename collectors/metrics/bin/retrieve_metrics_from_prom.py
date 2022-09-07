@@ -4,10 +4,11 @@ import argparse
 import json
 import logging
 import os
+from typing import Final
 
 from targets import sockshop, trainticket
 
-DEFAULT_DURATION = "30m"
+DEFAULT_DURATION: Final[str] = "30m"
 
 
 def support_set_default(obj: set):

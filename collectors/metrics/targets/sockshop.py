@@ -1,18 +1,18 @@
 from multiprocessing import cpu_count
-from typing import Any
+from typing import Any, Final
 
 from prometheus.fetcher import PromFetcher
 from tsutil import tsutil
 
-TARGET_APP_NAME = 'sock-shop'
-COMPONENT_LABELS = {
+TARGET_APP_NAME: Final[str] = 'sock-shop'
+COMPONENT_LABELS: Final[set] = {
     "front-end", "orders", "orders-db", "carts", "carts-db",
     "shipping", "user", "user-db", "payment", "catalogue", "catalogue-db",
     "queue-master", "rabbitmq", "session-db",
 }
-APP_LABEL = 'sock-shop'
-APP_NODEPOOL = 'default-pool'
-GRAFANA_DASHBOARD = "d/3cHU4RSMk/sock-shop-performance"
+APP_LABEL: Final[str] = 'sock-shop'
+APP_NODEPOOL: Final[str] = 'default-pool'
+GRAFANA_DASHBOARD: Final[str] = "d/3cHU4RSMk/sock-shop-performance"
 
 
 def metrics_as_result(

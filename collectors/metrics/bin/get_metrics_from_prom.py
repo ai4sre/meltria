@@ -37,12 +37,12 @@
 import argparse
 import json
 import sys
-from typing import Any
+from typing import Any, Final
 
 from targets import sockshop, trainticket
 
-STEP = 15
-DEFAULT_DURATION = "30m"
+STEP: Final[int] = 15
+DEFAULT_DURATION: Final[str] = "30m"
 
 
 def support_set_default(obj: set):
