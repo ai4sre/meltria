@@ -296,7 +296,7 @@ spec: {
 				"--prometheus-url", "http://prometheus.monitoring.svc.cluster.local:9090",
 				"--grafana-url", "http://grafana.monitoring.svc.cluster.local:3000",
 				"--end", "{{inputs.parameters.endTimestamp}}",
-				"--duraion", "{{workflow.parameters.chaosIntervalSec}}s",
+				"--duration", "{{workflow.parameters.chaosIntervalSec}}s",
 				"--chaos-injected-component", "{{inputs.parameters.appLabel}}",
 				"--injected-chaos-type", "{{inputs.parameters.chaosType}}",
 				"--out", #metricsPath,
