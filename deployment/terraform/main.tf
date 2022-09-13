@@ -111,8 +111,8 @@ locals {
   ]
 }
 
-resource "google_container_node_pool" "workload_pool" {
-  name       = "workload-pool"
+resource "google_container_node_pool" "default_pool" {
+  name       = "default-pool"
   location   = var.cluster_zone
   cluster    = google_container_cluster.cluster.name
   node_count = var.cluster_workload_node_count

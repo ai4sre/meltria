@@ -1,0 +1,11 @@
+namespace: monitoring
+resources:
+- grafana.yaml
+configMapGenerator:
+- name: grafana-provisioning
+  files:
+  - provisioning/dashboard.yaml
+  - provisioning/datasource.yaml
+- name: grafana-dashboards
+  files:
+  - dashboards/train-ticket-dashboard.json
