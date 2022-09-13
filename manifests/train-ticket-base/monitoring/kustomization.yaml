@@ -6,7 +6,7 @@ resources:
 - owlk8s-cr.yaml
 - owlk8s-ds.yaml
 - prometheus.yaml
-- grafana.yaml
+- grafana
 - jaeger.yaml
 configMapGenerator:
 - name: prometheus-config

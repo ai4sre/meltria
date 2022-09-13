@@ -58,10 +58,25 @@ spec:
         volumeMounts:
         - name: grafana-pv
           mountPath: /var/lib/grafana
+        - name: provisioning
+          mountPath: /etc/grafana/provisioning
+        - name: dashboard
+          mountPath: /etc/grafana/dashboards
       volumes:
         - name: grafana-pv
           persistentVolumeClaim:
             claimName: grafana-pvc
+        - name: provisioning
+          configMap:
+            name: grafana-provisioning
+            items:
+            - key: dashboard.yaml
+              path: dashboards/dashboard.yaml
+            - key: datasource.yaml
+              path: datasources/datasource.yaml
+        - name: dashboard
+          configMap:
+            name: grafana-dashboards
       nodeSelector:
         kubernetes.io/os: linux
         cloud.google.com/gke-nodepool: "control-pool"
