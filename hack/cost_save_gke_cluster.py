@@ -8,7 +8,7 @@ import subprocess
 
 GKE_CMD = 'gcloud -q container'
 SCRIPT_NAME = os.path.basename(__file__)
-RECOVER_FILE_PATH_PREFIX = '/tmp/meltria_gke_cluster'
+RECOVER_FILE_PATH_PREFIX = './tmp/meltria_gke_cluster'
 
 
 def get_node_pools(cluster_name: str, zone: str) -> list:
