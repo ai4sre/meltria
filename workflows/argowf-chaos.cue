@@ -89,7 +89,7 @@ import "strings"
 				value: "eth0"
 			}, {
 				name: "NETWORK_PACKET_LOSS_PERCENTAGE"
-				value: "20"
+				value: "80"
 			}, {
 				name:  "TOTAL_CHAOS_DURATION"
 				value: "{{workflow.parameters.chaosDurationSec}}"
@@ -113,7 +113,7 @@ import "strings"
 				value: "eth0"
 			}, {
 				name: "NETWORK_LATENCY"
-				value: "200" // ms
+				value: "500" // ms
 			}, {
 				name:  "TOTAL_CHAOS_DURATION"
 				value: "{{workflow.parameters.chaosDurationSec}}"
