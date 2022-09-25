@@ -173,7 +173,7 @@ def collect_metrics(
     assert len(container_targets) != 0
     # add container=POD for network metrics
     # exclude metrics of argo workflow pods by removing metrics that 'instance' is gke control-pool node.
-    container_selector = f"namespace='train-ticket',container=~'(ts-.+)|POD',nodepool='{APP_NODEPOOL}'"
+    container_selector = f"namespace='train-ticket',pod=~'(ts-.+)',nodepool='{APP_NODEPOOL}'"
     container_metrics = fetcher.get_metrics(container_targets, container_selector)
     assert len(container_metrics) != 0
 
