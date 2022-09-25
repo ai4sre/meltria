@@ -38,13 +38,12 @@ scrape_configs:
     replacement: nodepool
 
 - job_name: 'kubernetes-cadvisor'
+  scheme: https
   kubernetes_sd_configs:
   - role: node
-  scheme: https
   tls_config:
     ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
   bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
-  metrics_path: /metrics
   relabel_configs:
   - action: labelmap
     regex: __meta_kubernetes_node_label_(.+)
@@ -61,10 +60,12 @@ scrape_configs:
   - source_labels: [pod_name]
     action: replace
     target_label: pod
-  - source_labels: [pod]
-    regex: '^([a-zA-Z0-9-]+)?-([0-9a-f]{7,10})?-([a-z0-9]{5}|\d+)$'  # eg. "ts-notification-service-bcd6b59dc-7qwch"
-    replacement: ${1}
-    target_label: pod_group
+  # FIXME: The following config is not working.
+  # - source_labels: [pod]
+  #   action: labelmap
+  #   regex: '^([a-zA-Z0-9-]+)?-([0-9a-f]{7,10})?-([a-z0-9]{5}|\d+)$'  # eg. "ts-notification-service-bcd6b59dc-7qwch"
+  #   replacement: ${1}
+  #   target_label: pod_group
 
 - job_name: 'kubernetes-services'
   kubernetes_sd_configs:
