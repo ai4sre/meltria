@@ -1,0 +1,23 @@
+repeatNum: 1
+appNamespace: 'train-ticket'
+appLabels:
+  - ts-auth-service
+  - ts-basic-service
+  - ts-cancel-service
+  - ts-consign-service
+  - ts-food-service
+  - ts-inside-payment-service
+  - ts-order-service
+  - ts-order-other-service
+  - ts-route-service
+  - ts-payment-service
+  - ts-preserve-service
+  - ts-price-service
+  - ts-seat-service
+  - ts-train-service
+  - ts-travel-service
+  - ts-travel2-service
+  - ts-user-service
+  - ts-verification-code-service
+chaosTypes: "'pod-cpu-hog','pod-memory-hog','pod-network-latency','pod-network-loss'"
+chaosIntervalSec: 1800 # 30min
