@@ -44,12 +44,19 @@ def metrics_as_result(
     dupcheck: dict[str, Any] = {}
     for metric in container_metrics:
         # some metrics in results of prometheus query has no '__name__'
-        labels = metric['metric']
+        labels: dict[str, Any] = metric['metric']
+
+        # skip if the conditions of metrics are met.
         if '__name__' not in labels:
             continue
+        # ignore 'container' label not started with 'ts-'
+        if not ('container' in labels and labels['container'].startswith('ts-')) \
+           and not ('interface' in labels and labels['interface'] == 'eth0'):
+            continue
+
+        assert ('pod' in labels)
         # ex. pod="queue-master-85f5644bf5-wrp7q"
-        container = labels['pod'].rsplit(
-            "-", maxsplit=2)[0] if 'pod' in labels else labels['container']
+        container = labels['pod'].rsplit("-", maxsplit=2)[0]
         data['containers'].setdefault(container, [])
         metric_name = labels['__name__']
 
@@ -60,25 +67,19 @@ def metrics_as_result(
             'values': values,
         }
 
-        # 1. {container: 'POD'} => {container: 'xxx' } -> Update 'POD'
-        # 2. {container: 'xxx'} => {container: 'POD' } -> Discard 'POD'
-        # 3. {container: 'POD'}
         dupcheck.setdefault(container, {})
         dupcheck[container][metric_name] = False
-        if labels['container'] == 'POD':
-            if not dupcheck[container][metric_name]:
+        if not dupcheck[container][metric_name]:
+            if not labels.get('container'):
                 data['containers'][container].append(m)
-        else:
-            if not dupcheck[container][metric_name]:
-                uniq_metrics = [x for x in data['containers']
-                                [container] if x['metric_name'] != metric_name]
+            else:
+                uniq_metrics = [x for x in data['containers'][container] if x['metric_name'] != metric_name]
                 uniq_metrics.append(m)
                 data['containers'][container] = uniq_metrics
                 dupcheck[container][metric_name] = True
 
         # Update mappings for nods and containers
-        data['mappings']['nodes-containers'].setdefault(
-            labels['instance'], set())
+        data['mappings']['nodes-containers'].setdefault(labels['instance'], set())
         data['mappings']['nodes-containers'][labels['instance']].add(container)
 
     for metric in pod_metrics:
@@ -134,6 +135,12 @@ def metrics_as_result(
         services_cnt += len(metrics)
     for metrics in data['nodes'].values():
         nodes_cnt += len(metrics)
+
+    assert containers_cnt != 0
+    assert middlewares_cnt != 0
+    assert services_cnt != 0
+    assert nodes_cnt != 0
+
     data['meta']['count']['containers'] = containers_cnt
     data['meta']['count']['middlewares'] = middlewares_cnt
     data['meta']['count']['services'] = services_cnt
@@ -169,16 +176,16 @@ def collect_metrics(
     )
 
     # get container metrics (cAdvisor)
-    container_targets = fetcher.request_targets('job=~"kubernetes-cadvisor"')
+    container_targets = fetcher.request_targets('job="kubernetes-cadvisor"')
     assert len(container_targets) != 0
-    # add container=POD for network metrics
+    # for network metrics
     # exclude metrics of argo workflow pods by removing metrics that 'instance' is gke control-pool node.
-    container_selector = f"namespace='train-ticket',pod=~'(ts-.+)',nodepool='{APP_NODEPOOL}'"
+    container_selector = f"job='kubernetes-cadvisor',namespace='train-ticket',pod=~'^ts-.+',nodepool='{APP_NODEPOOL}'"
     container_metrics = fetcher.get_metrics(container_targets, container_selector)
     assert len(container_metrics) != 0
 
     # get pod metrics
-    pod_selector = 'app_kubernetes_io_name=~"ts-.+",kubernetes_namespace="train-ticket"'
+    pod_selector = 'app_kubernetes_io_name=~"^ts-.+",kubernetes_namespace="train-ticket"'
     pod_targets = fetcher.request_targets(pod_selector)
     assert len(pod_targets) != 0
     pod_metrics = fetcher.get_metrics(pod_targets, pod_selector)
