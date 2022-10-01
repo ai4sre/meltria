@@ -222,7 +222,10 @@ spec: {
 				name:  "appLabel"
 				value: "{{inputs.parameters.appLabel}}"
 			}]
-			continueOn: failed: true
+			continueOn: {
+				error: true
+				failed: true
+			}
 		}], [{
 			name: "get-injection-finished-time"
 			template: "get-injection-finished-time"
@@ -230,7 +233,10 @@ spec: {
 				name:  "chaosEngineName"
 				value: #chaosEngineName
 			}]
-			continueOn: failed: true
+			continueOn: {
+				error: true
+				failed: true
+			}
 		}], [{
 			name:     "sleep-until-writing-metrics-to-TSDB"
 			template: "sleep-n-sec"
@@ -238,7 +244,10 @@ spec: {
 				name:  "seconds"
 				value: "{{workflow.parameters.waitingTimeForTSDBSec}}"
 			}]
-			continueOn: failed: true
+			continueOn: {
+				error: true
+				failed: true
+			}
 		}], [{
 			name:     "get-metrics"
 			template: "get-metrics-from-prometheus"
@@ -255,7 +264,10 @@ spec: {
 				name: "endTimestamp"
 				value: "{{steps.get-injection-finished-time.outputs.result}}"
 			}]
-			continueOn: failed: true
+			continueOn: {
+				error: true
+				failed: true
+			}
 		}], [{
 			name:     "sleep"
 			template: "sleep-n-sec"
@@ -263,7 +275,10 @@ spec: {
 				name:  "seconds"
 				value: "{{=asInt(workflow.parameters.chaosIntervalSec) - asInt(workflow.parameters.waitingTimeForTSDBSec)}}"
 			}]
-			continueOn: failed: true
+			continueOn: {
+				error: true
+				failed: true
+			}
 		}], ]
 	}, {
 		// return <injection started time> + <chaos duration>
