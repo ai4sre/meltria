@@ -18,7 +18,7 @@ resource "google_compute_network" "meltria" {
 }
 
 resource "google_compute_subnetwork" "meltria" {
-  name          = "cluster-network"
+  name          = "${var.cluster_name}-cluster-network"
   ip_cidr_range = "10.146.0.0/20"
   region        = var.region
   network       = google_compute_network.meltria.id
