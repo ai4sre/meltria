@@ -48,5 +48,5 @@ gcloud container clusters get-credentials --zone ${ZONE} ${CLUSTER_NAME}
 kubectl apply -k ../manifests/train-ticket-base
 kubectl annotate serviceaccount --namespace litmus argo-chaos iam.gke.io/gcp-service-account=${CLUSTER_NAME}@${PROJECT_ID}.iam.gserviceaccount.com
 
-(cd manifests/train-ticket-base && helmfile sync)
+(cd ../manifests/train-ticket-base && helmfile sync)
 ```
