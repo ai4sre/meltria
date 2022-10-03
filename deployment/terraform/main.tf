@@ -137,7 +137,7 @@ resource "google_container_node_pool" "control_pool" {
   node_count = 1
 
   node_config {
-    machine_type = "e2-standard-2"
+    machine_type = "e2-medium"
     image_type   = "COS_CONTAINERD"
 
     workload_metadata_config {
@@ -157,6 +157,24 @@ resource "google_container_node_pool" "load_pool" {
 
   node_config {
     machine_type = "e2-small"
+    image_type   = "COS_CONTAINERD"
+
+    workload_metadata_config {
+      mode = "GKE_METADATA"
+    }
+
+    oauth_scopes = local.oauth_scopes
+  }
+}
+
+resource "google_container_node_pool" "monitoring_pool" {
+  name       = "monitoring-pool"
+  location   = var.cluster_zone
+  cluster    = google_container_cluster.cluster.name
+  node_count = 1
+
+  node_config {
+    machine_type = "e2-highmem-2"
     image_type   = "COS_CONTAINERD"
 
     workload_metadata_config {
