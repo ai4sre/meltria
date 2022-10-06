@@ -8,7 +8,7 @@ configMapGenerator:
   - provisioning/datasource.yaml
 - name: grafana-dashboards
   files:
-  - dashboards/k8s-pod-dresources.json
+  - dashboards/k8s-pod-resources.json
   - dashboards/prometheus-stats.json
   - dashboards/sock-shop-analytics.json
   - dashboards/sock-shop-performance.json

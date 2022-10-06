@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  namespace: monitoring
+  labels:
+    app: owlk8s
+  name: owlk8s
+spec:
+  selector:
+    matchLabels:
+      app: owlk8s
+  template:
+    metadata:
+      labels:
+        app: owlk8s
+      annotations:
+        prometheus.io/scrape: 'true'
+        prometheus.io/port: '9101'
+        prometheus.io/path: /metrics
+    spec:
+      hostNetwork: true
+      containers:
+      - image: ghcr.io/ai4sre/owlk8s:0.0.3
+        imagePullPolicy: IfNotPresent
+        name: owlk8s
+        securityContext:
+          privileged: true
+        ports:
+          - containerPort: 9101  # export this port directly on k8s node because of hostNetwork=true
+            name: 'metrics'
+        env:
+          - name: nodename
+            valueFrom:
+              fieldRef:
+                fieldPath: spec.nodeName
+          - name: debug
+            value: "false"
+          - name: listenPort
+            value: "9101"
+        resources:
+          limits:
+            cpu: 100m
+            memory: 100Mi
