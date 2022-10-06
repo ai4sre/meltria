@@ -1,5 +1,16 @@
 namespace: monitoring
 resources:
-- ./grafana-dep.yaml
-- ./grafana-configmap.yaml
-- ./grafana-svc.yaml
+- grafana.yaml
+configMapGenerator:
+- name: grafana-provisioning
+  files:
+  - provisioning/dashboard.yaml
+  - provisioning/datasource.yaml
+- name: grafana-dashboards
+  files:
+  - dashboards/k8s-pod-dresources.json
+  - dashboards/prometheus-stats.json
+  - dashboards/sock-shop-analytics.json
+  - dashboards/sock-shop-performance.json
+  - dashboards/sock-shop-resources.json
+  - dashboards/grafana-sockshop-custom.json

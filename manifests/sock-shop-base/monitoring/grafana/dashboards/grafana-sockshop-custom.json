@@ -37,7 +37,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "prometheus",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prom"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {}
@@ -136,7 +139,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "prometheus",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prom"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {}
@@ -241,7 +247,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "prometheus",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prom"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {}
@@ -340,7 +349,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "prometheus",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prom"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {}
@@ -446,7 +458,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "prometheus",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prom"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {}
@@ -545,7 +560,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "prometheus",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prom"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {}
@@ -651,7 +669,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "prometheus",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prom"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {}
@@ -750,7 +771,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "prometheus",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prom"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {}
@@ -856,7 +880,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "prometheus",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prom"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {}
@@ -955,7 +982,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "prometheus",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prom"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {}
@@ -1061,7 +1091,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "prometheus",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prom"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {}
@@ -1160,7 +1193,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "prometheus",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prom"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {}
@@ -1266,7 +1302,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "prometheus",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prom"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {}
@@ -1365,7 +1404,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "prometheus",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prom"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {}
@@ -1485,7 +1527,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "prometheus",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prom"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {}
@@ -1578,7 +1623,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "prometheus",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prom"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {}
@@ -1671,7 +1719,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "prometheus",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prom"
+      },
       "decimals": 2,
       "fieldConfig": {
         "defaults": {
@@ -1773,7 +1824,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "prometheus",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prom"
+      },
       "decimals": 2,
       "fieldConfig": {
         "defaults": {
@@ -1867,7 +1921,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "prometheus",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prom"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {}
@@ -1966,7 +2023,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "prometheus",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prom"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {}
@@ -2066,7 +2126,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "prometheus",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prom"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {}
@@ -2159,7 +2222,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "prometheus",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prom"
+      },
       "decimals": 2,
       "fieldConfig": {
         "defaults": {
@@ -2285,7 +2351,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "prometheus",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prom"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {}
@@ -2377,7 +2446,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "prometheus",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prom"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {}
@@ -2476,7 +2548,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "prometheus",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prom"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {}
@@ -2569,7 +2644,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "prometheus",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prom"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {}
@@ -2662,7 +2740,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "prometheus",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prom"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {}
@@ -2769,7 +2850,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "prometheus",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prom"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {}
@@ -2862,7 +2946,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "prometheus",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prom"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {}
@@ -2961,7 +3048,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "prometheus",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prom"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {}
@@ -3060,7 +3150,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "prometheus",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prom"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {}
