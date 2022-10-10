@@ -30,6 +30,9 @@ spec:
           requests:
             cpu: 50m
             memory: 100Mi
+          limits:
+            cpu: 200m
+            memory: 300Mi
 ---
 
 apiVersion: apps/v1
@@ -64,6 +67,9 @@ spec:
           requests:
             cpu: 50m
             memory: 100Mi
+          limits:
+            cpu: 200m
+            memory: 300Mi
 ---
 
 apiVersion: apps/v1
@@ -98,6 +104,9 @@ spec:
           requests:
             cpu: 50m
             memory: 100Mi
+          limits:
+            cpu: 200m
+            memory: 300Mi
 
 ---
 
@@ -133,6 +142,9 @@ spec:
           requests:
             cpu: 50m
             memory: 100Mi
+          limits:
+            cpu: 200m
+            memory: 300Mi
 
 ---
 
@@ -168,6 +180,9 @@ spec:
           requests:
             cpu: 50m
             memory: 100Mi
+          limits:
+            cpu: 200m
+            memory: 400Mi
 
 ---
 
@@ -203,6 +218,9 @@ spec:
           requests:
             cpu: 50m
             memory: 100Mi
+          limits:
+            cpu: 200m
+            memory: 300Mi
 
 ---
 
@@ -238,6 +256,9 @@ spec:
           requests:
             cpu: 50m
             memory: 100Mi
+          limits:
+            cpu: 200m
+            memory: 300Mi
 
 ---
 
@@ -273,6 +294,9 @@ spec:
           requests:
             cpu: 50m
             memory: 100Mi
+          limits:
+            cpu: 400m
+            memory: 300Mi
 
 ---
 
@@ -308,6 +332,9 @@ spec:
           requests:
             cpu: 50m
             memory: 100Mi
+          limits:
+            cpu: 200m
+            memory: 300Mi
 
 ---
 
@@ -343,6 +370,9 @@ spec:
           requests:
             cpu: 50m
             memory: 100Mi
+          limits:
+            cpu: 200m
+            memory: 300Mi
 
 ---
 
@@ -378,6 +408,9 @@ spec:
           requests:
             cpu: 50m
             memory: 100Mi
+          limits:
+            cpu: 200m
+            memory: 300Mi
 
 ---
 
@@ -413,6 +446,9 @@ spec:
           requests:
             cpu: 50m
             memory: 100Mi
+          limits:
+            cpu: 200m
+            memory: 300Mi
 
 ---
 
@@ -448,6 +484,9 @@ spec:
           requests:
             cpu: 50m
             memory: 100Mi
+          limits:
+            cpu: 200m
+            memory: 300Mi
 
 ---
 
@@ -483,6 +522,9 @@ spec:
           requests:
             cpu: 50m
             memory: 100Mi
+          limits:
+            cpu: 400m
+            memory: 400Mi
 
 ---
 
@@ -518,6 +560,9 @@ spec:
           requests:
             cpu: 50m
             memory: 100Mi
+          limits:
+            cpu: 200m
+            memory: 300Mi
 
 ---
 
@@ -553,6 +598,9 @@ spec:
           requests:
             cpu: 50m
             memory: 100Mi
+          limits:
+            cpu: 200m
+            memory: 300Mi
 
 ---
 
@@ -588,6 +636,9 @@ spec:
           requests:
             cpu: 50m
             memory: 100Mi
+          limits:
+            cpu: 200m
+            memory: 300Mi
 
 
 ---
@@ -628,6 +679,9 @@ spec:
           requests:
             cpu: 50m
             memory: 100Mi
+          limits:
+            cpu: 200m
+            memory: 800Mi
 
 ---
 
@@ -663,6 +717,9 @@ spec:
           requests:
             cpu: 50m
             memory: 100Mi
+          limits:
+            cpu: 200m
+            memory: 300Mi
 
 ---
 
@@ -698,6 +755,9 @@ spec:
           requests:
             cpu: 50m
             memory: 100Mi
+          limits:
+            cpu: 200m
+            memory: 300Mi
 
 ---
 
@@ -733,6 +793,9 @@ spec:
           requests:
             cpu: 50m
             memory: 100Mi
+          limits:
+            cpu: 200m
+            memory: 300Mi
 
 ---
 
@@ -768,6 +831,9 @@ spec:
           requests:
             cpu: 50m
             memory: 100Mi
+          limits:
+            cpu: 200m
+            memory: 400Mi
 ---
 
 apiVersion: apps/v1
@@ -802,6 +868,9 @@ spec:
             requests:
               cpu: 50m
               memory: 100Mi
+            limits:
+              cpu: 200m
+              memory: 300Mi
 ---
 
 apiVersion: apps/v1
@@ -836,6 +905,9 @@ spec:
             requests:
               cpu: 50m
               memory: 100Mi
+            limits:
+              cpu: 200m
+              memory: 400Mi
 ---
 
 apiVersion: apps/v1
