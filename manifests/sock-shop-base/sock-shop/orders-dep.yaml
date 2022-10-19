@@ -8,6 +8,7 @@ metadata:
     app.kubernetes.io/part-of: orders
     app.kubernetes.io/component: web
     app: sock-shop
+    runtime: jvm
   annotations:
     litmuschaos.io/chaos: "true"
   namespace: sock-shop
