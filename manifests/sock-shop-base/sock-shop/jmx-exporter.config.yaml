@@ -1,0 +1,9 @@
+---
+hostPort: localhost:5555
+username:
+password:
+
+rules:
+- pattern: ".*"
+
+cache: true

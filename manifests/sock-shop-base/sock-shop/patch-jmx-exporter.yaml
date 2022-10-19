@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: not-important
+spec:
+  template:
+    metadata:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "5556"
+    spec:
+      containers:
+        - name: "jmx-exporter"
+          image: "bitnami/jmx-exporter:0.17.0"
+          imagePullPolicy: IfNotPresent
+          args: ["5556", "/tmp/jmx-exporter.config.yaml"]
+          ports:
+            - name: exporter
+              containerPort: 5556
+          volumeMounts:
+            - name: configmap-jmx
+              mountPath: /tmp
+          resources:
+            limits:
+              cpu: 100m
+              memory: 200Mi
+      volumes:
+        - name: configmap-jmx
+          configMap:
+            name: jmx-config

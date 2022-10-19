@@ -29,3 +29,15 @@ resources:
 - ./session-db-svc.yaml
 - ./front-end-dep.yaml
 - ./front-end-svc.yaml
+
+configMapGenerator:
+  - name: jmx-config
+    files:
+    - jmx-exporter.config.yaml
+
+patches:
+  - path: patch-jmx-exporter.yaml
+    target:
+      kind: Deployment
+      namespace: sock-shop
+      labelSelector: runtime=jvm
