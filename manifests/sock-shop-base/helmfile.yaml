@@ -46,3 +46,5 @@ releases:
             cloud.google.com/gke-nodepool: control-pool
           image:
             tag: "v3.3.6"
+          extraArgs:
+            - --auth-mode=server
