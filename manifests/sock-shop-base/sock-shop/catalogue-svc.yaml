@@ -15,7 +15,5 @@ spec:
   - port: 80
     targetPort: 80
   selector:
-    app.kubernetes.io/name: catalogue
-    app.kubernetes.io/part-of: catalogue
-    app.kubernetes.io/component: web
+    name: catalogue
     app: sock-shop
