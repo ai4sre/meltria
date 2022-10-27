@@ -1,6 +1,8 @@
 namespace: loadtest
 resources:
-- ./loadtest-dep.yaml
+- loadtest-ns.yaml
+- loadtest-svc.yaml
+- loadtest-dep.yaml
 
 configMapGenerator:
 - name: locustfile
