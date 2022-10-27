@@ -4,7 +4,9 @@ kind: Service
 metadata:
   name: catalogue-db
   labels:
-    name: catalogue-db
+    app.kubernetes.io/name: catalogue-db
+    app.kubernetes.io/part-of: catalogue
+    app.kubernetes.io/component: db
     app: sock-shop
   namespace: sock-shop
 spec:
