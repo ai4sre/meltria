@@ -90,7 +90,7 @@ def metrics_as_result(
         if '__name__' not in metric['metric']:
             continue
         # TODO: want to rename 'kubernetes-name' in prometheus config because it is not intuitive.
-        container = metric['metric']['kubernetes_name']
+        container = metric['metric'].get('kubernetes_name', metric['metric']['app_kubernetes_io_name'])
         data['middlewares'].setdefault(container, [])
         values = tsutil.interpotate_time_series(metric['values'], time_meta)
         m = {
@@ -188,7 +188,7 @@ def collect_metrics(
 
     fetcher = PromFetcher(
         url=prometheus_url, ts_range=(start, end), step=step, concurrency=cpu_count()*10,
-        additional_summarize_labels=['kubernetes_name'],
+        additional_summarize_labels=['app_kubernetes_io_name', 'app_kubernetes_io_component', 'app_kubernetes_io_part_of'],
     )
 
     # get container metrics (cAdvisor)
