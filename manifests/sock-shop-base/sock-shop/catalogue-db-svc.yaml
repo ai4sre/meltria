@@ -13,5 +13,7 @@ spec:
   - port: 3306
     targetPort: 3306
   selector:
-    name: catalogue-db
+    app.kubernetes.io/name: catalogue-db
+    app.kubernetes.io/part-of: catalogue
+    app.kubernetes.io/component: db
     app: sock-shop
