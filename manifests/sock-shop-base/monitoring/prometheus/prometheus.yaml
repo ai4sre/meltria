@@ -60,6 +60,60 @@ scrape_configs:
       regex: __meta_kubernetes_node_label_cloud_google_com_gke_nodepool
       replacement: nodepool
 
+  - job_name: kubernetes-service-endpoints
+    scheme: http
+    kubernetes_sd_configs:
+    - role: endpoints
+    tls_config:
+      ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+    bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+    relabel_configs:
+    - source_labels:
+        - __meta_kubernetes_service_label_component
+      regex: apiserver
+      action: replace
+      target_label: __scheme__
+      replacement: https
+    - source_labels:
+        - __meta_kubernetes_service_label_kubernetes_io_cluster_service
+      action: drop
+      regex: 'true'
+    - source_labels:
+        - __meta_kubernetes_service_annotation_prometheus_io_scrape
+      action: drop
+      regex: 'false'
+    - source_labels:
+        - __meta_kubernetes_pod_container_port_name
+      action: drop
+      regex: .*-noscrape
+    - source_labels:
+        - __meta_kubernetes_service_annotation_prometheus_io_scheme
+      action: replace
+      target_label: __scheme__
+      regex: ^(https?)$
+      replacement: $1
+    - source_labels:
+        - __meta_kubernetes_service_annotation_prometheus_io_path
+      action: replace
+      target_label: __metrics_path__
+      regex: ^(.+)$
+      replacement: $1
+    - source_labels:
+        - __address__
+        - __meta_kubernetes_service_annotation_prometheus_io_port
+      action: replace
+      target_label: __address__
+      regex: '^(.+)(?::\d+);(\d+)$'
+      replacement: '$1:$2'
+    - action: labelmap
+      regex: __meta_kubernetes_service_label_(.+)
+    - source_labels: [__meta_kubernetes_namespace]
+      action: replace
+      target_label: kubernetes_namespace
+    - source_labels: [__meta_kubernetes_service_name]
+      action: replace
+      target_label: kubernetes_name
+
   - job_name: 'kubernetes-services'
     kubernetes_sd_configs:
     - role: service

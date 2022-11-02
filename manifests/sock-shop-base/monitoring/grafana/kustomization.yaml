@@ -9,7 +9,6 @@ configMapGenerator:
 - name: grafana-dashboards
   files:
   - dashboards/k8s-pod-resources.json
-  - dashboards/prometheus-stats.json
   - dashboards/sock-shop-analytics.json
   - dashboards/sock-shop-performance.json
   - dashboards/sock-shop-resources.json
