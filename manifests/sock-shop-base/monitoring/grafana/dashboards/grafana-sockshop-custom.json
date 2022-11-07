@@ -81,7 +81,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(rate(request_duration_seconds_count{name=\"front-end\",status_code=~\"2..\",route!=\"metrics\"}[1m])) * 100",
+          "expr": "sum(rate(request_duration_seconds_count{app_kubernetes_io_name=\"front-end\",status_code=~\"2..\",route!=\"metrics\"}[1m])) * 100",
           "interval": "",
           "intervalFactor": 1,
           "legendFormat": "2xx",
@@ -89,7 +89,7 @@
           "step": 4
         },
         {
-          "expr": "sum(rate(request_duration_seconds_count{name=\"front-end\",status_code=~\"4.+|5.+\"}[1m])) * 100",
+          "expr": "sum(rate(request_duration_seconds_count{app_kubernetes_io_name=\"front-end\",status_code=~\"4.+|5.+\"}[1m])) * 100",
           "interval": "",
           "intervalFactor": 1,
           "legendFormat": "4xx/5xx",
@@ -183,7 +183,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "histogram_quantile(0.99, sum(rate(request_duration_seconds_bucket{name=\"front-end\"}[1m])) by (name, le))",
+          "expr": "histogram_quantile(0.99, sum(rate(request_duration_seconds_bucket{app_kubernetes_io_name=\"front-end\"}[1m])) by (name, le))",
           "interval": "",
           "intervalFactor": 1,
           "legendFormat": "99th quantile",
@@ -191,7 +191,7 @@
           "step": 2
         },
         {
-          "expr": "histogram_quantile(0.5, sum(rate(request_duration_seconds_bucket{name=\"front-end\"}[1m])) by (name, le))",
+          "expr": "histogram_quantile(0.5, sum(rate(request_duration_seconds_bucket{app_kubernetes_io_name=\"front-end\"}[1m])) by (name, le))",
           "interval": "",
           "intervalFactor": 1,
           "legendFormat": "50th quantile",
@@ -199,7 +199,7 @@
           "step": 2
         },
         {
-          "expr": "sum(rate(request_duration_seconds_sum{name=\"front-end\"}[1m])) / sum(rate(request_duration_seconds_count{name=\"front-end\"}[1m]))",
+          "expr": "sum(rate(request_duration_seconds_sum{app_kubernetes_io_name=\"front-end\"}[1m])) / sum(rate(request_duration_seconds_count{app_kubernetes_io_name=\"front-end\"}[1m]))",
           "intervalFactor": 2,
           "legendFormat": "Mean",
           "refId": "C",
@@ -291,7 +291,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(rate(request_duration_seconds_count{name=\"catalogue\",status_code=~\"2..\",route!=\"metrics\"}[1m])) * 100",
+          "expr": "sum(rate(request_duration_seconds_count{app_kubernetes_io_name=\"catalogue\",status_code=~\"2..\",route!=\"metrics\"}[1m])) * 100",
           "interval": "",
           "intervalFactor": 1,
           "legendFormat": "2xx",
@@ -299,7 +299,7 @@
           "step": 4
         },
         {
-          "expr": "sum(rate(request_duration_seconds_count{name=\"catalogue\",status_code=~\"4.+|5.+\"}[1m])) * 100",
+          "expr": "sum(rate(request_duration_seconds_count{app_kubernetes_io_name=\"catalogue\",status_code=~\"4.+|5.+\"}[1m])) * 100",
           "interval": "",
           "intervalFactor": 1,
           "legendFormat": "4xx/5xx",
@@ -393,7 +393,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "histogram_quantile(0.99, sum(rate(request_duration_seconds_bucket{name=\"catalogue\"}[1m])) by (name, le))",
+          "expr": "histogram_quantile(0.99, sum(rate(request_duration_seconds_bucket{app_kubernetes_io_name=\"catalogue\"}[1m])) by (name, le))",
           "interval": "",
           "intervalFactor": 1,
           "legendFormat": "99th quantile",
@@ -401,7 +401,7 @@
           "step": 2
         },
         {
-          "expr": "histogram_quantile(0.5, sum(rate(request_duration_seconds_bucket{name=\"catalogue\"}[1m])) by (name, le))",
+          "expr": "histogram_quantile(0.5, sum(rate(request_duration_seconds_bucket{app_kubernetes_io_name=\"catalogue\"}[1m])) by (name, le))",
           "interval": "",
           "intervalFactor": 1,
           "legendFormat": "50th quantile",
@@ -409,7 +409,7 @@
           "step": 2
         },
         {
-          "expr": "sum(rate(request_duration_seconds_sum{name=\"catalogue\"}[1m])) / sum(rate(request_duration_seconds_count{name=\"catalogue\"}[1m]))",
+          "expr": "sum(rate(request_duration_seconds_sum{app_kubernetes_io_name=\"catalogue\"}[1m])) / sum(rate(request_duration_seconds_count{app_kubernetes_io_name=\"catalogue\"}[1m]))",
           "interval": "",
           "intervalFactor": 1,
           "legendFormat": "Mean",
@@ -502,7 +502,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(rate(http_request_duration_seconds_count{name=\"carts\",status_code=~\"2..\",route!=\"metrics\"}[1m])) * 100",
+          "expr": "sum(rate(http_request_duration_seconds_count{app_kubernetes_io_name=\"carts\",status_code=~\"2..\",route!=\"metrics\"}[1m])) * 100",
           "interval": "",
           "intervalFactor": 1,
           "legendFormat": "2xx",
@@ -510,7 +510,7 @@
           "step": 4
         },
         {
-          "expr": "sum(rate(http_request_duration_seconds_count{name=\"carts\",status_code=~\"4.+|5.+\"}[1m])) * 100",
+          "expr": "sum(rate(http_request_duration_seconds_count{app_kubernetes_io_name=\"carts\",status_code=~\"4.+|5.+\"}[1m])) * 100",
           "interval": "",
           "intervalFactor": 1,
           "legendFormat": "4xx/5xx",
@@ -604,7 +604,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "histogram_quantile(0.99, sum(rate(http_request_duration_seconds_bucket{name=\"carts\"}[1m])) by (name, le))",
+          "expr": "histogram_quantile(0.99, sum(rate(http_request_duration_seconds_bucket{app_kubernetes_io_name=\"carts\"}[1m])) by (name, le))",
           "interval": "",
           "intervalFactor": 1,
           "legendFormat": "99th quantile",
@@ -612,7 +612,7 @@
           "step": 2
         },
         {
-          "expr": "histogram_quantile(0.5, sum(rate(http_request_duration_seconds_bucket{name=\"carts\"}[1m])) by (name, le))",
+          "expr": "histogram_quantile(0.5, sum(rate(http_request_duration_seconds_bucket{app_kubernetes_io_name=\"carts\"}[1m])) by (name, le))",
           "interval": "",
           "intervalFactor": 1,
           "legendFormat": "50th quantile",
@@ -620,7 +620,7 @@
           "step": 2
         },
         {
-          "expr": "sum(rate(http_request_duration_seconds_sum{name=\"carts\"}[1m])) / sum(rate(http_request_duration_seconds_count{name=\"carts\"}[1m]))",
+          "expr": "sum(rate(http_request_duration_seconds_sum{app_kubernetes_io_name=\"carts\"}[1m])) / sum(rate(http_request_duration_seconds_count{app_kubernetes_io_name=\"carts\"}[1m]))",
           "interval": "",
           "intervalFactor": 1,
           "legendFormat": "Mean",
@@ -713,7 +713,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(rate(http_request_duration_seconds_count{name=\"orders\",status_code=~\"2..\",route!=\"metrics\"}[1m])) * 100",
+          "expr": "sum(rate(http_request_duration_seconds_count{app_kubernetes_io_name=\"orders\",status_code=~\"2..\",route!=\"metrics\"}[1m])) * 100",
           "interval": "",
           "intervalFactor": 1,
           "legendFormat": "2xx",
@@ -721,7 +721,7 @@
           "step": 4
         },
         {
-          "expr": "sum(rate(http_request_duration_seconds_count{name=\"orders\",status_code=~\"4.+|5.+\"}[1m])) * 100",
+          "expr": "sum(rate(http_request_duration_seconds_count{app_kubernetes_io_name=\"orders\",status_code=~\"4.+|5.+\"}[1m])) * 100",
           "interval": "",
           "intervalFactor": 1,
           "legendFormat": "4xx/5xx",
@@ -815,7 +815,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "histogram_quantile(0.99, sum(rate(http_request_duration_seconds_bucket{name=\"orders\"}[1m])) by (name, le))",
+          "expr": "histogram_quantile(0.99, sum(rate(http_request_duration_seconds_bucket{app_kubernetes_io_name=\"orders\"}[1m])) by (name, le))",
           "interval": "",
           "intervalFactor": 1,
           "legendFormat": "99th quantile",
@@ -823,7 +823,7 @@
           "step": 2
         },
         {
-          "expr": "histogram_quantile(0.5, sum(rate(http_request_duration_seconds_bucket{name=\"orders\"}[1m])) by (name, le))",
+          "expr": "histogram_quantile(0.5, sum(rate(http_request_duration_seconds_bucket{app_kubernetes_io_name=\"orders\"}[1m])) by (name, le))",
           "interval": "",
           "intervalFactor": 1,
           "legendFormat": "50th quantile",
@@ -831,7 +831,7 @@
           "step": 2
         },
         {
-          "expr": "sum(rate(request_duration_seconds_sum{name=\"orders\"}[1m])) / sum(rate(request_duration_seconds_count{name=\"orders\"}[1m]))",
+          "expr": "sum(rate(request_duration_seconds_sum{app_kubernetes_io_name=\"orders\"}[1m])) / sum(rate(request_duration_seconds_count{app_kubernetes_io_name=\"orders\"}[1m]))",
           "interval": "",
           "intervalFactor": 1,
           "legendFormat": "Mean",
@@ -924,7 +924,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(rate(request_duration_seconds_count{name=\"payment\",status_code=~\"2..\",route!=\"metrics\"}[1m])) * 100",
+          "expr": "sum(rate(request_duration_seconds_count{app_kubernetes_io_name=\"payment\",status_code=~\"2..\",route!=\"metrics\"}[1m])) * 100",
           "interval": "",
           "intervalFactor": 1,
           "legendFormat": "2xx",
@@ -932,7 +932,7 @@
           "step": 4
         },
         {
-          "expr": "sum(rate(request_duration_seconds_count{name=\"payment\",status_code=~\"4.+|5.+\"}[1m])) * 100",
+          "expr": "sum(rate(request_duration_seconds_count{app_kubernetes_io_name=\"payment\",status_code=~\"4.+|5.+\"}[1m])) * 100",
           "interval": "",
           "intervalFactor": 1,
           "legendFormat": "4xx/5xx",
@@ -1026,7 +1026,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "histogram_quantile(0.99, sum(rate(request_duration_seconds_bucket{name=\"payment\"}[1m])) by (name, le))",
+          "expr": "histogram_quantile(0.99, sum(rate(request_duration_seconds_bucket{app_kubernetes_io_name=\"payment\"}[1m])) by (name, le))",
           "interval": "",
           "intervalFactor": 1,
           "legendFormat": "99th quantile",
@@ -1034,7 +1034,7 @@
           "step": 2
         },
         {
-          "expr": "histogram_quantile(0.5, sum(rate(request_duration_seconds_bucket{name=\"payment\"}[1m])) by (name, le))",
+          "expr": "histogram_quantile(0.5, sum(rate(request_duration_seconds_bucket{app_kubernetes_io_name=\"payment\"}[1m])) by (name, le))",
           "interval": "",
           "intervalFactor": 1,
           "legendFormat": "50th quantile",
@@ -1042,7 +1042,7 @@
           "step": 2
         },
         {
-          "expr": "sum(rate(request_duration_seconds_sum{name=\"payment\"}[1m])) / sum(rate(request_duration_seconds_count{name=\"payment\"}[1m]))",
+          "expr": "sum(rate(request_duration_seconds_sum{app_kubernetes_io_name=\"payment\"}[1m])) / sum(rate(request_duration_seconds_count{app_kubernetes_io_name=\"payment\"}[1m]))",
           "interval": "",
           "intervalFactor": 1,
           "legendFormat": "Mean",
@@ -1135,7 +1135,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(rate(request_duration_seconds_count{name=\"shipping\",status_code=~\"2..\",route!=\"metrics\"}[1m])) * 100",
+          "expr": "sum(rate(request_duration_seconds_count{app_kubernetes_io_name=\"shipping\",status_code=~\"2..\",route!=\"metrics\"}[1m])) * 100",
           "interval": "",
           "intervalFactor": 1,
           "legendFormat": "2xx",
@@ -1143,7 +1143,7 @@
           "step": 4
         },
         {
-          "expr": "sum(rate(request_duration_seconds_count{name=\"shipping\",status_code=~\"4.+|5.+\"}[1m])) * 100",
+          "expr": "sum(rate(request_duration_seconds_count{app_kubernetes_io_name=\"shipping\",status_code=~\"4.+|5.+\"}[1m])) * 100",
           "interval": "",
           "intervalFactor": 1,
           "legendFormat": "4xx/5xx",
@@ -1237,7 +1237,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "histogram_quantile(0.99, sum(rate(request_duration_seconds_bucket{name=\"shipping\"}[1m])) by (name, le))",
+          "expr": "histogram_quantile(0.99, sum(rate(request_duration_seconds_bucket{app_kubernetes_io_name=\"shipping\"}[1m])) by (name, le))",
           "interval": "",
           "intervalFactor": 1,
           "legendFormat": "99th quantile",
@@ -1245,7 +1245,7 @@
           "step": 2
         },
         {
-          "expr": "histogram_quantile(0.5, sum(rate(request_duration_seconds_bucket{name=\"shipping\"}[1m])) by (name, le))",
+          "expr": "histogram_quantile(0.5, sum(rate(request_duration_seconds_bucket{app_kubernetes_io_name=\"shipping\"}[1m])) by (name, le))",
           "interval": "",
           "intervalFactor": 1,
           "legendFormat": "50th quantile",
@@ -1253,7 +1253,7 @@
           "step": 2
         },
         {
-          "expr": "sum(rate(request_duration_seconds_sum{name=\"shipping\"}[1m])) / sum(rate(request_duration_seconds_count{name=\"shipping\"}[1m]))",
+          "expr": "sum(rate(request_duration_seconds_sum{app_kubernetes_io_name=\"shipping\"}[1m])) / sum(rate(request_duration_seconds_count{app_kubernetes_io_name=\"shipping\"}[1m]))",
           "interval": "",
           "intervalFactor": 1,
           "legendFormat": "Mean",
@@ -1346,7 +1346,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(rate(request_duration_seconds_count{name=\"user\",status_code=~\"2..\",route!=\"metrics\"}[1m])) * 100",
+          "expr": "sum(rate(request_duration_seconds_count{app_kubernetes_io_name=\"user\",status_code=~\"2..\",route!=\"metrics\"}[1m])) * 100",
           "interval": "",
           "intervalFactor": 1,
           "legendFormat": "2xx",
@@ -1354,7 +1354,7 @@
           "step": 4
         },
         {
-          "expr": "sum(rate(request_duration_seconds_count{name=\"user\",status_code=~\"4.+|5.+\"}[1m])) * 100",
+          "expr": "sum(rate(request_duration_seconds_count{app_kubernetes_io_name=\"user\",status_code=~\"4.+|5.+\"}[1m])) * 100",
           "interval": "",
           "intervalFactor": 1,
           "legendFormat": "4xx/5xx",
@@ -1448,7 +1448,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "histogram_quantile(0.99, sum(rate(request_duration_seconds_bucket{name=\"user\"}[1m])) by (name, le))",
+          "expr": "histogram_quantile(0.99, sum(rate(request_duration_seconds_bucket{app_kubernetes_io_name=\"user\"}[1m])) by (name, le))",
           "interval": "",
           "intervalFactor": 1,
           "legendFormat": "99th quantile",
@@ -1456,7 +1456,7 @@
           "step": 2
         },
         {
-          "expr": "histogram_quantile(0.5, sum(rate(request_duration_seconds_bucket{name=\"user\"}[1m])) by (name, le))",
+          "expr": "histogram_quantile(0.5, sum(rate(request_duration_seconds_bucket{app_kubernetes_io_name=\"user\"}[1m])) by (name, le))",
           "interval": "",
           "intervalFactor": 1,
           "legendFormat": "50th quantile",
@@ -1464,7 +1464,7 @@
           "step": 2
         },
         {
-          "expr": "sum(rate(request_duration_seconds_sum{name=\"user\"}[1m])) / sum(rate(request_duration_seconds_count{name=\"user\"}[1m]))",
+          "expr": "sum(rate(request_duration_seconds_sum{app_kubernetes_io_name=\"user\"}[1m])) / sum(rate(request_duration_seconds_count{app_kubernetes_io_name=\"user\"}[1m]))",
           "interval": "",
           "intervalFactor": 1,
           "legendFormat": "Mean",
@@ -1667,7 +1667,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum (container_memory_working_set_bytes{image!=\"\",name=~\"^k8s_.*\",namespace=~\"^sock-shop\"}) by (container)",
+          "expr": "sum (container_memory_working_set_bytes{image!=\"\",namespace=~\"^sock-shop\"}) by (container)",
           "interval": "",
           "legendFormat": "{{ container }}",
           "refId": "A"
@@ -1765,13 +1765,13 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum (rate(container_network_receive_bytes_total{image!=\"\",name=~\"^k8s_.*\",namespace=~\"sock-shop\"}[1m])) by (pod)",
+          "expr": "sum (rate(container_network_receive_bytes_total{image!=\"\",namespace=~\"sock-shop\"}[1m])) by (pod)",
           "interval": "",
           "legendFormat": "{{ pod }} < in",
           "refId": "A"
         },
         {
-          "expr": "sum (rate(container_network_transmit_bytes_total{image!=\"\",name=~\"^k8s_.*\",namespace=~\"sock-shop\"}[1m])) by (pod)",
+          "expr": "sum (rate(container_network_transmit_bytes_total{image!=\"\",namespace=~\"sock-shop\"}[1m])) by (pod)",
           "interval": "",
           "legendFormat": "{{ pod }} > out",
           "refId": "B"
@@ -1869,7 +1869,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum (rate(container_network_receive_packets_total{image!=\"\",name=~\"^k8s_.*\",namespace=~\"sock-shop\"}[1m])) by (pod)",
+          "expr": "sum (rate(container_network_receive_packets_total{image!=\"\",namespace=~\"sock-shop\"}[1m])) by (pod)",
           "interval": "",
           "legendFormat": "{{ pod }}",
           "refId": "A"
@@ -2068,13 +2068,13 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(rate(container_fs_reads_total{image!=\"\",name=~\"^k8s_.*\",namespace=\"sock-shop\"}[1m])) by (container)",
+          "expr": "sum(rate(container_fs_reads_total{image!=\"\",namespace=\"sock-shop\"}[1m])) by (container)",
           "interval": "",
           "legendFormat": "{{ container }}(r)",
           "refId": "A"
         },
         {
-          "expr": "sum(rate(container_fs_writes_total{image!=\"\",name=~\"^k8s_.*\",namespace=\"sock-shop\"}[1m])) by (container)",
+          "expr": "sum(rate(container_fs_writes_total{image!=\"\",namespace=\"sock-shop\"}[1m])) by (container)",
           "interval": "",
           "legendFormat": "{{ container }}(w)",
           "refId": "B"
@@ -2170,7 +2170,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(container_fs_usage_bytes{image!=\"\",name=~\"^k8s_.*\",namespace=~\"sock-shop\"}) by (container)",
+          "expr": "sum(container_fs_usage_bytes{image!=\"\",namespace=~\"sock-shop\"}) by (container)",
           "interval": "",
           "legendFormat": "{{ container }}",
           "refId": "A"
@@ -2394,9 +2394,9 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum by (kubernetes_name) (rate(mongodb_mongod_metrics_document_total[1m]))",
+          "expr": "sum by (app_kubernetes_io_name) (rate(mongodb_ss_metrics_document [1m]))",
           "interval": "",
-          "legendFormat": "{{ kubernetes_name }}",
+          "legendFormat": "{{ app_kubernetes_io_name }}",
           "refId": "A"
         }
       ],
@@ -2490,15 +2490,15 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum by (kubernetes_name, state) (rate(mongodb_mongod_metrics_query_executor_total[1m]))",
+          "expr": "sum by (app_kubernetes_io_name, state) (rate(mongodb_mongod_metrics_query_executor_total[1m]))",
           "interval": "",
-          "legendFormat": "{{ kubernetes_name }}:{{ state }}",
+          "legendFormat": "{{ app_kubernetes_io_name }}:{{ state }}",
           "refId": "A"
         },
         {
-          "expr": "sum by (kubernetes_name, state) (rate(mongodb_mongod_metrics_record_moves_total[1m]))",
+          "expr": "sum by (app_kubernetes_io_name, state) (rate(mongodb_mongod_metrics_record_moves_total[1m]))",
           "interval": "",
-          "legendFormat": "{{ kubernetes_name }}:moved",
+          "legendFormat": "{{ app_kubernetes_io_name }}:moved",
           "refId": "B"
         }
       ],
@@ -2592,9 +2592,9 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum by (kubernetes_name) (rate(mongodb_mongod_metrics_get_last_error_wtime_total_milliseconds[1m]))",
+          "expr": "sum by (app_kubernetes_io_name) (rate(mongodb_mongod_metrics_get_last_error_wtime_total_milliseconds[1m]))",
           "interval": "",
-          "legendFormat": "Write Wait Time {{ kubernetes_name }}",
+          "legendFormat": "Write Wait Time {{ app_kubernetes_io_name }}",
           "refId": "A"
         }
       ],
@@ -2688,9 +2688,9 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum by (kubernetes_name, type) (rate(mongodb_mongod_asserts_total[1m]))",
+          "expr": "sum by (app_kubernetes_io_name, assert_type) (rate(mongodb_ss_asserts[1m]))",
           "interval": "",
-          "legendFormat": "{{type}}",
+          "legendFormat": "{{assert_type}}",
           "refId": "A"
         }
       ],
@@ -2894,7 +2894,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum by (node)(rate(node_cpu_seconds_total{mode=~\"user|system|iowait|.*irq\",job=\"monitoring/node-exporter/\"}[1m])) * 100",
+          "expr": "sum by (node)(rate(node_cpu_seconds_total{mode=~\"user|system|iowait|.*irq\",kubernetes_pod_name=~\"node-exporter-.*\"}[1m])) * 100",
           "interval": "",
           "legendFormat": "",
           "refId": "A"
@@ -2990,7 +2990,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "(node_memory_MemTotal_bytes{job=\"monitoring/node-exporter/\"} - node_memory_MemFree_bytes{job=\"monitoring/node-exporter/\"} - (node_memory_Cached_bytes{job=\"monitoring/node-exporter/\"} + node_memory_Buffers_bytes{job=\"monitoring/node-exporter/\"})) / node_memory_MemTotal_bytes{job=\"monitoring/node-exporter/\"} * 100",
+          "expr": "(node_memory_MemTotal_bytes{kubernetes_pod_name=~\"node-exporter-.*\"} - node_memory_MemFree_bytes{kubernetes_pod_name=~\"node-exporter-.*\"} - (node_memory_Cached_bytes{kubernetes_pod_name=~\"node-exporter-.*\"} + node_memory_Buffers_bytes{kubernetes_pod_name=~\"node-exporter-.*\"})) / node_memory_MemTotal_bytes{kubernetes_pod_name=~\"node-exporter-.*\"} * 100",
           "interval": "",
           "legendFormat": "Ram Used: {{ node }}",
           "refId": "A"
@@ -3092,13 +3092,13 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum by (node) (rate(node_network_receive_bytes_total{job=\"monitoring/node-exporter/\"}[1m]))",
+          "expr": "sum by (node) (rate(node_network_receive_bytes_total{kubernetes_pod_name=~\"node-exporter-.*\"}[1m]))",
           "interval": "",
           "legendFormat": "{{ node }} < in",
           "refId": "A"
         },
         {
-          "expr": "sum by (node) (rate(node_network_transmit_bytes_total{job=\"monitoring/node-exporter/\"}[1m]))",
+          "expr": "sum by (node) (rate(node_network_transmit_bytes_total{kubernetes_pod_name=~\"node-exporter-.*\"}[1m]))",
           "interval": "",
           "legendFormat": "{{ node }} > out",
           "refId": "B"
@@ -3194,13 +3194,13 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum by (node) (rate(node_disk_reads_completed_total{job=\"monitoring/node-exporter/\"}[1m]))",
+          "expr": "sum by (node) (rate(node_disk_reads_completed_total{kubernetes_pod_name=~\"node-exporter-.*\"}[1m]))",
           "interval": "",
           "legendFormat": "{{ node }} (r)",
           "refId": "A"
         },
         {
-          "expr": "sum by (node) (rate(node_disk_writes_completed_total{job=\"monitoring/node-exporter/\"}[1m]))",
+          "expr": "sum by (node) (rate(node_disk_writes_completed_total{kubernetes_pod_name=~\"node-exporter-.*\"}[1m]))",
           "interval": "",
           "legendFormat": "{{ node }} (w)",
           "refId": "B"
