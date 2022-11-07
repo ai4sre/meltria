@@ -39,5 +39,5 @@ spec:
             value: "9101"
         resources:
           limits:
-            cpu: 100m
+            cpu: 50m
             memory: 100Mi
