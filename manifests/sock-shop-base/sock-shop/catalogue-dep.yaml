@@ -8,6 +8,7 @@ metadata:
     app.kubernetes.io/part-of: catalogue
     app.kubernetes.io/component: web
     app: sock-shop
+    runtime: go
   annotations:
     litmuschaos.io/chaos: "true"
   namespace: sock-shop
@@ -15,13 +16,19 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      name: catalogue
+      app.kubernetes.io/name: catalogue
+      app.kubernetes.io/part-of: catalogue
+      app.kubernetes.io/component: web
       app: sock-shop
+      runtime: go
   template:
     metadata:
       labels:
-        name: catalogue
+        app.kubernetes.io/name: catalogue
+        app.kubernetes.io/part-of: catalogue
+        app.kubernetes.io/component: web
         app: sock-shop
+        runtime: go
     spec:
       containers:
       - name: catalogue

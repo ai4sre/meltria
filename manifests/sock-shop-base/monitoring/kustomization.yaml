@@ -1,5 +1,8 @@
 namespace: monitoring
 resources:
-- ./monitoring-ns.yaml
+- monitoring-ns.yaml
+- node-exporter.yaml
+- owlk8s-cr.yaml
+- owlk8s-ds.yaml
 - grafana
 - prometheus

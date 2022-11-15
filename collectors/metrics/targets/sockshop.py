@@ -90,7 +90,7 @@ def metrics_as_result(
         if '__name__' not in metric['metric']:
             continue
         # TODO: want to rename 'kubernetes-name' in prometheus config because it is not intuitive.
-        container = metric['metric']['kubernetes_name']
+        container = metric['metric'].get('kubernetes_name', metric['metric']['app_kubernetes_io_name'])
         data['middlewares'].setdefault(container, [])
         values = tsutil.interpotate_time_series(metric['values'], time_meta)
         m = {
@@ -115,33 +115,33 @@ def metrics_as_result(
         data['nodes'][node].append(m)
 
     for metric in throughput_metrics:
-        service = metric['metric']['name']
+        service = metric['metric']['app_kubernetes_io_name']
         data['services'].setdefault(service, [])
         values = tsutil.interpotate_time_series(metric['values'], time_meta)
         m = {
-            'service_name': metric['metric']['name'],
+            'service_name': metric['metric']['app_kubernetes_io_name'],
             'metric_name': 'throughput',
             'values': values,
         }
         data['services'][service].append(m)
 
     for metric in error_metrics:
-        service = metric['metric']['name']
+        service = metric['metric']['app_kubernetes_io_name']
         data['services'].setdefault(service, [])
         values = tsutil.interpotate_time_series(metric['values'], time_meta)
         m = {
-            'service_name': metric['metric']['name'],
+            'service_name': metric['metric']['app_kubernetes_io_name'],
             'metric_name': 'errors',
             'values': values,
         }
         data['services'][service].append(m)
 
     for metric in latency_metrics:
-        service = metric['metric']['name']
+        service = metric['metric']['app_kubernetes_io_name']
         data['services'].setdefault(service, [])
         values = tsutil.interpotate_time_series(metric['values'], time_meta)
         m = {
-            'service_name': metric['metric']['name'],
+            'service_name': metric['metric']['app_kubernetes_io_name'],
             'metric_name': 'latency',
             'values': values,
         }
@@ -188,31 +188,36 @@ def collect_metrics(
 
     fetcher = PromFetcher(
         url=prometheus_url, ts_range=(start, end), step=step, concurrency=cpu_count()*10,
-        additional_summarize_labels=['kubernetes_name'],
+        additional_summarize_labels=['app_kubernetes_io_name', 'app_kubernetes_io_component', 'app_kubernetes_io_part_of'],
     )
 
     # get container metrics (cAdvisor)
-    container_targets = fetcher.request_targets('job=~"kubernetes-cadvisor"')
+    container_targets = fetcher.request_targets('job="kubernetes-cadvisor"')
+    assert len(container_targets) != 0
     # add container=POD for network metrics
     # exclude metrics of argo workflow pods by removing metrics that 'instance' is gke control-pool node.
     comp_list = '|'.join(COMPONENT_LABELS)
-    container_selector = f"namespace='sock-shop',container=~'{comp_list}|POD',nodepool='{APP_NODEPOOL}'"
+    container_selector = f"job='kubernetes-cadvisor',namespace='sock-shop',container=~'{comp_list}|POD',nodepool='{APP_NODEPOOL}'"
     container_metrics = fetcher.get_metrics(container_targets, container_selector)
+    assert len(container_metrics) != 0
 
     # get pod metrics
-    pod_selector = 'app="{}"'.format(APP_LABEL)
+    pod_selector = f"app='{APP_LABEL}',kubernetes_namespace='sock-shop'"
     pod_targets = fetcher.request_targets(pod_selector)
+    assert len(pod_targets) != 0
     pod_metrics = fetcher.get_metrics(pod_targets, pod_selector)
+    assert len(pod_metrics) != 0
 
     # get node metrics (node-exporter)
-    node_selector = f"job='monitoring/node-exporter',node=~'.+-{APP_NODEPOOL}-.+'"
+    node_selector = f"k8s_app='node-exporter',node=~'.+-{APP_NODEPOOL}-.+',kubernetes_namespace='monitoring'"
     node_targets = fetcher.request_targets(node_selector)
     node_metrics = fetcher.get_metrics(node_targets, node_selector)
+    assert len(node_metrics) != 0
 
     # get service metrics
     throughput_metrics = fetcher.get_metrics_by_query_range(
         """
-            sum by (name) (
+            sum by (app_kubernetes_io_name) (
                 rate(
                     request_duration_seconds_count{
                         job="kubernetes-service-endpoints",
@@ -220,7 +225,7 @@ def collect_metrics(
                         status_code=~"2.."
                     }[1m]
                 )
-            ) or sum by (name) (
+            ) or sum by (app_kubernetes_io_name) (
                 rate(
                     http_request_duration_seconds_count{
                         job="kubernetes-service-endpoints",
@@ -235,7 +240,7 @@ def collect_metrics(
 
     error_metrics: list[Any] = fetcher.get_metrics_by_query_range(
         """
-            sum by (name) (
+            sum by (app_kubernetes_io_name) (
                 rate(
                     request_duration_seconds_count{
                         job="kubernetes-service-endpoints",
@@ -243,7 +248,7 @@ def collect_metrics(
                         status_code=~"4.+|5.+",
                     }[1m]
                 )
-            ) or sum by (name) (
+            ) or sum by (app_kubernetes_io_name) (
                 rate(
                     http_request_duration_seconds_count{
                         job="kubernetes-service-endpoints",
@@ -258,14 +263,14 @@ def collect_metrics(
 
     latency_metrics = fetcher.get_metrics_by_query_range(
         """
-            sum by (name) (
+            sum by (app_kubernetes_io_name) (
                 rate(
                     request_duration_seconds_sum{
                         job="kubernetes-service-endpoints",
                         kubernetes_namespace="sock-shop"
                     }[1m]
                 )
-            ) / sum by (name) (
+            ) / sum by (app_kubernetes_io_name) (
                 rate(
                     request_duration_seconds_count{
                         job="kubernetes-service-endpoints",
@@ -281,14 +286,14 @@ def collect_metrics(
     # request_duration_seconds_sum to http_request_duration_seconds_sum.
     latency_metrics_patch = fetcher.get_metrics_by_query_range(
         """
-            sum by (name) (
+            sum by (app_kubernetes_io_name) (
                 rate(
                     http_request_duration_seconds_sum{
                         job="kubernetes-service-endpoints",
                         kubernetes_namespace="sock-shop"
                     }[1m]
                 )
-            ) / sum by (name) (
+            ) / sum by (app_kubernetes_io_name) (
                 rate(
                     http_request_duration_seconds_count{
                         job="kubernetes-service-endpoints",

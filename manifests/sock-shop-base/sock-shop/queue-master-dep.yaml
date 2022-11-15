@@ -8,6 +8,7 @@ metadata:
     app.kubernetes.io/part-of: queue
     app.kubernetes.io/component: message-queue
     app: sock-shop
+    runtime: jvm
   annotations:
     litmuschaos.io/chaos: "true"
   namespace: sock-shop
@@ -35,9 +36,24 @@ spec:
            value: zipkin.jaeger.svc.cluster.local
          - name: JAVA_OPTS
            value: -Xms64m -Xmx128m -XX:PermSize=32m -XX:MaxPermSize=64m -XX:+UseG1GC -Djava.security.egd=file:/dev/urandom
+        #  - name: JAVA_TOOL_OPTIONS
+        #    value: >-
+        #         -XX:+UseContainerSupport
+        #         -XX:MinRAMFraction=2
+        #         -XX:MaxRAMFraction=2
+        #         -Dcom.sun.management.jmxremote
+        #         -Dcom.sun.management.jmxremote.port=5555
+        #         -Dcom.sun.management.jmxremote.authenticate=false
+        #         -Dcom.sun.management.jmxremote.ssl=false
+         - name: JAVA_TOOL_OPTIONS
+           value: >-
+                -Dcom.sun.management.jmxremote
+                -Dcom.sun.management.jmxremote.port=5555
+                -Dcom.sun.management.jmxremote.authenticate=false
+                -Dcom.sun.management.jmxremote.ssl=false
         resources:
           limits:
-            cpu: 100m
+            cpu: 200m
             memory: 400Mi
           requests:
             cpu: 100m

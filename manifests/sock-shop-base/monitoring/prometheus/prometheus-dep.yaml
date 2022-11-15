@@ -18,6 +18,8 @@ volumeBindingMode: WaitForFirstConsumer
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
+  labels:
+    name: prometheus-statefulset
   name: prometheus-statefulset
   namespace: monitoring
 spec:
@@ -30,12 +32,9 @@ spec:
       app: prometheus
   template:
     metadata:
-      name: prometheus
       labels:
         app: prometheus
     spec:
-      terminationGracePeriodSeconds: 5
-      serviceAccount: prometheus
       # Avoid Permission denied error when writing to pv. https://github.com/coreos/prometheus-operator/issues/541
       securityContext:
         fsGroup: 2000
@@ -43,32 +42,28 @@ spec:
         runAsNonRoot: true
       containers:
       - name: prometheus
-        image: prom/prometheus:v2.20.0
+        image: prom/prometheus:v2.37.0
         args:
-        - '--storage.tsdb.retention.time=7200h'
-        - '--storage.tsdb.path=/var/lib/prometheus'
         - '--config.file=/etc/prometheus/prometheus.yaml'
-        - '--log.level=debug'
+        - '--storage.tsdb.path=/var/lib/prometheus'
+        - '--storage.tsdb.retention.time=1000d'
         ports:
         - name: web
           containerPort: 9090
         volumeMounts:
-        - name: config-volume
-          mountPath: /etc/prometheus
-        # - name: alertrules-volume
-        #   mountPath: /etc/prometheus-rules
         - name: prometheus-pv
           mountPath: /var/lib/prometheus
+        - name: config-volume
+          mountPath: /etc/prometheus
+      terminationGracePeriodSeconds: 5
+      serviceAccount: prometheus
       volumes:
       - name: config-volume
         configMap:
           name: prometheus-config
-      # - name: alertrules-volume
-      #   configMap:
-      #     name: prometheus-alertrules
       nodeSelector:
-        beta.kubernetes.io/os: linux
-        cloud.google.com/gke-nodepool: "control-pool"
+        kubernetes.io/os: linux
+        cloud.google.com/gke-nodepool: "monitoring-pool"
   volumeClaimTemplates:
     - metadata:
         name: prometheus-pv
@@ -79,3 +74,20 @@ spec:
         resources:
           requests:
             storage: 200Gi
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  labels:
+    app: prometheus
+  name: prometheus
+  namespace: monitoring
+spec:
+  type: NodePort
+  ports:
+  - port: 9090
+    targetPort: 9090
+    nodePort: 30003
+  selector:
+    app: prometheus

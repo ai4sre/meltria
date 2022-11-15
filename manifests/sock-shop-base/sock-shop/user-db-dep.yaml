@@ -47,10 +47,13 @@ spec:
             cpu: 200m
             memory: 200Mi
       - name: mongodb-exporter
-        image: ssheehy/mongodb-exporter:0.10.0
+        image: percona/mongodb_exporter:0.32.0
+        imagePullPolicy: IfNotPresent
+        args: ['--collector.diagnosticdata', '--collector.replicasetstatus', '--collector.dbstats', '--collector.topmetrics', '--collector.indexstats', '--collector.collstats', '--compatible-mode']
         ports:
         - name: exporter
           containerPort: 9216
+          protocol: TCP
         env:
           - name: MONGODB_URI
             value: "mongodb://localhost:27017"

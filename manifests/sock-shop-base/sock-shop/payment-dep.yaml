@@ -8,6 +8,7 @@ metadata:
     app.kubernetes.io/part-of: payment
     app.kubernetes.io/component: web
     app: sock-shop
+    runtime: go
   annotations:
     litmuschaos.io/chaos: "true"
   namespace: sock-shop
