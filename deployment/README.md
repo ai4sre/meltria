@@ -26,6 +26,10 @@ cluster_name = "${CLUSTER_NAME}"
 cluster_zone = "${ZONE}"
 
 cluster_workload_node_count = 7
+cluster_workload_node_type = "e2-standard-2"
+cluster_control_node_type = "e2-standard-2"
+cluster_monitoring_node_type = "e2-highmem-2"
+cluster_load_node_type = "e2-small"
 EOF
 ```
 
