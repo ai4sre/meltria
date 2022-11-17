@@ -24,6 +24,27 @@ variable "cluster_workload_node_count" {
   default     = 7
 }
 
+
+variable "cluster_workload_node_type" {
+  type        = string
+  description = "The machine type of the workload pool in the GKE cluster."
+}
+
+variable "cluster_control_node_type" {
+  type        = string
+  description = "The machine type of the control pool in the GKE cluster."
+}
+
+variable "cluster_monitoring_node_type" {
+  type        = string
+  description = "The machine type of the monitoring pool in the GKE cluster."
+}
+
+variable "cluster_load_node_type" {
+  type        = string
+  description = "The machine type of the load pool in the GKE cluster."
+}
+
 variable "bucket_name" {
   type        = string
   description = "Specify the name of the pre-created bucket. This bucket will be used to store Terraform state and generated datasets."
