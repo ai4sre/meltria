@@ -1,0 +1,17 @@
+repeatNum: 1
+appNamespace: 'sock-shop'
+appLabels:
+  - front-end
+  - orders
+  - orders-db
+  - carts
+  - carts-db
+  - user
+  - user-db
+  - payment
+  - catalogue
+  - catalogue-db
+  - queue-master
+chaosTypes: "'pod-cpu-hog','pod-memory-hog','pod-network-loss'"
+chaosIntervalSec: 2700 # 45min
+
