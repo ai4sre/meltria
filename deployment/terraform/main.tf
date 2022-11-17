@@ -118,7 +118,7 @@ resource "google_container_node_pool" "default_pool" {
   node_count = var.cluster_workload_node_count
 
   node_config {
-    machine_type = "e2-standard-2"
+    machine_type = var.cluster_workload_node_type
     image_type   = "COS_CONTAINERD"
 
     workload_metadata_config {
@@ -137,7 +137,7 @@ resource "google_container_node_pool" "control_pool" {
   node_count = 1
 
   node_config {
-    machine_type = "e2-medium"
+    machine_type = var.cluster_control_node_type
     image_type   = "COS_CONTAINERD"
 
     workload_metadata_config {
@@ -156,7 +156,7 @@ resource "google_container_node_pool" "load_pool" {
   node_count = 1
 
   node_config {
-    machine_type = "e2-small"
+    machine_type = var.cluster_load_node_type
     image_type   = "COS_CONTAINERD"
 
     workload_metadata_config {
@@ -174,7 +174,7 @@ resource "google_container_node_pool" "monitoring_pool" {
   node_count = 1
 
   node_config {
-    machine_type = "e2-highmem-2"
+    machine_type = var.cluster_monitoring_node_type
     image_type   = "COS_CONTAINERD"
 
     workload_metadata_config {
