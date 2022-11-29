@@ -18,7 +18,7 @@ CLUSTER_NAME=meltria
 
 gsutil mb -l ${REGION} gs://${BUCKET_NAME}
 
-cat <<EOF > terraform/terraform.tfvars
+cat <<EOF > terraform/sockshop.tfvars
 project_id   = "${PROJECT_ID}"
 region       = "${REGION}"
 bucket_name  = "${BUCKET_NAME}"
@@ -40,7 +40,7 @@ gcloud auth application-default login
 
 cd terraform
 terraform init -backend-config="bucket=${BUCKET_NAME}" -backend-config="prefix=terraform/state"
-terraform apply
+terraform apply -var-file=sockshop.tfvars
 
 # Get kubernetes cluster credentials
 gcloud container clusters get-credentials --zone ${ZONE} ${CLUSTER_NAME}
@@ -50,7 +50,7 @@ gcloud container clusters get-credentials --zone ${ZONE} ${CLUSTER_NAME}
 
 ```bash
 kubectl apply -k ../manifests/train-ticket-base
-kubectl annotate serviceaccount --namespace litmus argo-chaos iam.gke.io/gcp-service-account=${CLUSTER_NAME}@${PROJECT_ID}.iam.gserviceaccount.com
+kubectl annotate serviceaccount --namespace litmus argo-chaos iam.gke.io/gcp-service-account=${CLUSTER_NAME}@${PROJECT_ID}-sa.iam.gserviceaccount.com
 
 (cd ../manifests/train-ticket-base && helmfile sync)
 ```
