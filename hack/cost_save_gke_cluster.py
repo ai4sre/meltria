@@ -46,6 +46,10 @@ def degrade_node_pool(cluster_name: str, zone: str, recover_file: str):
         logging.info(f'Degrading node pool {pool["name"]} in {cluster_name}')
         resize_node_pool(cluster_name, zone, pool['name'], 0)
 
+def apply_descheduler_job():
+    manifest = f"{os.path.dirname(__file__)}/descheduler-job.yaml"
+    logging.info(f"Applying descheduler job ...")
+    subprocess.check_call(['kubectl', 'apply', '-f', manifest])
 
 def main():
     logging.basicConfig(format='%(asctime)s %(levelname)s:%(message)s', level=logging.INFO)
@@ -75,6 +79,7 @@ def main():
 
     if args.up:
         recover_node_pool(args.cluster_name, args.zone, recover_file)
+        apply_descheduler_job()
     elif args.down:
         degrade_node_pool(args.cluster_name, args.zone, recover_file)
     else:

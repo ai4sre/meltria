@@ -3,3 +3,4 @@ resources:
 - app
 - loadtest
 - litmus
+- descheduler
