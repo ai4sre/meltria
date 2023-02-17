@@ -12,4 +12,4 @@ appLabels:
   - catalogue
   - catalogue-db
 chaosTypes: "'pod-cpu-hog','pod-memory-hog','pod-network-latency'"
-chaosIntervalSec: 2400 # 40min
+chaosIntervalSec: 2700 # 45min
