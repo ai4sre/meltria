@@ -1,9 +1,9 @@
 namespace: monitoring
 resources:
-- alertmanager-configmap.yaml
 - alertmanager.yaml
 
 configMapGenerator:
-- name: locustfile
+- name: alertmanager
   files:
-  - locustfile.py
+  - alertmanager_config.yaml
+  - configure_secret.sh

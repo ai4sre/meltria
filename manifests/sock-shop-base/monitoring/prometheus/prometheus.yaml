@@ -194,3 +194,9 @@ scrape_configs:
       - __meta_kubernetes_pod_node_name
       - __meta_kubernetes_pod_label_app
       target_label: node
+
+alerting:
+  alertmanagers:
+  - scheme: http
+    static_configs:
+    - targets: ['alertmanager.monitoring.svc.cluster.local:9093']
