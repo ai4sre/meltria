@@ -41,10 +41,10 @@ spec:
           name: tmp-volume
         resources:
           limits:
-            cpu: 200m
+            cpu: 500m
             memory: 200Mi
           requests:
-            cpu: 200m
+            cpu: 500m
             memory: 200Mi
       - name: mongodb-exporter
         image: percona/mongodb_exporter:0.32.0

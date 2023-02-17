@@ -38,7 +38,7 @@ spec:
         - -port=80
         resources:
           limits:
-            cpu: 100m
+            cpu: 300m
             memory: 100Mi
           requests:
             cpu: 100m

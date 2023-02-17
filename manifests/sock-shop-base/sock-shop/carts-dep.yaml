@@ -36,30 +36,24 @@ spec:
         env:
          - name: ZIPKIN
            value: zipkin.jaeger.svc.cluster.local
-         - name: JAVA_OPTS
-           value: -Xms128m -Xmx128m -XX:PermSize=32m -XX:MaxPermSize=64m -XX:+UseG1GC -Djava.security.egd=file:/dev/urandom
-        #  - name: JAVA_TOOL_OPTIONS
-        #    value: >-
-        #         -XX:+UseContainerSupport
-        #         -XX:MinRAMFraction=2
-        #         -XX:MaxRAMFraction=2
-        #         -Dcom.sun.management.jmxremote
-        #         -Dcom.sun.management.jmxremote.port=5555
-        #         -Dcom.sun.management.jmxremote.authenticate=false
-        #         -Dcom.sun.management.jmxremote.ssl=false
          - name: JAVA_TOOL_OPTIONS
            value: >-
+                -XX:+UseContainerSupport
+                -XX:MinRAMFraction=2
+                -XX:MaxRAMFraction=2
+                -XX:+UseG1GC
+                -Djava.security.egd=file:/dev/urandom
                 -Dcom.sun.management.jmxremote
                 -Dcom.sun.management.jmxremote.port=5555
                 -Dcom.sun.management.jmxremote.authenticate=false
                 -Dcom.sun.management.jmxremote.ssl=false
         resources:
           limits:
-            cpu: 600m
-            memory: 500Mi
+            cpu: 1500m
+            memory: 1200Mi
           requests:
-            cpu: 300m
-            memory: 500Mi
+            cpu: 800m
+            memory: 800Mi
         ports:
         - containerPort: 80
         volumeMounts:
@@ -69,13 +63,13 @@ spec:
           httpGet:
             path: /health
             port: 80
-          initialDelaySeconds: 300
+          initialDelaySeconds: 120
           periodSeconds: 3
         readinessProbe:
           httpGet:
             path: /health
             port: 80
-          initialDelaySeconds: 180
+          initialDelaySeconds: 120
           periodSeconds: 3
       volumes:
         - name: tmp-volume

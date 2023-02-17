@@ -25,7 +25,7 @@ spec:
     spec:
       containers:
       - name: load-test-master
-        image: locustio/locust:2.9.0
+        image: locustio/locust:2.14.2
         args: ["-f", "/config/locustfile.py", "--master"]
         volumeMounts:
           - name: locustfile-volume
@@ -44,7 +44,7 @@ spec:
           - name: LOCUST_AUTOSTART
             value: 'true'
           - name: RUN_TIME
-            value: '30s'
+            value: '300s'
         ports:
           - name: master-web
             containerPort: 8089
@@ -87,7 +87,7 @@ spec:
     spec:
       containers:
       - name: load-test-worker
-        image: locustio/locust:2.9.0
+        image: locustio/locust:2.14.2
         args: ["-f", "/config/locustfile.py", "--worker"]
         volumeMounts:
           - name: locustfile-volume

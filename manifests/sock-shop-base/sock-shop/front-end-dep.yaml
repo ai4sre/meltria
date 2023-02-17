@@ -12,7 +12,7 @@ metadata:
     litmuschaos.io/chaos: "true"
   namespace: sock-shop
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app.kubernetes.io/name: front-end
@@ -32,11 +32,11 @@ spec:
         image: weaveworksdemos/front-end:0.3.12
         resources:
           limits:
-            cpu: 400m
-            memory: 300Mi
+            cpu: 1000m
+            memory: 500Mi
           requests:
-            cpu: 400m
-            memory: 300Mi
+            cpu: 500m
+            memory: 500Mi
         ports:
         - containerPort: 8079
         env:

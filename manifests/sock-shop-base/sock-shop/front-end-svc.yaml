@@ -14,7 +14,7 @@ spec:
   ports:
   - port: 80
     targetPort: 8079
-    nodePort: 30001
+    nodePort: 30002
   selector:
     app.kubernetes.io/name: front-end
     app.kubernetes.io/part-of: front-end

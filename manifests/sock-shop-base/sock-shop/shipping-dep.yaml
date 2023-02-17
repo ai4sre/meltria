@@ -35,7 +35,7 @@ spec:
          - name: ZIPKIN
            value: zipkin.jaeger.svc.cluster.local
          - name: JAVA_OPTS
-           value: -Xms64m -Xmx128m -XX:PermSize=32m -XX:MaxPermSize=64m -XX:+UseG1GC -Djava.security.egd=file:/dev/urandom
+           value: -Xms300m -Xmx300m -XX:PermSize=32m -XX:MaxPermSize=64m -XX:+UseG1GC -Djava.security.egd=file:/dev/urandom
         #  - name: JAVA_TOOL_OPTIONS
         #    value: >-
         #         -XX:+UseContainerSupport
@@ -54,7 +54,7 @@ spec:
         resources:
           limits:
             cpu: 600m
-            memory: 400Mi
+            memory: 600Mi
           requests:
             cpu: 300m
             memory: 400Mi
