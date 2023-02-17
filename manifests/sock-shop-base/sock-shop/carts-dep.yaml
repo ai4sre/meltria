@@ -34,10 +34,10 @@ spec:
       - name: carts
         image: ghcr.io/ai4sre/sockshop-carts:latest
         env:
-         - name: ZIPKIN
-           value: zipkin.jaeger.svc.cluster.local
-         - name: JAVA_TOOL_OPTIONS
-           value: >-
+          - name: ZIPKIN
+            value: zipkin.jaeger.svc.cluster.local
+          - name: JAVA_TOOL_OPTIONS
+            value: >-
                 -XX:+UseContainerSupport
                 -XX:MinRAMFraction=2
                 -XX:MaxRAMFraction=2
