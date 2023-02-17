@@ -6,3 +6,4 @@ resources:
 - owlk8s-ds.yaml
 - grafana
 - prometheus
+- alerting
