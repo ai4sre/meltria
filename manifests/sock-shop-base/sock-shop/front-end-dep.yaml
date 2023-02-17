@@ -12,7 +12,7 @@ metadata:
     litmuschaos.io/chaos: "true"
   namespace: sock-shop
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app.kubernetes.io/name: front-end
