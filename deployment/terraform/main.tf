@@ -40,14 +40,11 @@ resource "google_compute_subnetwork" "meltria" {
 resource "google_compute_firewall" "meltria" {
   name    = "${var.cluster_name}-firewall"
   network = google_compute_network.meltria.id
-
+  source_ranges = ["35.235.240.0/20"]
   allow {
     protocol = "tcp"
     ports    = ["22"]  # ssh
   }
-
-  target_tags   = ["${var.cluster_name}-firewall"]
-  source_ranges = ["0.0.0.0/0"]
 }
 
 # ----------------------------------------
