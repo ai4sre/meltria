@@ -55,3 +55,13 @@ kubectl annotate serviceaccount --namespace litmus argo-chaos iam.gke.io/gcp-ser
 
 (cd ../manifests/train-ticket-base && helmfile sync)
 ```
+
+## 4. Setup alerts notification to slack with alertmanager
+
+```bash
+cat > /tmp/meltria_alerts_slack_webhook_url.env
+slack-hook-url=XXXXXXXXX/YYYYYYYYYYY/ZZZZZZZZZZZZZZZZZZZZZZZZ
+
+kubectl create secret generic -n monitoring --save-config slack-hook-url --from-env-file /tmp/meltria_alerts_slack_webhook_url.env
+kubectl rollout restart deployment -n monitoring alertmanager
+```
