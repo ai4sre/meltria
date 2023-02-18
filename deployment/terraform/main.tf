@@ -37,6 +37,19 @@ resource "google_compute_subnetwork" "meltria" {
   ]
 }
 
+resource "google_compute_firewall" "meltria" {
+  name    = "${var.cluster_name}-firewall"
+  network = google_compute_network.meltria.id
+
+  allow {
+    protocol = "tcp"
+    ports    = ["22"]  # ssh
+  }
+
+  target_tags   = ["${var.cluster_name}-firewall"]
+  source_ranges = ["0.0.0.0/0"]
+}
+
 # ----------------------------------------
 # Service Account for GKE Cluster
 # ----------------------------------------
