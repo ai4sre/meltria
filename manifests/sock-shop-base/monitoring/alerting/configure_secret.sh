@@ -1,5 +1,9 @@
 #!/bin/sh
 
 echo 'Configuring Slack hook url.'
-sed -i -e s,API_URL_SECRET,"$SLACK_HOOK_URL",g /etc/alertmanager/config.yml
+
+# To avoid read-only file system error
+cp -fp /etc/alertmanager/alertmanager_config.yaml /alertmanager/config.yaml
+sed -i -e s,API_URL_SECRET,"$SLACK_HOOK_URL",g /alertmanager/config.yaml
+
 exec /bin/alertmanager $*
