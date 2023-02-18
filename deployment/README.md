@@ -44,6 +44,7 @@ terraform apply -var-file=sockshop.tfvars
 
 # Get kubernetes cluster credentials
 gcloud container clusters get-credentials --zone ${ZONE} ${CLUSTER_NAME}
+gcloud projects add-iam-policy-binding ${PROJECT_ID} --member serviceAccount:${CLUSTER_NAME}@${PROJECT_ID}.iam.gserviceaccount.com --role roles/storage.objectAdmin
 ```
 
 ## 3. Apply manifests
