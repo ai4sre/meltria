@@ -3,9 +3,9 @@ groups:
   rules:
   - alert: LowRequestLatency
     expr: rate(requests{app="owlk8s",ns="train_ticket",svc="ts_ui_dashboard"}[1m]) < 95
-    for: 20m
+    for: 20m  # over chaos duration
     labels:
       severity: slack
     annotations:
       summary: "Low requests rate {{ $labels.svc }} in {{ $labels.ns }}"
-      description: "(current value: {{ $value }}[1m])"
+      description: "current value: {{ $value }} RPS"
