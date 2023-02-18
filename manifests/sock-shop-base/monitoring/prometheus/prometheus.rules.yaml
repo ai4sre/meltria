@@ -2,10 +2,10 @@ groups:
 - name: meltria_sockshop
   rules:
   - alert: LowRequestLatency
-    expr: rate(requests{app="owlk8s",ns="sock_shop",svc="front-end"}[1m]) < 280
-    for: 20m
+    expr: rate(requests{app="owlk8s",ns="sock_shop",svc="front_end"}[1m]) < 290
+    for: 20m  # over chaos duration
     labels:
       severity: slack
     annotations:
       summary: "Low requests rate {{ $labels.svc }} in {{ $labels.ns }}"
-      description: "(current value: {{ $value }}[1m])"
+      description: "current value: {{ $value }} RPS"
