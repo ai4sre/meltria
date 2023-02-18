@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: alertmanager
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: alertmanager
+  template:
+    metadata:
+      name: alertmanager
+      labels:
+        app: alertmanager
+    spec:
+      containers:
+      - name: alertmanager
+        image: prom/alertmanager:latest
+        env:
+          - name: SLACK_HOOK_URL
+            valueFrom:
+              secretKeyRef:
+                name: slack-hook-url
+                key: slack-hook-url
+        command: ['/bin/sh', '/etc/alertmanager/configure_secret.sh']
+        args:
+          - '--config.file=/alertmanager/config.yaml'
+          - '--storage.path=/alertmanager'
+        ports:
+        - name: alertmanager
+          containerPort: 9093
+        volumeMounts:
+        - name: config-volume
+          mountPath: /etc/alertmanager/
+      volumes:
+      - name: config-volume
+        configMap:
+          name: alertmanager
+      nodeSelector:
+        kubernetes.io/os: linux
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    prometheus.io/scrape: 'false'
+    prometheus.io/path: '/alertmanager/metrics'
+  labels:
+    app: alertmanager
+  name: alertmanager
+spec:
+  type: NodePort
+  selector:
+    app: alertmanager
+  ports:
+  - name: alertmanager
+    protocol: TCP
+    port: 9093
+    targetPort: 9093
+    nodePort: 30004

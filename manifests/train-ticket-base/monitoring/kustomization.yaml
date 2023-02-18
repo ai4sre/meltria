@@ -5,6 +5,7 @@ resources:
 - node-exporter.yaml
 - owlk8s-cr.yaml
 - owlk8s-ds.yaml
+- alerting
 - prometheus.yaml
 - grafana
 - jaeger.yaml
@@ -12,3 +13,4 @@ configMapGenerator:
 - name: prometheus-config
   files:
   - prometheus.config.yaml
+  - prometheus.rules.yaml
