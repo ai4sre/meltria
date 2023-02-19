@@ -22,6 +22,11 @@ spec:
               secretKeyRef:
                 name: slack-hook-url
                 key: slack-hook-url
+          - name: WAROOM_INTEGRATION_KEY
+            valueFrom:
+              secretKeyRef:
+                name: waroom-integration-key
+                key: waroom-integration-key
         command: ['/bin/sh', '/etc/alertmanager/configure_secret.sh']
         args:
           - '--config.file=/alertmanager/config.yaml'
