@@ -44,24 +44,36 @@ terraform apply -var-file=sockshop.tfvars
 
 # Get kubernetes cluster credentials
 gcloud container clusters get-credentials --zone ${ZONE} ${CLUSTER_NAME}
-gcloud projects add-iam-policy-binding ${PROJECT_ID} --member serviceAccount:${CLUSTER_NAME}@${PROJECT_ID}.iam.gserviceaccount.com --role roles/storage.objectAdmin
+gcloud projects add-iam-policy-binding ${PROJECT_ID} --member serviceAccount:${CLUSTER_NAME}-sa@${PROJECT_ID}.iam.gserviceaccount.com --role roles/storage.objectAdmin
 ```
 
 ## 3. Apply manifests
 
 ```bash
 kubectl apply -k ../manifests/train-ticket-base
-kubectl annotate serviceaccount --namespace litmus argo-chaos iam.gke.io/gcp-service-account=${CLUSTER_NAME}@${PROJECT_ID}-sa.iam.gserviceaccount.com
+kubectl annotate serviceaccount --namespace litmus argo-chaos iam.gke.io/gcp-service-account=${CLUSTER_NAME}-sa@${PROJECT_ID}.iam.gserviceaccount.com
 
 (cd ../manifests/train-ticket-base && helmfile sync)
 ```
 
-## 4. Setup alerts notification to slack with alertmanager
+## 4. Setup alerts notification with alertmanager
+
+### Slack webhook
 
 ```bash
 cat > /tmp/meltria_alerts_slack_webhook_url.env
 slack-hook-url=XXXXXXXXX/YYYYYYYYYYY/ZZZZZZZZZZZZZZZZZZZZZZZZ
 
 kubectl create secret generic -n monitoring --save-config slack-hook-url --from-env-file /tmp/meltria_alerts_slack_webhook_url.env
+kubectl rollout restart deployment -n monitoring alertmanager
+```
+
+### Waroom webhook
+
+```bash
+cat > /tmp/meltria_alerts_waroom_integration_key.env
+waroom-integration-key=XXXXXXXX
+
+kubectl create secret generic -n monitoring --save-config waroom-integration-key --from-env-file /tmp/meltria_alerts_waroom_integration_key.env
 kubectl rollout restart deployment -n monitoring alertmanager
 ```
