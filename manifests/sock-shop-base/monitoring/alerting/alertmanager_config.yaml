@@ -19,3 +19,11 @@ receivers:
     title: "{{ range .Alerts }}{{ .Annotations.summary }}\n{{ end }}"
     text: "{{ range .Alerts }}{{ .Annotations.description }}\n{{ end }}"
     api_url: https://hooks.slack.com/services/API_URL_SECRET
+
+- name: 'waroom-all'
+  webhook_configs:
+    - url: 'https://api.beta.waroom.com/v1/events/alertmanager'
+      send_resolved: true
+      http_config:
+        authorization:
+          credentials_file: /alertmanager/waroom-integration-key
