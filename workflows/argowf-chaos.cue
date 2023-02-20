@@ -43,8 +43,13 @@ import "strings"
 				name:  "TARGET_CONTAINER"
 				value: "{{inputs.parameters.appLabel}}"
 			}, {
+				name:  "CPU_LOAD"
+				value: "100"
+			}, {
+				// # cpu core should be provided as 0 for cpu load
+				// # to work, otherwise it will take cpu core as priority
 				name:  "CPU_CORES"
-				value: "2"
+				value: "0"
 			}, {
 				name:  "TOTAL_CHAOS_DURATION"
 				value: "{{workflow.parameters.chaosDurationSec}}"
