@@ -1336,11 +1336,11 @@ spec:
         - containerPort: 14568
         resources:
           requests:
-            cpu: 500m
-            memory: 600Mi
+            cpu: 300m
+            memory: 1200Mi
           limits:
-            cpu: 1000m
-            memory: 800Mi
+            cpu: 600m
+            memory: 1200Mi
         readinessProbe:
           tcpSocket:
             port: 14568
