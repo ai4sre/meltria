@@ -9,6 +9,9 @@ route:
     - match:
         severity: slack
       receiver: slack-all
+    - match:
+        severity: slack
+      receiver: waroom-all
 
 
 receivers:
