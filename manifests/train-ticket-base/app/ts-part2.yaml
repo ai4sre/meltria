@@ -378,11 +378,11 @@ spec:
         - containerPort: 15680
         resources:
           requests:
-            cpu: 50m
-            memory: 160Mi
-          limits:
             cpu: 500m
-            memory: 500Mi
+            memory: 300Mi
+          limits:
+            cpu: 800m
+            memory: 600Mi
         readinessProbe:
           tcpSocket:
             port: 15680
@@ -886,11 +886,11 @@ spec:
         - containerPort: 18673
         resources:
           requests:
-            cpu: 1000m
-            memory: 500Mi
+            cpu: 1200m
+            memory: 1000Mi
           limits:
-            cpu: 1500m
-            memory: 1300Mi
+            cpu: 1700m
+            memory: 1600Mi
         readinessProbe:
           tcpSocket:
             port: 18673
@@ -942,7 +942,7 @@ spec:
         - containerPort: 12340
         resources:
           requests:
-            cpu: 1500m
+            cpu: 3000m
             memory: 800Mi
           limits:
             cpu: 3000m
