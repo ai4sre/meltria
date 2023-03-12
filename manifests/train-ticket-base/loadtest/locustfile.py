@@ -11,9 +11,8 @@ import locust.stats
 from locust import (HttpUser, between, constant, constant_throughput, events,
                     task)
 from locust.env import Environment
-from requests.adapters import HTTPAdapter
-
 from locustfile_dataset import TRIP_DATA, USER_CREDETIALS
+from requests.adapters import HTTPAdapter
 
 HTTP_REQUEST_TIMEOUT = 5
 state_data = []  # for debugging purposes
@@ -885,6 +884,9 @@ def run_task_sequence(request, sequence: list[str]):
             request.perform_task(seq)
         except TrainTicketError:
             logging.exception(f"{seq} raises an error of train ticket")
+            break
+        except json.decoder.JSONDecodeError:
+            logging.exception(f"{seq} raises an error of json decode")
             break
 
 
