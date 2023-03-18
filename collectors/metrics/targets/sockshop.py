@@ -1,3 +1,4 @@
+import logging
 from multiprocessing import cpu_count
 from typing import Any, Final
 
@@ -70,13 +71,11 @@ def metrics_as_result(
         # 3. {container: 'POD'}
         dupcheck.setdefault(container, {})
         dupcheck[container][metric_name] = False
-        if labels['container'] == 'POD':
-            if not dupcheck[container][metric_name]:
+        if not dupcheck[container][metric_name]:
+            if not labels.get('container'):
                 data['containers'][container].append(m)
-        else:
-            if not dupcheck[container][metric_name]:
-                uniq_metrics = [x for x in data['containers']
-                                [container] if x['metric_name'] != metric_name]
+            else:
+                uniq_metrics = [x for x in data['containers'][container] if x['metric_name'] != metric_name]
                 uniq_metrics.append(m)
                 data['containers'][container] = uniq_metrics
                 dupcheck[container][metric_name] = True
@@ -167,54 +166,41 @@ def metrics_as_result(
     return data
 
 
-def collect_metrics(
-    prometheus_url: str, grafana_url: str,
-    start_time: str, end_time: str,
-    chaos_param: dict[str, str],
-    duration: str, step: int,
-) -> dict[str, Any]:
-    """
-    Collect metrics API
-    """
-
-    start, end = tsutil.time_range_from_args({
-        "duration": duration,
-        "start": start_time,
-        "end": end_time,
-        "step": step,
-    })
-    if start > end:
-        raise ValueError("start must be lower than end.")
-
-    fetcher = PromFetcher(
-        url=prometheus_url, ts_range=(start, end), step=step, concurrency=cpu_count()*10,
-        additional_summarize_labels=['app_kubernetes_io_name', 'app_kubernetes_io_component', 'app_kubernetes_io_part_of'],
-    )
-
-    # get container metrics (cAdvisor)
+def fetch_container_metrics(fetcher: PromFetcher) -> list:
+    """ Fetch container (cadvisor) metrics from prometheus """
     container_targets = fetcher.request_targets('job="kubernetes-cadvisor"')
     assert len(container_targets) != 0
-    # add container=POD for network metrics
     # exclude metrics of argo workflow pods by removing metrics that 'instance' is gke control-pool node.
-    comp_list = '|'.join(COMPONENT_LABELS)
-    container_selector = f"job='kubernetes-cadvisor',namespace='sock-shop',container=~'{comp_list}|POD',nodepool='{APP_NODEPOOL}'"
+    container_selector = ",".join([
+        "job='kubernetes-cadvisor'",
+        f"pod=~'^({'|'.join(COMPONENT_LABELS)})-.+'",
+        "namespace='sock-shop'",
+        f"nodepool='{APP_NODEPOOL}'",
+    ])
     container_metrics = fetcher.get_metrics(container_targets, container_selector)
     assert len(container_metrics) != 0
+    return container_metrics
 
-    # get pod metrics
+
+def fetch_pod_metrics(fetcher: PromFetcher) -> list:
     pod_selector = f"app='{APP_LABEL}',kubernetes_namespace='sock-shop'"
     pod_targets = fetcher.request_targets(pod_selector)
     assert len(pod_targets) != 0
     pod_metrics = fetcher.get_metrics(pod_targets, pod_selector)
     assert len(pod_metrics) != 0
+    return pod_metrics
 
-    # get node metrics (node-exporter)
+
+def fetch_node_metrics(fetcher: PromFetcher) -> list:
     node_selector = f"k8s_app='node-exporter',node=~'.+-{APP_NODEPOOL}-.+',kubernetes_namespace='monitoring'"
     node_targets = fetcher.request_targets(node_selector)
     node_metrics = fetcher.get_metrics(node_targets, node_selector)
     assert len(node_metrics) != 0
+    return node_metrics
 
-    # get service metrics
+
+def fetch_service_metrics(fetcher: PromFetcher) -> tuple[list, list, list]:
+    """ Fetch service metrics (RED metrics) from prometheus"""
     throughput_metrics = fetcher.get_metrics_by_query_range(
         """
             sum by (app_kubernetes_io_name) (
@@ -305,6 +291,40 @@ def collect_metrics(
         {'metric': 'request_duration_seconds_sum', 'type': 'gauge'},
     )
     latency_metrics.extend(latency_metrics_patch)
+
+    return throughput_metrics, error_metrics, latency_metrics
+
+
+def collect_metrics(
+    prometheus_url: str, grafana_url: str,
+    start_time: str, end_time: str,
+    chaos_param: dict[str, str],
+    duration: str, step: int,
+) -> dict[str, Any]:
+    """
+    Collect metrics API
+    """
+
+    start, end = tsutil.time_range_from_args({
+        "duration": duration,
+        "start": start_time,
+        "end": end_time,
+        "step": step,
+    })
+    if start > end:
+        raise ValueError("start must be lower than end.")
+
+    fetcher = PromFetcher(
+        url=prometheus_url, ts_range=(start, end), step=step, concurrency=cpu_count()*10,
+        additional_summarize_labels=[
+            'app_kubernetes_io_name', 'app_kubernetes_io_component', 'app_kubernetes_io_part_of',
+        ],
+    )
+
+    container_metrics = fetch_container_metrics(fetcher)
+    pod_metrics = fetch_pod_metrics(fetcher)
+    node_metrics = fetch_node_metrics(fetcher)
+    throughput_metrics, error_metrics, latency_metrics = fetch_service_metrics(fetcher)
 
     result = metrics_as_result(
         container_metrics, pod_metrics,
