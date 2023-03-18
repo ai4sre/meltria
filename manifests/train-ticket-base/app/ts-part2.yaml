@@ -887,10 +887,10 @@ spec:
         resources:
           requests:
             cpu: 600m
-            memory: 1500Mi
+            memory: 2500Mi
           limits:
             cpu: 800m
-            memory: 1800Mi
+            memory: 3000Mi
         readinessProbe:
           tcpSocket:
             port: 18673
