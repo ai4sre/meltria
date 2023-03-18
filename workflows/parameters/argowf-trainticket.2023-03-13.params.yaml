@@ -1,0 +1,24 @@
+repeatNum: 3
+appNamespace: 'train-ticket'
+appLabels:
+  - ts-preserve-service
+  - ts-station-service
+  - ts-train-service
+  - ts-auth-service
+  - ts-basic-service
+  # - ts-cancel-service
+  # - ts-consign-service
+  # - ts-consign-mongo
+  - ts-food-service
+  - ts-order-service
+  # - ts-order-other-service
+  # - ts-order-mongo
+  - ts-payment-service
+  - ts-price-service
+  - ts-travel-service
+  # - ts-travel2-service
+  # - ts-travel2-mongo
+  - ts-user-service
+    #chaosTypes: "'pod-cpu-hog','pod-memory-hog','pod-network-latency'"
+chaosTypes: "'pod-memory-hog','pod-network-latency'"
+chaosIntervalSec: 2700 # 45min
