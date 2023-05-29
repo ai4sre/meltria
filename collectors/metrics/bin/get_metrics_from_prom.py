@@ -107,12 +107,11 @@ def main():
         case _:
             raise ValueError("Unknown target: {}".format(args.target))
 
-    data = json.dumps(result, default=support_set_default)
     if args.out is None:
-        print(data)
+        json.dump(result, sys.stdout, default=support_set_default)
     else:
         with open(args.out, mode='w') as f:
-            f.write(data)
+            json.dump(result, f, default=support_set_default)
 
 
 if __name__ == '__main__':
