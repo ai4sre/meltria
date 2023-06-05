@@ -125,6 +125,27 @@ import "strings"
 			}]
 		}
 	}]
+	"pod-io-stress": [{
+		name: "pod-io-stress"
+		spec: {
+			components: env: [{
+				name: "CONTAINER_RUNTIME"
+				value: "containerd"
+			}, {
+				name: "SOCKET_PATH"
+				value: "/var/run/containerd/containerd.sock"
+			}, {
+				name:  "TARGET_CONTAINER"
+				value: "{{inputs.parameters.appLabel}}"
+			}, {
+				name:  "FILESYSTEM_UTILIZATION_PERCENTAGE"
+				value: "10"
+			}, {
+				name:  "TOTAL_CHAOS_DURATION"
+				value: "{{workflow.parameters.chaosDurationSec}}"
+			}]
+		}
+	}]
 }
 
 apiVersion: "argoproj.io/v1alpha1"
@@ -161,6 +182,9 @@ spec: {
 	}, {
 		name:  "chaosIntervalSec"
 		value: 1800 // 30min
+	}, {
+		name:  "collectionIntervalSec"
+		value: 5
 	}, {
 		name: "chaosTypes"
 		value: strings.Join([for type, _ in #chaosTypeToExps { "'" + type + "'" }], ",")
@@ -322,6 +346,7 @@ spec: {
 				"--grafana-url", "http://grafana.monitoring.svc.cluster.local:3000",
 				"--end", "{{inputs.parameters.endTimestamp}}",
 				"--duration", "{{workflow.parameters.chaosIntervalSec}}s",
+        "--step", "{{workflow.parameters.collectionIntervalSec}}",
 				"--chaos-injected-component", "{{inputs.parameters.appLabel}}",
 				"--injected-chaos-type", "{{inputs.parameters.chaosType}}",
 				"--out", #metricsPath,
