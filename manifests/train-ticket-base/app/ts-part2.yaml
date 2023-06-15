@@ -886,10 +886,10 @@ spec:
         - containerPort: 18673
         resources:
           requests:
-            cpu: 600m
+            cpu: 800m
             memory: 2500Mi
           limits:
-            cpu: 800m
+            cpu: 1200m
             memory: 3000Mi
         readinessProbe:
           tcpSocket:

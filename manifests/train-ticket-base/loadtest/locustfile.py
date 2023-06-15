@@ -8,9 +8,7 @@ from random import randint, uniform
 
 import locust
 import locust.stats
-from locust import (HttpUser, between, constant, constant_throughput, events,
-                    task)
-from locust.env import Environment
+from locust import HttpUser, constant, events, task
 from locustfile_dataset import TRIP_DATA, USER_CREDETIALS
 from requests.adapters import HTTPAdapter
 
@@ -582,7 +580,7 @@ class Requests:
 
 
 class UserOnlyLogin(HttpUser):
-    weight = 1
+    weight = 0.5
     # wait_function = random.expovariate(1) * 1000
     wait_time = constant(0)
 
@@ -646,7 +644,7 @@ class UserNoLogin(HttpUser):
 
 
 class UserBooking(HttpUser):
-    weight = 1
+    weight = 1.5
     # wait_function = random.expovariate(1)
     wait_time = constant(0)
 
