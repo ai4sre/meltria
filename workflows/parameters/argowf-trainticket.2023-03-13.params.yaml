@@ -19,6 +19,5 @@ appLabels:
   # - ts-travel2-service
   # - ts-travel2-mongo
   - ts-user-service
-    #chaosTypes: "'pod-cpu-hog','pod-memory-hog','pod-network-latency'"
-chaosTypes: "'pod-memory-hog','pod-network-latency'"
+chaosTypes: "'pod-cpu-hog','pod-memory-hog','pod-network-latency'"
 chaosIntervalSec: 2700 # 45min

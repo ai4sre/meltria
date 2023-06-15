@@ -1,0 +1,10 @@
+repeatNum: 5
+appNamespace: 'sock-shop'
+appLabels:
+  # - front-end
+  - orders-db
+  - carts-db
+  - user-db
+  - catalogue-db
+chaosTypes: "'pod-io-stress'"
+chaosIntervalSec: 2700 # 45min
