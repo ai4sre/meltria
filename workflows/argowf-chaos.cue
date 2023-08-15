@@ -125,6 +125,27 @@ import "strings"
 			}]
 		}
 	}]
+    "pod-io-stress": [{
+            name: "pod-io-stress"
+            spec: {
+                    components: env: [{
+                            name: "CONTAINER_RUNTIME"
+                            value: "containerd"
+                    }, {
+                            name: "SOCKET_PATH"
+                            value: "/var/run/containerd/containerd.sock"
+                    }, {
+                            name:  "TARGET_CONTAINER"
+                            value: "{{inputs.parameters.appLabel}}"
+                    }, {
+                            name:  "FILESYSTEM_UTILIZATION_PERCENTAGE"
+                            value: "10"
+                    }, {
+                            name:  "TOTAL_CHAOS_DURATION"
+                            value: "{{workflow.parameters.chaosDurationSec}}"
+                    }]
+            }
+    }]
 }
 
 apiVersion: "argoproj.io/v1alpha1"
