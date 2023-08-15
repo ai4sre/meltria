@@ -183,6 +183,9 @@ spec: {
 		name:  "chaosIntervalSec"
 		value: 1800 // 30min
 	}, {
+		name:  "collectionIntervalSec"
+		value: 15  // should be same as the prometheus scraping interval
+	}, {
 		name: "chaosTypes"
 		value: strings.Join([for type, _ in #chaosTypeToExps { "'" + type + "'" }], ",")
 	}, {
@@ -343,6 +346,7 @@ spec: {
 				"--grafana-url", "http://grafana.monitoring.svc.cluster.local:3000",
 				"--end", "{{inputs.parameters.endTimestamp}}",
 				"--duration", "{{workflow.parameters.chaosIntervalSec}}s",
+				"--step", "{{workflow.parameters.collectionIntervalSec}}",
 				"--chaos-injected-component", "{{inputs.parameters.appLabel}}",
 				"--injected-chaos-type", "{{inputs.parameters.chaosType}}",
 				"--out", #metricsPath,
